@@ -39,13 +39,21 @@ module foodTest(CLOCK_50, snakeX, snakeY, foodX, foodY, outX, outY);
 	 input[8:0] snakeY, foodY;
 	 output reg[9:0] outX;
 	 output reg[8:0] outY;
+	 wire[9:0] x;
+	 wire[8:0] y;
+	 random_generator ran(CLOCK_50, x, y);
 	 assign regenerate_food = (snakeX == foodX)&&(snakeY == foodY);
 	 always @(posedge CLOCK_50)
 	 begin
 		if(regenerate_food == 1'b1)
-			random_generator random(CLOCK_50, outX, outY);
-		else 
+		begin
+			outX <= x;
+			outY <= y;
+		end
+		else
+		begin
 			outX <= foodX;
 			outY <= foodY;
 		end
+	end
 	endmodule
