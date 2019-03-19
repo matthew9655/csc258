@@ -1,4 +1,4 @@
-	module random_generator(CLOCK_50, randomX, randomY);
+module random_generator(CLOCK_50, randomX, randomY);
 	input CLOCK_50;
 	output reg [9:0] randomX;
 	output reg [8:0] randomY;
@@ -33,19 +33,19 @@
 	end
 	endmodule 
 	
-	module foodTest(CLOCK_50, snakeX, snakeY, foodX, foodY, outX, outY);
+module foodTest(CLOCK_50, snakeX, snakeY, foodX, foodY, outX, outY);
+	input CLOCK_50;
 	 input[9:0] snakeX, foodX;
 	 input[8:0] snakeY, foodY;
-	 output[9:0] outX;
-	 output[8:0] outY;
+	 output reg[9:0] outX;
+	 output reg[8:0] outY;
 	 assign regenerate_food = (snakeX == foodX)&&(snakeY == foodY);
-	 if(regenerate_food == 1'b1)
-		begin
-		random_geberator(CLOCK_50, outX, outY)
-		end
-	else
-		begin 
-		outX <= foodX;
-		outY <= foodY;
+	 always @(posedge CLOCK_50)
+	 begin
+		if(regenerate_food == 1'b1)
+			random_generator random(CLOCK_50, outX, outY);
+		else 
+			outX <= foodX;
+			outY <= foodY;
 		end
 	endmodule
