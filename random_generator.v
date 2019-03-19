@@ -32,3 +32,20 @@
 			randomY <= (y * 10);
 	end
 	endmodule 
+	
+	module foodTest(CLOCK_50, snakeX, snakeY, foodX, foodY, outX, outY);
+	 input[9:0] snakeX, foodX;
+	 input[8:0] snakeY, foodY;
+	 output[9:0] outX;
+	 output[8:0] outY;
+	 assign regenerate_food = (snakeX == foodX)&&(snakeY == foodY);
+	 if(regenerate_food == 1'b1)
+		begin
+		random_geberator(CLOCK_50, outX, outY)
+		end
+	else
+		begin 
+		outX <= foodX;
+		outY <= foodY;
+		end
+	endmodule
