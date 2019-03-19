@@ -1,0 +1,48 @@
+
+State Machine - |snake_2|part2:u0|keyboard_tracker:KB0|curr_state
+Name curr_state.SECONDARY_BREAK curr_state.SECONDARY_MAKE curr_state.BREAK curr_state.MAKE 
+curr_state.MAKE 0 0 0 0 
+curr_state.BREAK 0 0 1 1 
+curr_state.SECONDARY_MAKE 0 1 0 1 
+curr_state.SECONDARY_BREAK 1 0 0 1 
+
+State Machine - |snake_2|part2:u0|keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver
+Name s_ps2_transceiver.PS2_STATE_3_END_TRANSFER s_ps2_transceiver.PS2_STATE_2_COMMAND_OUT s_ps2_transceiver.PS2_STATE_1_DATA_IN s_ps2_transceiver.PS2_STATE_0_IDLE s_ps2_transceiver.PS2_STATE_4_END_DELAYED 
+s_ps2_transceiver.PS2_STATE_0_IDLE 0 0 0 0 0 
+s_ps2_transceiver.PS2_STATE_1_DATA_IN 0 0 1 1 0 
+s_ps2_transceiver.PS2_STATE_2_COMMAND_OUT 0 1 0 1 0 
+s_ps2_transceiver.PS2_STATE_3_END_TRANSFER 1 0 0 1 0 
+s_ps2_transceiver.PS2_STATE_4_END_DELAYED 0 0 0 1 1 
+
+State Machine - |snake_2|part2:u0|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter
+Name s_ps2_transmitter.PS2_STATE_7_TRANSMISSION_ERROR s_ps2_transmitter.PS2_STATE_6_COMMAND_WAS_SENT s_ps2_transmitter.PS2_STATE_5_RECEIVE_ACK_BIT s_ps2_transmitter.PS2_STATE_4_TRANSMIT_STOP_BIT s_ps2_transmitter.PS2_STATE_3_TRANSMIT_DATA s_ps2_transmitter.PS2_STATE_2_WAIT_FOR_CLOCK s_ps2_transmitter.PS2_STATE_1_INITIATE_COMMUNICATION s_ps2_transmitter.PS2_STATE_0_IDLE 
+s_ps2_transmitter.PS2_STATE_0_IDLE 0 0 0 0 0 0 0 0 
+s_ps2_transmitter.PS2_STATE_1_INITIATE_COMMUNICATION 0 0 0 0 0 0 1 1 
+s_ps2_transmitter.PS2_STATE_2_WAIT_FOR_CLOCK 0 0 0 0 0 1 0 1 
+s_ps2_transmitter.PS2_STATE_3_TRANSMIT_DATA 0 0 0 0 1 0 0 1 
+s_ps2_transmitter.PS2_STATE_4_TRANSMIT_STOP_BIT 0 0 0 1 0 0 0 1 
+s_ps2_transmitter.PS2_STATE_5_RECEIVE_ACK_BIT 0 0 1 0 0 0 0 1 
+s_ps2_transmitter.PS2_STATE_6_COMMAND_WAS_SENT 0 1 0 0 0 0 0 1 
+s_ps2_transmitter.PS2_STATE_7_TRANSMISSION_ERROR 1 0 0 0 0 0 0 1 
+
+State Machine - |snake_2|part2:u0|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver
+Name s_ps2_receiver.PS2_STATE_3_PARITY_IN s_ps2_receiver.PS2_STATE_2_DATA_IN s_ps2_receiver.PS2_STATE_1_WAIT_FOR_DATA s_ps2_receiver.PS2_STATE_0_IDLE s_ps2_receiver.PS2_STATE_4_STOP_IN 
+s_ps2_receiver.PS2_STATE_0_IDLE 0 0 0 0 0 
+s_ps2_receiver.PS2_STATE_1_WAIT_FOR_DATA 0 0 1 1 0 
+s_ps2_receiver.PS2_STATE_2_DATA_IN 0 1 0 1 0 
+s_ps2_receiver.PS2_STATE_3_PARITY_IN 1 0 0 1 0 
+s_ps2_receiver.PS2_STATE_4_STOP_IN 0 0 0 1 1 
+
+State Machine - |snake_2|part2:u0|control:C0|current_state
+Name current_state.WAIT current_state.S_CYCLE_3 current_state.S_CYCLE_2 current_state.MOVE current_state.S_CYCLE_1 current_state.S_CYCLE_0 current_state.BLACK current_state.DRAW_WAIT current_state.DRAW current_state.S_LOAD_C_WAIT current_state.S_LOAD_C 
+current_state.S_LOAD_C 0 0 0 0 0 0 0 0 0 0 0 
+current_state.S_LOAD_C_WAIT 0 0 0 0 0 0 0 0 0 1 1 
+current_state.DRAW 0 0 0 0 0 0 0 0 1 0 1 
+current_state.DRAW_WAIT 0 0 0 0 0 0 0 1 0 0 1 
+current_state.BLACK 0 0 0 0 0 0 1 0 0 0 1 
+current_state.S_CYCLE_0 0 0 0 0 0 1 0 0 0 0 1 
+current_state.S_CYCLE_1 0 0 0 0 1 0 0 0 0 0 1 
+current_state.MOVE 0 0 0 1 0 0 0 0 0 0 1 
+current_state.S_CYCLE_2 0 0 1 0 0 0 0 0 0 0 1 
+current_state.S_CYCLE_3 0 1 0 0 0 0 0 0 0 0 1 
+current_state.WAIT 1 0 0 0 0 0 0 0 0 0 1 
