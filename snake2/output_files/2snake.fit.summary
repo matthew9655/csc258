@@ -1,12 +1,12 @@
-Fitter Status : Successful - Wed Mar 20 22:20:24 2019
+Fitter Status : Successful - Thu Mar 21 12:59:54 2019
 Quartus Prime Version : 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 Revision Name : 2snake
 Top-level Entity Name : snake_2
 Family : Cyclone V
 Device : 5CGXFC7C7F23C8
 Timing Models : Final
-Logic utilization (in ALMs) : 36 / 56,480 ( < 1 % )
-Total registers : 50
+Logic utilization (in ALMs) : 93 / 56,480 ( < 1 % )
+Total registers : 120
 Total pins : 42 / 268 ( 16 % )
 Total virtual pins : 0
 Total block memory bits : 57,600 / 7,024,640 ( < 1 % )

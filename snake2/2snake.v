@@ -58,7 +58,7 @@ module part2(
 	 // wires to contain the other values on the keyboard
 	 wire not_used[5:0];
 	 
-	 // the stop wire from the datapath to the FSM
+	 wire enable_d;
 	 
 	 
 	 
@@ -66,7 +66,8 @@ module part2(
 			.cout(delay),
 			.reset(reset),
 			.clk(clk),
-			.d({4'b0, 24'd12500000}) 
+			.d({4'b0, 24'd12500000}),
+			.enable_d(enable_d)
 	 );
 	 
 	 
@@ -81,7 +82,7 @@ module part2(
 	 vga_adapter a0(
 			.resetn(resetn),
 			.clock(clk),
-			.colour(c_out),
+			.colour(colour),
 			.x(x_out), 
 			.y(y_out),
 			.plot(plot),
@@ -111,7 +112,8 @@ module part2(
         .move(move),
         .enable(enable),
         .plot(plot),
-		  .colour(colour)
+		  .colour(colour),
+		  .enable_d(enable_d)
         
     );
 
@@ -126,13 +128,12 @@ module part2(
 		  .foodx(foodx),
 		  .foody(foody),
         .enable(enable), 
-		  .colour(colour),
+
 		  
 		  .stop(stop),
 		  .food_gen(gen),
         .x_out(x_out),
-		  .y_out(y_out),
-		  .c_out(c_out)
+		  .y_out(y_out)
     );
 	 
 	 keyboard_tracker #(.PULSE_OR_HOLD(1)) KB0 (
@@ -164,7 +165,7 @@ module control(
 	 input delay,
 	 input food_gen,
 	 
-	 output reg move, enable, plot,
+	 output reg move, enable, plot, enable_d,
 	 output reg [2:0] colour
 	 );
 	
@@ -212,6 +213,7 @@ module control(
 		  plot = 1'b0;
 		  colour = 3'b000;
 		  move = 1'b0;
+		  enable_d = 1'b0;
 
 
         case (current_state)
@@ -221,41 +223,26 @@ module control(
 					plot = 1'b1;
 					colour = 3'b010;
             end
-				DRAW1: 
-				begin 
-					 enable = 1'b1;
-					 plot = 1'b1;
-				end
 				WAIT: 
 				begin 
-					 colour = 3'b111;
+					enable_d = 1'b1;
+					 
 				end	
 				BLACK: 
 				begin 
 					 enable = 1'b1;
 					 plot = 1'b1;
-				end
-				BLACK1: 
-				begin 
-					 enable = 1'b1;
-					 plot = 1'b1;
+					 colour = 3'b111;
 				end
 				MOVE: 
 				begin
 					 move = 1'b1;
-					 enable = 1'b0;
-					 plot = 1'b0;
 			   end
 				FOOD:
 				begin
 					 enable = 1'b1;
 					 plot = 1'b1;
 					 colour = 3'b100;
-				end
-				FOOD1:
-				begin
-					 enable = 1'b1;
-					 plot = 1'b1;
 				end
         endcase
     end // enable_signals
@@ -275,7 +262,6 @@ module datapath(
     input clk,
     input resetn, enable,
 	 input left, right, up, down,// if y_dir is 1, go down else up. if x_dir is 1, go right, else left.
-    input [2:0] colour,
 	 input move, // if move is high, move x y based on x_dir, y_dir // colour the pixel black if black is high
 	 
 	 // food 
@@ -286,14 +272,12 @@ module datapath(
 	 
     output [6:0] x_out,
 	 output [6:0] y_out,
-	 output [2:0] c_out,
 	 output reg stop
     );
 	 
 	 // registers for coordinates of x ,y
 	 reg [6:0] regx;
 	 reg [6:0] regy;
-	 reg [2:0] regc;
 	 
 	 reg [3:0] count; 
 	 
@@ -395,14 +379,14 @@ module datapath(
 	 
 	 assign x_out = food_gen ? (foodx + count[1:0]) : (regx + count[1:0]);
 	 assign y_out = food_gen ? (foody + count[3:2]) : (regy + count[3:2]);
-	 assign c_out = regc;
 	 
 	 
 endmodule
 
-module RateDivider(cout, reset, clk, d) ; // need to take into account of the frames too
+module RateDivider(cout, reset, clk, d, enable_d) ; // need to take into account of the frames too
 	input [27:0] d;
 	input reset, clk;
+	input enable_d;
 	output cout; 
 	
 	reg [27:0] count;
@@ -413,7 +397,8 @@ module RateDivider(cout, reset, clk, d) ; // need to take into account of the fr
 		begin
 			count <= d;
 		end
-		else
+		
+		if (enable_d == 1'b1)
 		begin 
 			if (count == 0)
 			begin

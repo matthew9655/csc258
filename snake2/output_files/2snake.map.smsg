@@ -4,6 +4,6 @@ Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(312)
 Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(313): object "HEX3" differs only in case from object "hex3" in the same scope File: /h/u17/c7/00/choimat4/csc258/snake2/PS2_Mouse_Controller.v Line: 313
 Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(314): object "HEX4" differs only in case from object "hex4" in the same scope File: /h/u17/c7/00/choimat4/csc258/snake2/PS2_Mouse_Controller.v Line: 314
 Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(315): object "HEX5" differs only in case from object "hex5" in the same scope File: /h/u17/c7/00/choimat4/csc258/snake2/PS2_Mouse_Controller.v Line: 315
-Info (10281): Verilog HDL Declaration information at 2snake.v(162): object "draw" differs only in case from object "DRAW" in the same scope File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 162
-Info (10281): Verilog HDL Declaration information at 2snake.v(167): object "move" differs only in case from object "MOVE" in the same scope File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 167
-Warning (10268): Verilog HDL information at 2snake.v(357): always construct contains both blocking and non-blocking assignments File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 357
+Info (10281): Verilog HDL Declaration information at 2snake.v(163): object "draw" differs only in case from object "DRAW" in the same scope File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 163
+Info (10281): Verilog HDL Declaration information at 2snake.v(168): object "move" differs only in case from object "MOVE" in the same scope File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 168
+Warning (10268): Verilog HDL information at 2snake.v(341): always construct contains both blocking and non-blocking assignments File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 341
