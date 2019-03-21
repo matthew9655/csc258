@@ -1,14 +1,8 @@
-// Sw[9:7] colour
-// SW[6:0] input
-
 //KEY[0] active low reset
 //KEY[1] go signal
-// enable KEY[3]
-//LEDR displays result
-//HEX0 & HEX1 also displays result
 
-module snake_2(SW, KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R, VGA_G, VGA_B, PS2_CLK, PS2_DAT);
-    input [9:0] SW;
+
+module snake_2(KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R, VGA_G, VGA_B, PS2_CLK, PS2_DAT);
     input [3:0] KEY;
     input CLOCK_50;
     output VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK;
@@ -17,18 +11,14 @@ module snake_2(SW, KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, V
 	 
 	 
     wire resetn;
-    wire go;
 	 wire draw;
-    assign go = ~KEY[3];
     assign resetn = KEY[0];
 	 assign draw = KEY[1];
 
     part2 u0(
         .clk(CLOCK_50),
         .resetn(resetn),
-        .go(go),
 		  .draw(draw),
-		  .color(SW[9:7]),
         .VGA_HS(VGA_HS),
 		  .VGA_VS(VGA_VS),
 		  .VGA_BLANK(VGA_BLANK),
@@ -46,9 +36,7 @@ endmodule
 module part2(
     input clk,
     input resetn,
-    input go,
 	 input draw,
-	 input [2:0] color,
 	 output VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK,
 	 output [9:0] VGA_R, VGA_G, VGA_B,
 	 inout PS2_CLK, PS2_DAT
@@ -57,21 +45,21 @@ module part2(
     );
 	 // wires for food generation
 	 wire gen;
-	 wire [7:0] food_x;
-	 wire [6:0] food_y;
+	 wire [6:0] foodx;
+	 wire [6:0] foody;
 	 
 	 // wires for moving the bit
-    wire black, move, ld_c, enable, plot, stop, delay;
+    wire move, enable, plot, stop, delay;
 	 wire left, right, up, down;
-	 wire [7:0] x_out; 
+	 wire [6:0] x_out; 
 	 wire [6:0] y_out;
-	 wire [2:0] c_out;
+	 wire [2:0] c_out, colour;
 	 
 	 // wires to contain the other values on the keyboard
 	 wire not_used[5:0];
 	 
 	 // the stop wire from the datapath to the FSM
-	 wire stop_counter;
+	 
 	 
 	 
 	 RateDivider r0(
@@ -81,13 +69,13 @@ module part2(
 			.d({4'b0, 24'd12500000}) 
 	 );
 	 
-//	 
-//	 food_gen(
-//			.clk(clk),
-//			.gen(gen),
-//			.randomX(food_x),
-//			.randomY(food_y)
-//	 );
+	 
+	 food_gen(
+			.clk(clk),
+			.gen(gen),
+			.randomX(foodx),
+			.randomY(foody)
+	 );
 	 
 	 
 	 vga_adapter a0(
@@ -116,14 +104,14 @@ module part2(
     control C0(
         .clk(clk),
         .resetn(resetn),
-        .go(go),
 		  .draw(draw),
 		  .stop(stop),
 		  .delay(delay),
 		  
         .move(move),
         .enable(enable),
-        .plot(plot)
+        .plot(plot),
+		  .colour(colour)
         
     );
 
@@ -134,12 +122,11 @@ module part2(
 		  .right(right),
 		  .up(up),
 		  .down(down),
-        .black(black),
 		  .move(move),
-		  .food_x(food_x),
-		  .food_y(food_y),
+		  .foodx(foodx),
+		  .foody(foody),
         .enable(enable), 
-		  .colour(color),
+		  .colour(colour),
 		  
 		  .stop(stop),
 		  .food_gen(gen),
@@ -172,18 +159,15 @@ module part2(
 module control(
     input clk,
     input resetn,
-    input go,
 	 input draw,
 	 input stop,
 	 input delay,
 	 input food_gen,
 	 
-	 output reg move, enable, plot
-	 output reg colour[2:0];
+	 output reg move, enable, plot,
+	 output reg [2:0] colour
 	 );
 	
-	
-    //output reg  black, move, ld_c, enable, plot;
    
 
     reg [3:0] current_state, next_state; 
@@ -196,23 +180,25 @@ module control(
 					 WAIT            = 4'd4,
 					 BLACK			  = 4'd5,
 					 BLACK1		     = 4'd6,
-					 MOVE				  = 4'd7;
+					 MOVE				  = 4'd7,
+					 FOOD				  = 4'd8,
+					 FOOD1			  = 4'd9;
 			
-					 
-					 
     
     // Next state logic aka our state table
     always@(*)
     begin: state_table 
             case (current_state)
-					 START: next_state = draw ? DRAW_WAIT : DRAW;
-					 START_WAIT: next_state = draw ? DRAW_WAIT : DRAW;
+					 START: next_state = draw ? START_WAIT : START;
+					 START_WAIT: next_state = draw ? START_WAIT : DRAW;
                 DRAW: next_state = DRAW1;
 					 DRAW1: next_state = stop ? WAIT : DRAW; 
-					 WAIT: next_state = delay ? DRAW2 : WAIT
+					 WAIT: next_state = delay ? BLACK : WAIT;
 					 BLACK: next_state = BLACK1;
 					 BLACK1: next_state = stop ? MOVE : BLACK;
-					 MOVE: next_state = DRAW;
+					 MOVE: next_state = food_gen ? FOOD : DRAW;
+					 FOOD: next_state = FOOD1;
+					 FOOD1: next_state = stop ? DRAW : FOOD;
             default:     next_state = START;
         endcase
     end // state_table
@@ -222,7 +208,6 @@ module control(
     always @(*)
     begin: enable_signals
         // By default make all our signals 0
-        ld_c = 1'b0;
 		  enable = 1'b0;
 		  plot = 1'b0;
 		  colour = 3'b000;
@@ -234,7 +219,7 @@ module control(
 				begin
 					enable = 1'b1;
 					plot = 1'b1;
-					colour = 3b'100;
+					colour = 3'b010;
             end
 				DRAW1: 
 				begin 
@@ -243,7 +228,7 @@ module control(
 				end
 				WAIT: 
 				begin 
-					 colour = 3b'111;
+					 colour = 3'b111;
 				end	
 				BLACK: 
 				begin 
@@ -261,6 +246,17 @@ module control(
 					 enable = 1'b0;
 					 plot = 1'b0;
 			   end
+				FOOD:
+				begin
+					 enable = 1'b1;
+					 plot = 1'b1;
+					 colour = 3'b100;
+				end
+				FOOD1:
+				begin
+					 enable = 1'b1;
+					 plot = 1'b1;
+				end
         endcase
     end // enable_signals
    
@@ -283,60 +279,26 @@ module datapath(
 	 input move, // if move is high, move x y based on x_dir, y_dir // colour the pixel black if black is high
 	 
 	 // food 
-	 input [7:0] food_x,
-	 input [6:0] food_y,
+	 input [6:0] foodx,
+	 input [6:0] foody,
 	 output reg food_gen,
 	 
 	 
-    output [8:0] x_out,
-	 output [7:0] y_out,
+    output [6:0] x_out,
+	 output [6:0] y_out,
 	 output [2:0] c_out,
 	 output reg stop
     );
 	 
 	 // registers for coordinates of x ,y
-	 reg [8:0] regx;
-	 reg [7:0] regy;
+	 reg [6:0] regx;
+	 reg [6:0] regy;
 	 reg [2:0] regc;
 	 
 	 reg [3:0] count; 
 	 
 	 // registers for directions
-	 reg x_dir, y_dir;
-	 
-    // registers for regc
-	 
-	 
-	 // setting the logic direction bits
-	 always @ (posedge clk) 
-	 begin 
-		if (!resetn)
-		begin
-			 x_dir <= 1'b0;
-			 y_dir <= 1'b0;
-			 
-		end
-		else
-		begin 
-			if (left == 1)
-			begin 
-				x_dir <= 1'b0;
-			end
-			else if (right == 1)
-			begin 
-				x_dir <= 1'b1;
-			end
-			else if (up == 1)
-			begin 
-				y_dir <= 1'b0;
-			end
-			else if (down == 1)
-			begin
-				y_dir <= 1'b1;
-			end
-		end
-	 end
-	 
+	 reg r, l, u, d;
 	 
 	 // moving the blocks of x and y
 	 
@@ -344,34 +306,67 @@ module datapath(
 	 begin 
 		if (!resetn)
 		begin
-		    regx <= 8'b0;
-			 regy <= 7'b0;
+		    regx <= 7'd80;
+			 regy <= 7'd60;
+			 r <= 1'b0;
+			 l <= 1'b0;
+			 u <= 1'b0;
+			 d <= 1'b0;
 		end
 		
 		else 
 		begin
 			if (move == 1) 
 			begin
-				if (x_dir == 1)
+				if (right == 1 && l == 0)
 				begin
 					regx <= regx + 1;
+					r <= 1'b1;
+					l <= 1'b0;
+					u <= 1'b0;
+					d <= 1'b0;
 				end
-				else if (x_dir == 0)
+				else if (left == 1 && r == 0)
 				begin
 					regx <= regx - 1;
+					r <= 1'b0;
+					l <= 1'b1;
+					u <= 1'b0;
+					d <= 1'b0;
 				end
-				
-				if (y_dir == 1)
+				else if (up == 1 && d == 0)
 				begin 
 					regy <= regy + 1;
+					r <= 1'b0;
+					l <= 1'b0;
+					u <= 1'b1;
+					d <= 1'b0;
 				end
-				else if (y_dir == 0)
+				else if (down == 1 && u == 0)
 				begin 
 					regy <= regy - 1;
+					r <= 1'b0;
+					l <= 1'b0;
+					u <= 1'b0;
+					d <= 1'b1;
 				end
-				
 			 end
 		end
+	 end
+	 
+	 always @ (posedge clk)
+	 begin
+		  if (!resetn)
+		  begin 
+				food_gen = 1'b0;
+		  end
+		  else
+		  begin
+			  if ((regx == foodx) && (regy == foody))
+			  begin 
+					food_gen <= 1'b1;
+			  end
+		  end
 	 end
 		
     // counter to colour in bits
@@ -398,20 +393,11 @@ module datapath(
 	 end
 	 
 	 
-	 assign x_out = regx + count[1:0];
-	 assign y_out = regy + count[3:2];
+	 assign x_out = food_gen ? (foodx + count[1:0]) : (regx + count[1:0]);
+	 assign y_out = food_gen ? (foody + count[3:2]) : (regy + count[3:2]);
 	 assign c_out = regc;
 	 
-	 // checking for food 
-//	 always @ (posedge clk) 
-//	 begin
-//		if ((regx == food_x) && (regy == food_y))
-//			begin 
-//			food_gen <= 1'b1;
-//			end
-//	 end
-
-    
+	 
 endmodule
 
 module RateDivider(cout, reset, clk, d) ; // need to take into account of the frames too
@@ -445,81 +431,44 @@ module RateDivider(cout, reset, clk, d) ; // need to take into account of the fr
 endmodule
 
 
-//module food_gen (clk, gen, randomX, randomY);
-//	input clk, gen;
-//	output reg [9:0] randomX;
-//	output reg [8:0] randomY;
-//
-//	reg [6:0] x = 10; //.5 -> 0 - 127 -> 62
-//	reg [6:0] y = 10; //.5 -> 0 - 127 -> 46
-//	
-//	always@(posedge clk)
-//		x <= x + 4;
-//		
-//	always@(posedge clk)
-//		y <= y + 2;
-//	
-//	always@(posedge clk)
-//	begin
-//		if (gen == 1)
-//		begin
-//			if(x > 46)
-//			begin
-//				randomX <= ((x % 46) + 1) * 10;
-//			end
-//			else if (x < 5)
-//			begin
-//				randomX <= ((x + 1) * 4) * 10;
-//			end
-//			else
-//			begin
-//				randomX <= (x * 10);
-//			end
-//		end
-//	end
-//	
-//	always@(posedge clk)
-//	begin
-//		if (gen == 1)
-//		begin
-//			if(y > 46)
-//			begin
-//				randomY <= ((y % 46) + 1) * 10;
-//			end
-//			else if (y < 5)
-//			begin
-//				randomY <= ((y + 1) * 3) * 10;
-//			end
-//			else
-//			begin
-//				randomY <= (y * 10);
-//			end
-//		end
-//	end
-//	endmodule 
+module food_gen (clk, gen, randomX, randomY);
+	input clk, gen;
+	output reg [6:0] randomX;
+	output reg [6:0] randomY;
+
+	reg [6:0] x;
+	reg [6:0] y;
 	
-//module foodTest(CLOCK_50, snakeX, snakeY, foodX, foodY, outX, outY);
-//	input CLOCK_50;
-//	 input[9:0] snakeX, foodX;
-//	 input[8:0] snakeY, foodY;
-//	 output reg[9:0] outX;
-//	 output reg[8:0] outY;
-//	 wire[9:0] x;
-//	 wire[8:0] y;
-//	 random_generator ran(CLOCK_50, x, y);
-//	 assign regenerate_food = (snakeX == foodX)&&(snakeY == foodY);
-//	 always @(posedge CLOCK_50)
-//	 begin
-//		if(regenerate_food == 1'b1)
-//		begin
-//			outX <= x;
-//			outY <= y;
-//		end
-//		else
-//		begin
-//			outX <= foodX;
-//			outY <= foodY;
-//		end
-//	end
-//	endmodule
+	always@(posedge clk)
+	begin
+		if (gen == 1)
+		begin
+			if(x < 7'd112)
+			begin
+				x <= x + 1;
+			end
+			else
+			begin
+				x <= 7'd48;
+			end
+		end
+	end
+	
+	always@(posedge clk)
+	begin
+		if (gen == 1)
+		begin
+			if(y > 7'd28)
+			begin
+				y <= y - 1;
+			end
+			else
+			begin
+				y <= 7'd92;
+			end
+		end
+	end
+
+endmodule 
+	
 

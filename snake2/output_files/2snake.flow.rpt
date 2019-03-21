@@ -1,5 +1,5 @@
 Flow report for 2snake
-Tue Mar 19 13:59:58 2019
+Wed Mar 20 22:20:50 2019
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -41,7 +41,7 @@ agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Flow Summary                                                                  ;
 +---------------------------------+---------------------------------------------+
-; Flow Status                     ; Successful - Tue Mar 19 13:59:58 2019       ;
+; Flow Status                     ; Successful - Wed Mar 20 22:20:50 2019       ;
 ; Quartus Prime Version           ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                   ; 2snake                                      ;
 ; Top-level Entity Name           ; snake_2                                     ;
@@ -49,8 +49,8 @@ agreement for further details.
 ; Device                          ; 5CGXFC7C7F23C8                              ;
 ; Timing Models                   ; Final                                       ;
 ; Logic utilization (in ALMs)     ; 36 / 56,480 ( < 1 % )                       ;
-; Total registers                 ; 51                                          ;
-; Total pins                      ; 50 / 268 ( 19 % )                           ;
+; Total registers                 ; 50                                          ;
+; Total pins                      ; 42 / 268 ( 16 % )                           ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 57,600 / 7,024,640 ( < 1 % )                ;
 ; Total DSP Blocks                ; 0 / 156 ( 0 % )                             ;
@@ -68,7 +68,7 @@ agreement for further details.
 +-------------------+---------------------+
 ; Option            ; Setting             ;
 +-------------------+---------------------+
-; Start date & time ; 03/19/2019 13:57:03 ;
+; Start date & time ; 03/20/2019 22:19:34 ;
 ; Main task         ; Compilation         ;
 ; Revision Name     ; 2snake              ;
 +-------------------+---------------------+
@@ -79,7 +79,7 @@ agreement for further details.
 +-------------------------------------+----------------------------------------+---------------+-------------+----------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id     ;
 +-------------------------------------+----------------------------------------+---------------+-------------+----------------+
-; COMPILER_SIGNATURE_ID               ; 118796719441060.155301822322543        ; --            ; --          ; --             ;
+; COMPILER_SIGNATURE_ID               ; 118796719441451.155313477437290        ; --            ; --          ; --             ;
 ; EDA_OUTPUT_DATA_FORMAT              ; Verilog Hdl                            ; --            ; --          ; eda_simulation ;
 ; EDA_SIMULATION_TOOL                 ; ModelSim-Altera (Verilog)              ; <None>        ; --          ; --             ;
 ; EDA_TIME_SCALE                      ; 1 ps                                   ; --            ; --          ; eda_simulation ;
@@ -100,12 +100,12 @@ agreement for further details.
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name               ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis      ; 00:00:17     ; 1.0                     ; 1051 MB             ; 00:00:21                           ;
-; Fitter                    ; 00:00:47     ; 1.0                     ; 2348 MB             ; 00:00:50                           ;
-; Assembler                 ; 00:00:09     ; 1.0                     ; 969 MB              ; 00:00:07                           ;
-; TimeQuest Timing Analyzer ; 00:00:10     ; 1.1                     ; 1346 MB             ; 00:00:07                           ;
-; EDA Netlist Writer        ; 00:00:02     ; 1.0                     ; 1262 MB             ; 00:00:01                           ;
-; Total                     ; 00:01:25     ; --                      ; --                  ; 00:01:26                           ;
+; Analysis & Synthesis      ; 00:00:15     ; 1.0                     ; 1053 MB             ; 00:00:20                           ;
+; Fitter                    ; 00:00:34     ; 1.0                     ; 2346 MB             ; 00:00:48                           ;
+; Assembler                 ; 00:00:09     ; 1.0                     ; 967 MB              ; 00:00:07                           ;
+; TimeQuest Timing Analyzer ; 00:00:10     ; 1.1                     ; 1347 MB             ; 00:00:07                           ;
+; EDA Netlist Writer        ; 00:00:02     ; 1.0                     ; 1261 MB             ; 00:00:01                           ;
+; Total                     ; 00:01:10     ; --                      ; --                  ; 00:01:23                           ;
 +---------------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
@@ -114,11 +114,11 @@ agreement for further details.
 +---------------------------+------------------+----------------+------------+----------------+
 ; Module Name               ; Machine Hostname ; OS Name        ; OS Version ; Processor type ;
 +---------------------------+------------------+----------------+------------+----------------+
-; Analysis & Synthesis      ; b3175-02         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
-; Fitter                    ; b3175-02         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
-; Assembler                 ; b3175-02         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
-; TimeQuest Timing Analyzer ; b3175-02         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
-; EDA Netlist Writer        ; b3175-02         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
+; Analysis & Synthesis      ; b3175-05         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
+; Fitter                    ; b3175-05         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
+; Assembler                 ; b3175-05         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
+; TimeQuest Timing Analyzer ; b3175-05         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
+; EDA Netlist Writer        ; b3175-05         ; Ubuntu 16.04.6 ; 16         ; x86_64         ;
 +---------------------------+------------------+----------------+------------+----------------+
 
 

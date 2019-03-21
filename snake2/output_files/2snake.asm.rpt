@@ -1,5 +1,5 @@
 Assembler report for 2snake
-Tue Mar 19 13:59:44 2019
+Wed Mar 20 22:20:36 2019
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -38,7 +38,7 @@ agreement for further details.
 +---------------------------------------------------------------+
 ; Assembler Summary                                             ;
 +-----------------------+---------------------------------------+
-; Assembler Status      ; Successful - Tue Mar 19 13:59:44 2019 ;
+; Assembler Status      ; Successful - Wed Mar 20 22:20:36 2019 ;
 ; Revision Name         ; 2snake                                ;
 ; Top-level Entity Name ; snake_2                               ;
 ; Family                ; Cyclone V                             ;
@@ -67,8 +67,8 @@ agreement for further details.
 +----------------+---------------------+
 ; Option         ; Setting             ;
 +----------------+---------------------+
-; JTAG usercode  ; 0x01161A5D          ;
-; Checksum       ; 0x01161A5D          ;
+; JTAG usercode  ; 0x01161C71          ;
+; Checksum       ; 0x01161C71          ;
 +----------------+---------------------+
 
 
@@ -78,13 +78,13 @@ agreement for further details.
 Info: *******************************************************************
 Info: Running Quartus Prime Assembler
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Tue Mar 19 13:59:35 2019
+    Info: Processing started: Wed Mar 20 22:20:27 2019
 Info: Command: quartus_asm --read_settings_files=off --write_settings_files=off 2snake -c 2snake
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (115030): Assembler is generating device programming files
 Info: Quartus Prime Assembler was successful. 0 errors, 1 warning
-    Info: Peak virtual memory: 969 megabytes
-    Info: Processing ended: Tue Mar 19 13:59:45 2019
+    Info: Peak virtual memory: 967 megabytes
+    Info: Processing ended: Wed Mar 20 22:20:37 2019
     Info: Elapsed time: 00:00:10
     Info: Total CPU time (on all processors): 00:00:07
 
