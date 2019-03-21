@@ -20,12 +20,11 @@ add wave {/*}
 # Test Reset
 force {clk} 1 
 force {resetn} 0 
-force {enable} 0 
+force {enable} 1
 force {left} 1
 force {right} 0
 force {up} 0 
 force {down} 0 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -43,7 +42,6 @@ force {left} 1
 force {right} 0
 force {up} 0 
 force {down} 0 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -61,7 +59,6 @@ force {left} 1
 force {right} 0
 force {up} 0 
 force {down} 0 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -79,7 +76,6 @@ force {left} 0
 force {right} 1
 force {up} 0
 force {down} 0 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -96,7 +92,6 @@ force {left} 0
 force {right} 0
 force {up} 1
 force {down} 0 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -113,7 +108,6 @@ force {left} 0
 force {right} 0
 force {up} 1
 force {down} 0 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -130,7 +124,6 @@ force {left} 0
 force {right} 0
 force {up} 0
 force {down} 1 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -147,7 +140,6 @@ force {left} 0
 force {right} 1
 force {up} 0
 force {down} 0 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -164,7 +156,6 @@ force {left} 0
 force {right} 1
 force {up} 0
 force {down} 0 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -181,7 +172,6 @@ force {left} 1
 force {right} 0
 force {up} 0
 force {down} 0 
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -198,7 +188,6 @@ force {left} 0
 force {right} 0
 force {up} 0
 force {down} 1
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -215,7 +204,6 @@ force {left} 0
 force {right} 0
 force {up} 0
 force {down} 1
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -233,7 +221,6 @@ force {left} 0
 force {right} 0
 force {up} 1
 force {down} 0
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -250,7 +237,6 @@ force {left} 1
 force {right} 0
 force {up} 0
 force {down} 0
-force {colour} 100
 force {move} 1
 force {foodx} 0010100
 force {foody} 1010001
@@ -267,7 +253,6 @@ force {left} 1
 force {right} 0
 force {up} 0
 force {down} 0
-force {colour} 100
 force {move} 1
 force {foodx} 1001110
 force {foody} 0111100
@@ -284,11 +269,35 @@ force {left} 1
 force {right} 0
 force {up} 0
 force {down} 0
-force {colour} 100
 force {move} 1
 force {foodx} 1001110
 force {foody} 0111100
 run 10ns
 
-force {clk} 0
-run 5ns
+# Test colour pickel
+force {clk} 1 0, 0 1 -repeat 10
+force {enable} 1
+force {resetn} 1 
+force {enable} 1
+force {left} 0
+force {right} 0
+force {up} 0
+force {down} 0
+force {move} 0
+force {foodx} 1001110
+force {foody} 0111100
+run 200ns
+#
+
+# Test go left after eat the food 
+force {clk} 1 0 
+force {resetn} 0
+force {enable} 1
+force {left} 0
+force {right} 0
+force {up} 0
+force {down} 0
+force {move} 0
+force {foodx} 1001110
+force {foody} 0111100
+run 10ns
