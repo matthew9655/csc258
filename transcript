@@ -1,0 +1,178 @@
+cd /h/u17/c7/00/choimat4/csc258/snake2
+do control.do
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 16:15:39 on Mar 21,2019
+# vlog -reportprogress 300 -timescale 1ns/1ns 2snake.v 
+# -- Compiling module snake_2
+# -- Compiling module part2
+# -- Compiling module control
+# -- Compiling module datapath
+# -- Compiling module RateDivider
+# -- Compiling module food_gen
+# 
+# Top level modules:
+# 	snake_2
+# End time: 16:15:41 on Mar 21,2019, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 0
+# vsim control 
+# Start time: 16:15:41 on Mar 21,2019
+# Loading work.control
+# ** Error: (vsim-4012) Expected ',' separator between value/time pairs.
+# Usage: force [-deposit | -drive | -freeze] [-cancel <period>] [-repeat <period>] <item_name> <value> [<time>] [, <value> <time> ...]
+# Error in macro ./control.do line 11
+# ** Error: (vsim-4012) Expected ',' separator between value/time pairs.
+# Usage: force [-deposit | -drive | -freeze] [-cancel <period>] [-repeat <period>] <item_name> <value> [<time>] [, <value> <time> ...]
+#     while executing
+# "force {clk} 0 0 1 10 -repeat 20"
+do control.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 16:16:26 on Mar 21,2019
+# vlog -reportprogress 300 -timescale 1ns/1ns 2snake.v 
+# -- Compiling module snake_2
+# -- Compiling module part2
+# -- Compiling module control
+# -- Compiling module datapath
+# -- Compiling module RateDivider
+# -- Compiling module food_gen
+# 
+# Top level modules:
+# 	snake_2
+# End time: 16:16:27 on Mar 21,2019, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# End time: 16:16:29 on Mar 21,2019, Elapsed time: 0:00:48
+# Errors: 2, Warnings: 0
+# vsim control 
+# Start time: 16:16:29 on Mar 21,2019
+# Loading work.control
+# ** Error (suppressible): (vsim-4008) Object 'reset' not found.
+# Error in macro ./control.do line 13
+# ** Error (suppressible): (vsim-4008) Object 'reset' not found.
+# 
+#     while executing
+# "force {reset} 0 0, 1 20"
+do control.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 16:17:01 on Mar 21,2019
+# vlog -reportprogress 300 -timescale 1ns/1ns 2snake.v 
+# -- Compiling module snake_2
+# -- Compiling module part2
+# -- Compiling module control
+# -- Compiling module datapath
+# -- Compiling module RateDivider
+# -- Compiling module food_gen
+# 
+# Top level modules:
+# 	snake_2
+# End time: 16:17:04 on Mar 21,2019, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 0
+# End time: 16:17:05 on Mar 21,2019, Elapsed time: 0:00:36
+# Errors: 1, Warnings: 0
+# vsim control 
+# Start time: 16:17:05 on Mar 21,2019
+# Loading work.control
+# ** Error: invalid command name "force{stop}"
+# Error in macro ./control.do line 17
+# invalid command name "force{stop}"
+#     while executing
+# "force{stop} 1 80, 0 100"
+do control.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 16:17:40 on Mar 21,2019
+# vlog -reportprogress 300 -timescale 1ns/1ns 2snake.v 
+# -- Compiling module snake_2
+# -- Compiling module part2
+# -- Compiling module control
+# -- Compiling module datapath
+# -- Compiling module RateDivider
+# -- Compiling module food_gen
+# 
+# Top level modules:
+# 	snake_2
+# End time: 16:17:42 on Mar 21,2019, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 0
+# End time: 16:17:44 on Mar 21,2019, Elapsed time: 0:00:39
+# Errors: 3, Warnings: 0
+# vsim control 
+# Start time: 16:17:44 on Mar 21,2019
+# Loading work.control
+# ** Error: invalid command name "force{stop}"
+# Error in macro ./control.do line 25
+# invalid command name "force{stop}"
+#     while executing
+# "force{stop} 1 200, 0 220"
+do control.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 16:18:04 on Mar 21,2019
+# vlog -reportprogress 300 -timescale 1ns/1ns 2snake.v 
+# -- Compiling module snake_2
+# -- Compiling module part2
+# -- Compiling module control
+# -- Compiling module datapath
+# -- Compiling module RateDivider
+# -- Compiling module food_gen
+# 
+# Top level modules:
+# 	snake_2
+# End time: 16:18:07 on Mar 21,2019, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 0
+# End time: 16:18:08 on Mar 21,2019, Elapsed time: 0:00:24
+# Errors: 3, Warnings: 0
+# vsim control 
+# Start time: 16:18:08 on Mar 21,2019
+# Loading work.control
+# ** Error: invalid command name "force{stop}"
+# Error in macro ./control.do line 25
+# invalid command name "force{stop}"
+#     while executing
+# "force{stop} 1 200, 0 220"
+do control.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 16:18:25 on Mar 21,2019
+# vlog -reportprogress 300 -timescale 1ns/1ns 2snake.v 
+# -- Compiling module snake_2
+# -- Compiling module part2
+# -- Compiling module control
+# -- Compiling module datapath
+# -- Compiling module RateDivider
+# -- Compiling module food_gen
+# 
+# Top level modules:
+# 	snake_2
+# End time: 16:18:29 on Mar 21,2019, Elapsed time: 0:00:04
+# Errors: 0, Warnings: 0
+# End time: 16:18:31 on Mar 21,2019, Elapsed time: 0:00:23
+# Errors: 3, Warnings: 0
+# vsim control 
+# Start time: 16:18:31 on Mar 21,2019
+# Loading work.control
+# ** Error: invalid command name "force{stop}"
+# Error in macro ./control.do line 25
+# invalid command name "force{stop}"
+#     while executing
+# "force{stop} 1 200, 0 220"
+do control.do
+# ** Warning: (vlib-34) Library already exists at "work".
+# Model Technology ModelSim - Intel FPGA Edition vlog 10.5b Compiler 2016.10 Oct  5 2016
+# Start time: 16:18:47 on Mar 21,2019
+# vlog -reportprogress 300 -timescale 1ns/1ns 2snake.v 
+# -- Compiling module snake_2
+# -- Compiling module part2
+# -- Compiling module control
+# -- Compiling module datapath
+# -- Compiling module RateDivider
+# -- Compiling module food_gen
+# 
+# Top level modules:
+# 	snake_2
+# End time: 16:18:50 on Mar 21,2019, Elapsed time: 0:00:03
+# Errors: 0, Warnings: 0
+# End time: 16:18:53 on Mar 21,2019, Elapsed time: 0:00:22
+# Errors: 3, Warnings: 0
+# vsim control 
+# Start time: 16:18:53 on Mar 21,2019
+# Loading work.control
