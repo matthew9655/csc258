@@ -436,8 +436,8 @@ module food_gen (clk, gen, randomX, randomY);
 	output reg [6:0] randomX;
 	output reg [6:0] randomY;
 
-	reg [6:0] x;
-	reg [6:0] y;
+	reg [6:0] x = 7'd48;
+	reg [6:0] y = 7'd92;
 	
 	always@(posedge clk)
 	begin
@@ -445,10 +445,12 @@ module food_gen (clk, gen, randomX, randomY);
 		begin
 			if(x < 7'd112)
 			begin
-				x <= x + 1;
+				randomX <= x;
+				x<= x + 1;
 			end
 			else
 			begin
+				randomX <= x;
 				x <= 7'd48;
 			end
 		end
@@ -460,15 +462,17 @@ module food_gen (clk, gen, randomX, randomY);
 		begin
 			if(y > 7'd28)
 			begin
+				randomY <= y;
 				y <= y - 1;
 			end
 			else
 			begin
+				randomY <= y;
 				y <= 7'd92;
 			end
 		end
 	end
-
+	
 endmodule 
 	
 
