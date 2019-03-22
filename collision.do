@@ -18,15 +18,23 @@ force {clk} 0
 run 5ns
 # Test y be 0
 force {clk} 1
-force {regx} 0101101
+force {regx} 01011011
 force {regy} 0
+run 10ns
+
+force {clk} 0
+run 5ns
+# Test x be 159
+force {clk} 1
+force {regx} 10011111
+force {regy} 1110111
 run 10ns
 
 force {clk} 0
 run 5ns
 # Test y be 119
 force {clk} 1
-force {regx} 0101101
+force {regx} 01011010
 force {regy} 1110111
 run 10ns
 
@@ -34,6 +42,6 @@ force {clk} 0
 run 5ns
 # Non-collision_test
 force {clk} 1
-force {regx} 0101101
+force {regx} 01011010
 force {regy} 1110110
 run 10ns

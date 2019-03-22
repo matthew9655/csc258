@@ -1,6 +1,7 @@
 module collision_test(clk, regx, regy, collision);
 	input clk;
-	input [6:0]regx, regy;
+	input [7:0]regx;
+	input [6:0]regy;
 	output reg [0:0]collision;
 	reg [0:0] boarder;
 	always @(posedge clk)
