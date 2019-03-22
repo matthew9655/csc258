@@ -34,14 +34,10 @@ s_ps2_receiver.PS2_STATE_3_PARITY_IN 1 0 0 1 0
 s_ps2_receiver.PS2_STATE_4_STOP_IN 0 0 0 1 1 
 
 State Machine - |snake_2|part2:u0|control:C0|current_state
-Name current_state.FOOD1 current_state.FOOD current_state.MOVE current_state.BLACK1 current_state.BLACK current_state.WAIT current_state.DRAW1 current_state.DRAW current_state.START_WAIT current_state.START 
-current_state.START 0 0 0 0 0 0 0 0 0 0 
-current_state.START_WAIT 0 0 0 0 0 0 0 0 1 1 
-current_state.DRAW 0 0 0 0 0 0 0 1 0 1 
-current_state.DRAW1 0 0 0 0 0 0 1 0 0 1 
-current_state.WAIT 0 0 0 0 0 1 0 0 0 1 
-current_state.BLACK 0 0 0 0 1 0 0 0 0 1 
-current_state.BLACK1 0 0 0 1 0 0 0 0 0 1 
-current_state.MOVE 0 0 1 0 0 0 0 0 0 1 
-current_state.FOOD 0 1 0 0 0 0 0 0 0 1 
-current_state.FOOD1 1 0 0 0 0 0 0 0 0 1 
+Name current_state.DOWN current_state.UP current_state.LEFT current_state.START current_state.START_WAIT current_state.RIGHT 
+current_state.RIGHT 0 0 0 0 0 0 
+current_state.START_WAIT 0 0 0 0 1 1 
+current_state.START 0 0 0 1 0 1 
+current_state.LEFT 0 0 1 0 0 1 
+current_state.UP 0 1 0 0 0 1 
+current_state.DOWN 1 0 0 0 0 1 

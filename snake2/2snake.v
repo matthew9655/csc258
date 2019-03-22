@@ -11,14 +11,14 @@ module snake_2(KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R
 	 
 	 
     wire resetn;
-	 wire draw;
+	 wire start;
     assign resetn = KEY[0];
-	 assign draw = KEY[1];
+	 assign start = KEY[1];
 
     part2 u0(
         .clk(CLOCK_50),
         .resetn(resetn),
-		  .draw(draw),
+		  .start(start),
         .VGA_HS(VGA_HS),
 		  .VGA_VS(VGA_VS),
 		  .VGA_BLANK(VGA_BLANK),
@@ -36,48 +36,12 @@ endmodule
 module part2(
     input clk,
     input resetn,
-	 input draw,
+	 input start,
 	 output VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK,
 	 output [9:0] VGA_R, VGA_G, VGA_B,
 	 inout PS2_CLK, PS2_DAT
-	 
-	 
     );
-	 // wires for food generation
-	 wire gen;
-	 wire [6:0] foodx;
-	 wire [6:0] foody;
-	 
-	 // wires for moving the bit
-    wire move, enable, plot, stop, delay;
-	 wire left, right, up, down;
-	 wire [6:0] x_out; 
-	 wire [6:0] y_out;
-	 wire [2:0] c_out, colour;
-	 
-	 // wires to contain the other values on the keyboard
-	 wire not_used[5:0];
-	 
-	 wire enable_d;
-	 
-	 
-	 
-	 RateDivider r0(
-			.cout(delay),
-			.reset(reset),
-			.clk(clk),
-			.d({4'b0, 24'd12500000}),
-			.enable_d(enable_d)
-	 );
-	 
-	 
-	 food_gen(
-			.clk(clk),
-			.gen(gen),
-			.randomX(foodx),
-			.randomY(foody)
-	 );
-	 
+	
 	 
 	 vga_adapter a0(
 			.resetn(resetn),
@@ -85,7 +49,7 @@ module part2(
 			.colour(colour),
 			.x(x_out), 
 			.y(y_out),
-			.plot(plot),
+			.plot(1'b1),
 			/* Signals for the DAC to drive the monitor. */
 			.VGA_R(VGA_R),
 			.VGA_G(VGA_G),
@@ -100,23 +64,27 @@ module part2(
 		   defparam a0.MONOCHROME = "FALSE";
 		   defparam a0.BITS_PER_COLOUR_CHANNEL = 1;
          defparam a0.BACKGROUND_IMAGE = "black.mif";
+			
 
-
+	 wire left, right, up, down;
+	 
     control C0(
         .clk(clk),
         .resetn(resetn),
-		  .draw(draw),
-		  .stop(stop),
-		  .delay(delay),
+		  .start(start),
+		  .dir(dir),
 		  
-        .move(move),
-        .enable(enable),
-        .plot(plot),
-		  .colour(colour),
-		  .enable_d(enable_d)
-        
+        .left(left),
+		  .right(right),
+		  .up(up),
+		  .down(down)
     );
-
+	 
+	 
+	 wire [2:0] colour;
+	 wire [7:0] x_out; 
+	 wire [6:0] y_out;
+	 
     datapath D0(
         .clk(clk),
         .resetn(resetn),
@@ -124,17 +92,28 @@ module part2(
 		  .right(right),
 		  .up(up),
 		  .down(down),
-		  .move(move),
-		  .foodx(foodx),
-		  .foody(foody),
-        .enable(enable), 
 
 		  
-		  .stop(stop),
 		  .food_gen(gen),
         .x_out(x_out),
-		  .y_out(y_out)
+		  .y_out(y_out),
+		  .colour(colour),
     );
+	 
+	 
+	 wire [1:0] dir;
+	 
+	 keyboard_reader k0 (
+			.left(kleft),
+			.right(kright),
+			.up(up),
+			.down(down),
+			.out(dir)
+	 );
+	 
+	 
+	 wire kleft, kright, kup, kdown;
+	 wire not_used[5:0];
 	 
 	 keyboard_tracker #(.PULSE_OR_HOLD(1)) KB0 (
 			.clock(clk),
@@ -147,12 +126,32 @@ module part2(
 			.d(not_used[2]),
 			.space(not_used[1]),
 			.enter(not_used[0]),
-			.left(left),
-			.right(right),
-			.up(up),
-			.down(down)
+			.left(kleft),
+			.right(kright),
+			.up(kup),
+			.down(kdown)
 	 );
 	 
+	 wire enable_d;
+	 
+	 RateDivider r0(
+			.cout(delay),
+			.reset(reset),
+			.clk(clk),
+			.d(28'b10000000),
+			.enable_d(enable_d)
+	 );
+	 
+	 wire gen;
+	 wire [7:0] foodx;
+	 wire [6:0] foody;
+	 
+	 food_gen(
+			.clk(clk),
+			.gen(gen),
+			.randomX(foodx),
+			.randomY(foody)
+	 );
                 
  endmodule        
                 
@@ -160,47 +159,93 @@ module part2(
 module control(
     input clk,
     input resetn,
-	 input draw,
-	 input stop,
-	 input delay,
-	 input food_gen,
+	 input start,
+	 input [1:0] dir, // 0 for left, 1 for right, 2 for up, 3 for down
 	 
-	 output reg move, enable, plot, enable_d,
-	 output reg [2:0] colour
+	 output reg left, right, up ,down
 	 );
 	
-   
-
     reg [3:0] current_state, next_state; 
     
-    localparam 
-					 START           = 4'd0,
+    localparam  
+					 START			  = 4'd0,
 					 START_WAIT		  = 4'd1,
-					 DRAW            = 4'd2,
-					 DRAW1			  = 4'd3,
-					 WAIT            = 4'd4,
-					 BLACK			  = 4'd5,
-					 BLACK1		     = 4'd6,
-					 MOVE				  = 4'd7,
-					 FOOD				  = 4'd8,
-					 FOOD1			  = 4'd9;
+					 RIGHT           = 4'd2,
+					 LEFT		        = 4'd3,
+					 UP              = 4'd4,
+					 DOWN			     = 4'd5;
+				
 			
     
     // Next state logic aka our state table
     always@(*)
     begin: state_table 
             case (current_state)
-					 START: next_state = draw ? START_WAIT : START;
-					 START_WAIT: next_state = draw ? START_WAIT : DRAW;
-                DRAW: next_state = DRAW1;
-					 DRAW1: next_state = stop ? WAIT : DRAW; 
-					 WAIT: next_state = delay ? BLACK : WAIT;
-					 BLACK: next_state = BLACK1;
-					 BLACK1: next_state = stop ? MOVE : BLACK;
-					 MOVE: next_state = food_gen ? FOOD : DRAW;
-					 FOOD: next_state = FOOD1;
-					 FOOD1: next_state = stop ? DRAW : FOOD;
-            default:     next_state = START;
+				START: next_state = start ? START_WAIT : START;
+				START_WAIT: next_state = start ? START_WAIT : RIGHT;
+				RIGHT: 
+				begin 
+					if (dir == 2'd2)
+					begin
+						next_state = UP;
+					end
+					if (dir == 2'd3)
+					begin
+						next_state = DOWN;
+					end
+					else
+					begin
+						next_state = RIGHT;
+					end
+				end
+				
+				LEFT: 
+				begin 
+					if (dir == 2'd2)
+					begin
+						next_state = UP;
+					end
+					if (dir == 2'd3)
+					begin
+						next_state = DOWN;
+					end
+					else
+					begin
+						next_state = LEFT;
+					end
+				end
+				UP: 
+				begin 
+					if (dir == 2'd0)
+					begin
+						next_state = LEFT;
+					end
+					if (dir == 2'd1)
+					begin
+						next_state = RIGHT;
+					end
+					else
+					begin
+						next_state = UP;
+					end
+				end
+				DOWN: 
+				begin 
+					if (dir == 2'd0)
+					begin
+						next_state = LEFT;
+					end
+					if (dir == 2'd1)
+					begin
+						next_state = RIGHT;
+					end
+					else
+					begin
+						next_state = DOWN;
+					end
+				end
+					 
+            default: next_state = current_state;
         endcase
     end // state_table
    
@@ -209,41 +254,42 @@ module control(
     always @(*)
     begin: enable_signals
         // By default make all our signals 0
-		  enable = 1'b0;
-		  plot = 1'b0;
-		  colour = 3'b000;
-		  move = 1'b0;
-		  enable_d = 1'b0;
+		  left = 1'b0;
+		  right = 1'b0;
+		  up = 1'b0;
+		  down = 1'b0;
 
 
         case (current_state)
-            DRAW: 
+            LEFT: 
 				begin
-					enable = 1'b1;
-					plot = 1'b1;
-					colour = 3'b010;
+					left = 1'b1;
+					right = 1'b0;
+					up = 1'b0;
+					down = 1'b0;
             end
-				WAIT: 
+				RIGHT: 
 				begin 
-					enable_d = 1'b1;
+					left = 1'b0;
+					right = 1'b1;
+					up = 1'b0;
+					down = 1'b0;
 					 
 				end	
-				BLACK: 
+				UP: 
 				begin 
-					 enable = 1'b1;
-					 plot = 1'b1;
-					 colour = 3'b111;
+					left = 1'b0;
+					right = 1'b0;
+					up = 1'b1;
+					down = 1'b0;
 				end
-				MOVE: 
+				DOWN: 
 				begin
-					 move = 1'b1;
+					left = 1'b0;
+					right = 1'b0;
+					up = 1'b0;
+					down = 1'b1;
 			   end
-				FOOD:
-				begin
-					 enable = 1'b1;
-					 plot = 1'b1;
-					 colour = 3'b100;
-				end
         endcase
     end // enable_signals
    
@@ -251,7 +297,7 @@ module control(
     always@(posedge clk)
     begin: state_FFs
         if(!resetn)
-            current_state <= START;
+            current_state <= RIGHT;
         else
             current_state <= next_state;
     end // state_FFS
@@ -260,9 +306,8 @@ endmodule
 module datapath(
 	 // moving snake
     input clk,
-    input resetn, enable,
+    input resetn,
 	 input left, right, up, down,// if y_dir is 1, go down else up. if x_dir is 1, go right, else left.
-	 input move, // if move is high, move x y based on x_dir, y_dir // colour the pixel black if black is high
 	 
 	 // food 
 	 input [6:0] foodx,
@@ -270,118 +315,201 @@ module datapath(
 	 output reg food_gen,
 	 
 	 
-    output [6:0] x_out,
-	 output [6:0] y_out,
-	 output reg stop
+    output reg [7:0] x_out,
+	 output reg [6:0] y_out,
+	 output reg [2:0] colour
     );
 	 
-	 // registers for coordinates of x ,y
-	 reg [6:0] regx;
-	 reg [6:0] regy;
+	 reg [7:0] headx, x1, x2, x3, x4, x5, tailx;
+	 reg [6:0] heady, y1, y2, y3, y4, y5, taily;
 	 
-	 reg [3:0] count; 
 	 
-	 // registers for directions
-	 reg r, l, u, d;
+	 wire delay;
+	 counter16 d0 (
+			.resetn(resetn),
+			.clk(clk),
+			.enable(1'b1),
+			.out(delay)
+	 );
 	 
-	 // moving the blocks of x and y
+	 
+	 wire [3:0] pixel;
+	 counter16 p0 (
+			.resetn(resetn),
+			.clk(clk),
+			.enable(1'b1),
+			.out(pixel)
+	 );
+	 
+	 
 	 
 	 always @ (posedge clk) 
 	 begin 
-		if (!resetn)
-		begin
-		    regx <= 7'd80;
-			 regy <= 7'd60;
-			 r <= 1'b0;
-			 l <= 1'b0;
-			 u <= 1'b0;
-			 d <= 1'b0;
-		end
-		
-		else 
-		begin
-			if (move == 1) 
-			begin
-				if (right == 1 && l == 0)
+		if (!resetn) 
+		begin 
+			x1 <= 8'd80;
+			y1 <= 7'd60;
+			
+			headx <= x1;
+			heady <= y1;
+			
+			
+			x2 <= x1 - 3'd4; 
+			x3 <= x2 - 3'd4; 
+			x4 <= x3 - 3'd4; 
+			x5 <= x4 - 3'd4; 
+			
+			
+			y2 <= y1; 
+			y3 <= y2; 
+			y4 <= y3; 
+			y5 <= y4; 
+			
+			
+			tailx <= x5 - 3'd4;
+			taily <= y5;
+			
+	   end
+	 
+		 else 
+		 begin
+				x2 <= x1; 
+				x3 <= x2; 
+				x4 <= x3; 
+				x5 <= x4; 
+				
+				y2 <= y1; 
+				y3 <= y2; 
+				y4 <= y3; 
+				y5 <= y4; 
+				
+				if (right)
 				begin
-					regx <= regx + 1;
-					r <= 1'b1;
-					l <= 1'b0;
-					u <= 1'b0;
-					d <= 1'b0;
+					x1 <= x1 + 3'd4;
 				end
-				else if (left == 1 && r == 0)
+				
+				if (left)
+				begin 
+					x1 <= x1 - 3'd4;
+				end
+				
+				if (down)
 				begin
-					regx <= regx - 1;
-					r <= 1'b0;
-					l <= 1'b1;
-					u <= 1'b0;
-					d <= 1'b0;
+					y1 <= y1 + 3'd4;
 				end
-				else if (up == 1 && d == 0)
+				
+				if (up)
 				begin 
-					regy <= regy + 1;
-					r <= 1'b0;
-					l <= 1'b0;
-					u <= 1'b1;
-					d <= 1'b0;
+					y1 <= y1 - 3'd4;
 				end
-				else if (down == 1 && u == 0)
+				
+				if (food_gen == 0)
 				begin 
-					regy <= regy - 1;
-					r <= 1'b0;
-					l <= 1'b0;
-					u <= 1'b0;
-					d <= 1'b1;
+					if (delay == 0)
+					begin
+						headx <= x1;
+						heady <= y1;
+						colour <= 3'b100;
+					end
+					
+					if (delay == 1)
+					begin 	
+						headx <= tailx;
+						heady <= taily;
+						colour <= 3'b111;
+					end
 				end
-			 end
+				
+				else 
+				begin
+					if (delay == 1)
+					begin
+					headx <= foodx;
+					heady <= foody;
+					colour <= 3'b001;
+					end
+				end
+			end
 		end
-	 end
+	 
 	 
 	 always @ (posedge clk)
 	 begin
 		  if (!resetn)
 		  begin 
-				food_gen = 1'b0;
+				food_gen <= 1'b0;
 		  end
 		  else
 		  begin
-			  if ((regx == foodx) && (regy == foody))
+			  if ((headx == foodx) && (heady == foody))
 			  begin 
 					food_gen <= 1'b1;
 			  end
 		  end
 	 end
-		
-    // counter to colour in bits
-    always @ (posedge clk) 
+	 
+	 always @(posedge clk)
 	 begin
-        if (!resetn) 
-		  begin
-            count <= 4'b0; 
-				stop <= 1'b0;
-        end
-        else if (enable)
-		  begin
-           if (count == 4'b1111) 
-			  begin
-					count <= 0;
-					stop <= 1;
-			  end
-			  else 
-			  begin
-					count <= count + 1;
-					stop <= 0;
-			  end
-		  end
+			x_out <= headx + pixel[1:0];
+			y_out <= heady + pixel[3:2];
 	 end
 	 
 	 
-	 assign x_out = food_gen ? (foodx + count[1:0]) : (regx + count[1:0]);
-	 assign y_out = food_gen ? (foody + count[3:2]) : (regy + count[3:2]);
-	 
-	 
 endmodule
+
+module counter16(resetn, clk, enable, out) ;
+	input resetn, clk, enable;
+	output reg [3:0] out;
+	
+	
+	always @ (posedge clk) 
+	 begin
+        if (!resetn) 
+		  begin
+            out <= 4'b0; 
+				
+        end
+        else if (enable)
+		  begin
+           if (out == 4'b1111) 
+			  begin
+					out <= 0;
+			  end
+			  else 
+			  begin
+					out <= out + 1;
+			  end
+		  end
+	 end
+endmodule
+	
+
+module keyboard_reader(left, right, up, down, out);
+	input left, right, up, down;
+	output reg [1:0] out;
+	
+	always@(*)
+	begin 
+		if (left)
+		begin 
+			out <= 2'b0;
+		end
+		if (right)
+		begin
+			out <= 2'd1;
+		end
+		if (up)
+		begin
+			out <= 2'd2;
+		end
+		if (down)
+		begin 
+			out <= 2'd3;
+		end
+	end
+endmodule
+
+		
 
 module RateDivider(cout, reset, clk, d, enable_d) ; // need to take into account of the frames too
 	input [27:0] d;
@@ -459,5 +587,4 @@ module food_gen (clk, gen, randomX, randomY);
 	end
 	
 endmodule 
-	
 
