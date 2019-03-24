@@ -140,7 +140,7 @@ module part2(
 
 	 RateDivider r0(
 			.cout(delay),
-			.reset(reset),
+			.resetn(reset),
 			.clk(clk),
 			.d(28'b10000000)
 	 );
@@ -329,7 +329,7 @@ module datapath(
 			.cout(new_clk),
 			.resetn(resetn),
 			.clk(clk),
-			.d(28'd16)
+			.d(28'd12500000)
 	 );
 	 
 	 wire delay;
@@ -352,7 +352,7 @@ module datapath(
 	 
 	 
 	 
-	 always @ (posedge clk) 
+	 always @ (posedge new_clk) 
 	 begin 
 		if (!resetn) 
 		begin 
@@ -377,6 +377,7 @@ module datapath(
 			
 
 			food_gen <= 1'b0;
+			colour <= 3'b000;
 			
 	   end
 	 
@@ -415,10 +416,10 @@ module datapath(
 				end
 				
 				
-				if ((headx == foodx) && (heady == foody))
-				begin
-					food_gen <= 1'b1;
-				end
+//				if ((headx == foodx) && (heady == foody))
+//				begin
+//					food_gen <= 1'b1;
+//				end
 				
 				if (food_gen == 0)
 				begin 
@@ -426,25 +427,25 @@ module datapath(
 					begin
 						headx <= x1;
 						heady <= y1;
-						colour <= 3'b100;
+						colour <= 3'b001;
 					end
 					
 					if (delay == 1)
 					begin 	
 						headx <= tailx;
 						heady <= taily;
-						colour <= 3'b111;
+						colour <= 3'b000;
 					end
 				end
 				
-				else 
-				begin
-						headx <= foodx;
-						heady <= foody;
-						colour <= 3'b001;
-						food_gen <= 1'b0;
-					
-				end
+//				else 
+//				begin
+//						headx <= foodx;
+//						heady <= foody;
+//						colour <= 3'b001;
+//						food_gen <= 1'b0;
+//					
+				//end
 			end
 		end
 		
