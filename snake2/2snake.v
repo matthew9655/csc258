@@ -42,7 +42,7 @@ module part2(
 	 inout PS2_CLK, PS2_DAT
     );
 	
-	 wire left, right, up, down;
+	 wire left, right, up, down, stop;
 	 
 	 wire [2:0] colour;
 	 wire [7:0] x_out; 
@@ -58,6 +58,8 @@ module part2(
 	 wire gen;
 	 wire [7:0] foodx;
 	 wire [6:0] foody;
+	 
+	 wire control_clock;
 	 
 	 
 	 
@@ -85,7 +87,7 @@ module part2(
 		
 	 
     control C0(
-        .clk(clk),
+        .clk(control_clk),
         .resetn(resetn),
 		  .start(start),
 		  .dir(dir),
@@ -93,7 +95,8 @@ module part2(
         .left(left),
 		  .right(right),
 		  .up(up),
-		  .down(down)
+		  .down(down),
+		  .stop(stop)
     );
 	 
 
@@ -104,6 +107,7 @@ module part2(
 		  .right(right),
 		  .up(up),
 		  .down(down),
+		  .stop(stop),
 
 		  
 		  .food_gen(gen),
@@ -137,12 +141,12 @@ module part2(
 			.up(kup),
 			.down(kdown)
 	 );
-
+	
 	 RateDivider r0(
-			.cout(delay),
+			.cout(control_clock),
 			.resetn(reset),
 			.clk(clk),
-			.d(28'b10000000)
+			.d(28'd8)
 	 );
 	 
 	 food_gen(
@@ -161,18 +165,17 @@ module control(
 	 input start,
 	 input [1:0] dir, // 0 for left, 1 for right, 2 for up, 3 for down
 	 
-	 output reg left, right, up ,down
+	 output reg left, right, up ,down, stop
 	 );
 	
     reg [3:0] current_state, next_state; 
     
     localparam  
 					 START			  = 4'd0,
-					 START_WAIT		  = 4'd1,
-					 RIGHT           = 4'd2,
-					 LEFT		        = 4'd3,
-					 UP              = 4'd4,
-					 DOWN			     = 4'd5;
+					 RIGHT           = 4'd1,
+					 LEFT		        = 4'd2,
+					 UP              = 4'd3,
+					 DOWN			     = 4'd4;
 				
 			
     
@@ -180,8 +183,7 @@ module control(
     always@(*)
     begin: state_table 
             case (current_state)
-				START: next_state = start ? START_WAIT : START;
-				START_WAIT: next_state = start ? START_WAIT : RIGHT;
+				START: next_state = RIGHT;
 				RIGHT: 
 				begin 
 					if (dir == 2'd2)
@@ -260,8 +262,17 @@ module control(
 
 
         case (current_state)
+				START:
+				begin
+					stop = 1'b1;
+					left = 1'b0;
+					right = 1'b0;
+					up = 1'b0;
+					down = 1'b0;
+				end
             LEFT: 
 				begin
+					stop = 1'b0;
 					left = 1'b1;
 					right = 1'b0;
 					up = 1'b0;
@@ -269,6 +280,7 @@ module control(
             end
 				RIGHT: 
 				begin 
+				   stop = 1'b0;
 					left = 1'b0;
 					right = 1'b1;
 					up = 1'b0;
@@ -277,6 +289,7 @@ module control(
 				end	
 				UP: 
 				begin 
+					stop = 1'b0;
 					left = 1'b0;
 					right = 1'b0;
 					up = 1'b1;
@@ -284,6 +297,7 @@ module control(
 				end
 				DOWN: 
 				begin
+					stop = 1'b0;
 					left = 1'b0;
 					right = 1'b0;
 					up = 1'b0;
@@ -296,7 +310,7 @@ module control(
     always@(posedge clk)
     begin: state_FFs
         if(!resetn)
-            current_state <= RIGHT;
+            current_state <= START;
         else
             current_state <= next_state;
     end // state_FFS
@@ -306,7 +320,8 @@ module datapath(
 	 // moving snake
     input clk,
     input resetn,
-	 input left, right, up, down,// if y_dir is 1, go down else up. if x_dir is 1, go right, else left.
+	 input left, right, up, down,
+	 input stop,
 	 
 	 // food 
 	 input [7:0] foodx,
@@ -395,6 +410,10 @@ module datapath(
 				y5 <= y4;
 				taily <= y5;
 				
+				if (stop)
+					x1 <= x1;
+					y1 <= y1;
+				
 				if (right)
 				begin
 					x1 <= x1 + 3'd4;
@@ -454,14 +473,14 @@ module datapath(
 	 begin
 			if (!resetn)
 			begin
-				x_out <= 8'b0;
-				y_out <= 7'b0;
+				x_out <= 8'd80;
+				y_out <= 7'd60;
 			end
 			else 
-			begin
-				x_out <= headx + pixel[1:0];
-				y_out <= heady + pixel[3:2];
-			end
+				begin 
+					x_out <= headx + pixel[1:0];
+					y_out <= heady + pixel[3:2];
+				end
 	 end
 
 endmodule
