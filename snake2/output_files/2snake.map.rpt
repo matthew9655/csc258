@@ -1,5 +1,5 @@
 Analysis & Synthesis report for 2snake
-Fri Mar 22 00:03:49 2019
+Sun Mar 24 11:35:42 2019
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -40,13 +40,14 @@ Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
  32. Port Connectivity Checks: "part2:u0|keyboard_tracker:KB0|PS2_Controller:core_driver"
  33. Port Connectivity Checks: "part2:u0|keyboard_tracker:KB0"
  34. Port Connectivity Checks: "part2:u0|datapath:D0|counter16:p0"
- 35. Port Connectivity Checks: "part2:u0|datapath:D0|counter16:d0"
- 36. Port Connectivity Checks: "part2:u0|datapath:D0"
- 37. Port Connectivity Checks: "part2:u0|vga_adapter:a0"
- 38. Post-Synthesis Netlist Statistics for Top Partition
- 39. Elapsed Time Per Partition
- 40. Analysis & Synthesis Messages
- 41. Analysis & Synthesis Suppressed Messages
+ 35. Port Connectivity Checks: "part2:u0|datapath:D0|counter6:c6"
+ 36. Port Connectivity Checks: "part2:u0|datapath:D0|delay_counter:d0"
+ 37. Port Connectivity Checks: "part2:u0|datapath:D0"
+ 38. Port Connectivity Checks: "part2:u0|vga_adapter:a0"
+ 39. Post-Synthesis Netlist Statistics for Top Partition
+ 40. Elapsed Time Per Partition
+ 41. Analysis & Synthesis Messages
+ 42. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -73,13 +74,13 @@ agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                  ;
 +---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Fri Mar 22 00:03:49 2019       ;
+; Analysis & Synthesis Status     ; Successful - Sun Mar 24 11:35:42 2019       ;
 ; Quartus Prime Version           ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                   ; 2snake                                      ;
 ; Top-level Entity Name           ; snake_2                                     ;
 ; Family                          ; Cyclone V                                   ;
 ; Logic utilization (in ALMs)     ; N/A                                         ;
-; Total registers                 ; 132                                         ;
+; Total registers                 ; 141                                         ;
 ; Total pins                      ; 42                                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 57,600                                      ;
@@ -193,7 +194,8 @@ agreement for further details.
 ;                            ;             ;
 ; Usage by Processor         ; % Time Used ;
 ;     Processor 1            ; 100.0%      ;
-;     Processors 2-4         ;   0.0%      ;
+;     Processor 2            ;   0.0%      ;
+;     Processors 3-4         ;   0.0%      ;
 +----------------------------+-------------+
 
 
@@ -237,16 +239,16 @@ agreement for further details.
 +---------------------------------------------+----------------+
 ; Resource                                    ; Usage          ;
 +---------------------------------------------+----------------+
-; Estimate of Logic utilization (ALMs needed) ; 78             ;
+; Estimate of Logic utilization (ALMs needed) ; 83             ;
 ;                                             ;                ;
-; Combinational ALUT usage for logic          ; 120            ;
+; Combinational ALUT usage for logic          ; 130            ;
 ;     -- 7 input functions                    ; 0              ;
-;     -- 6 input functions                    ; 10             ;
-;     -- 5 input functions                    ; 19             ;
-;     -- 4 input functions                    ; 11             ;
-;     -- <=3 input functions                  ; 80             ;
+;     -- 6 input functions                    ; 11             ;
+;     -- 5 input functions                    ; 23             ;
+;     -- 4 input functions                    ; 15             ;
+;     -- <=3 input functions                  ; 81             ;
 ;                                             ;                ;
-; Dedicated logic registers                   ; 132            ;
+; Dedicated logic registers                   ; 141            ;
 ;                                             ;                ;
 ; I/O pins                                    ; 42             ;
 ; Total MLAB memory bits                      ; 0              ;
@@ -258,9 +260,9 @@ agreement for further details.
 ;     -- PLLs                                 ; 1              ;
 ;                                             ;                ;
 ; Maximum fan-out node                        ; CLOCK_50~input ;
-; Maximum fan-out                             ; 112            ;
-; Total fan-out                               ; 1164           ;
-; Average fan-out                             ; 3.34           ;
+; Maximum fan-out                             ; 118            ;
+; Total fan-out                               ; 1249           ;
+; Average fan-out                             ; 3.40           ;
 +---------------------------------------------+----------------+
 
 
@@ -269,11 +271,14 @@ agreement for further details.
 +------------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-----------------------------------------------------------------------------------------------------------------+------------------------+--------------+
 ; Compilation Hierarchy Node                                 ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                             ; Entity Name            ; Library Name ;
 +------------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+-----------------------------------------------------------------------------------------------------------------+------------------------+--------------+
-; |snake_2                                                   ; 120 (0)             ; 132 (0)                   ; 57600             ; 0          ; 42   ; 0            ; |snake_2                                                                                                        ; snake_2                ; work         ;
-;    |part2:u0|                                              ; 120 (0)             ; 132 (0)                   ; 57600             ; 0          ; 0    ; 0            ; |snake_2|part2:u0                                                                                               ; part2                  ; work         ;
+; |snake_2                                                   ; 130 (0)             ; 141 (0)                   ; 57600             ; 0          ; 42   ; 0            ; |snake_2                                                                                                        ; snake_2                ; work         ;
+;    |part2:u0|                                              ; 130 (0)             ; 141 (0)                   ; 57600             ; 0          ; 0    ; 0            ; |snake_2|part2:u0                                                                                               ; part2                  ; work         ;
 ;       |control:C0|                                         ; 1 (1)               ; 2 (2)                     ; 0                 ; 0          ; 0    ; 0            ; |snake_2|part2:u0|control:C0                                                                                    ; control                ; work         ;
-;       |datapath:D0|                                        ; 57 (54)             ; 100 (96)                  ; 0                 ; 0          ; 0    ; 0            ; |snake_2|part2:u0|datapath:D0                                                                                   ; datapath               ; work         ;
-;          |counter16:d0|                                    ; 3 (3)               ; 4 (4)                     ; 0                 ; 0          ; 0    ; 0            ; |snake_2|part2:u0|datapath:D0|counter16:d0                                                                      ; counter16              ; work         ;
+;       |datapath:D0|                                        ; 67 (53)             ; 109 (96)                  ; 0                 ; 0          ; 0    ; 0            ; |snake_2|part2:u0|datapath:D0                                                                                   ; datapath               ; work         ;
+;          |counter16:p0|                                    ; 4 (4)               ; 4 (4)                     ; 0                 ; 0          ; 0    ; 0            ; |snake_2|part2:u0|datapath:D0|counter16:p0                                                                      ; counter16              ; work         ;
+;          |counter6:c6|                                     ; 3 (3)               ; 3 (3)                     ; 0                 ; 0          ; 0    ; 0            ; |snake_2|part2:u0|datapath:D0|counter6:c6                                                                       ; counter6               ; work         ;
+;          |delay_counter:d0|                                ; 1 (1)               ; 1 (1)                     ; 0                 ; 0          ; 0    ; 0            ; |snake_2|part2:u0|datapath:D0|delay_counter:d0                                                                  ; delay_counter          ; work         ;
+;          |delay_counter:d1|                                ; 6 (6)               ; 5 (5)                     ; 0                 ; 0          ; 0    ; 0            ; |snake_2|part2:u0|datapath:D0|delay_counter:d1                                                                  ; delay_counter          ; work         ;
 ;       |vga_adapter:a0|                                     ; 62 (1)              ; 30 (0)                    ; 57600             ; 0          ; 0    ; 0            ; |snake_2|part2:u0|vga_adapter:a0                                                                                ; vga_adapter            ; work         ;
 ;          |altsyncram:VideoMemory|                          ; 9 (0)               ; 4 (0)                     ; 57600             ; 0          ; 0    ; 0            ; |snake_2|part2:u0|vga_adapter:a0|altsyncram:VideoMemory                                                         ; altsyncram             ; work         ;
 ;             |altsyncram_m6m1:auto_generated|               ; 9 (0)               ; 4 (4)                     ; 57600             ; 0          ; 0    ; 0            ; |snake_2|part2:u0|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated                          ; altsyncram_m6m1        ; work         ;
@@ -423,21 +428,21 @@ Encoding Type:  One-Hot
 ; part2:u0|datapath:D0|x1[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
 ; part2:u0|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|cur_bit[1..3]                                        ; Stuck at GND due to stuck port data_in               ;
 ; part2:u0|datapath:D0|y2[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
-; part2:u0|datapath:D0|x2[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
 ; part2:u0|datapath:D0|y3[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
-; part2:u0|datapath:D0|x3[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
 ; part2:u0|datapath:D0|y4[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
-; part2:u0|datapath:D0|x4[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
 ; part2:u0|datapath:D0|y5[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
+; part2:u0|datapath:D0|taily[0,1]                                                                                                                         ; Stuck at GND due to stuck port data_in               ;
+; part2:u0|datapath:D0|x2[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
+; part2:u0|datapath:D0|x3[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
+; part2:u0|datapath:D0|x4[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
 ; part2:u0|datapath:D0|x5[0,1]                                                                                                                            ; Stuck at GND due to stuck port data_in               ;
 ; part2:u0|datapath:D0|tailx[0,1]                                                                                                                         ; Stuck at GND due to stuck port data_in               ;
-; part2:u0|datapath:D0|taily[0,1]                                                                                                                         ; Stuck at GND due to stuck port data_in               ;
-; part2:u0|datapath:D0|counter16:p0|out[3]                                                                                                                ; Merged with part2:u0|datapath:D0|counter16:d0|out[3] ;
-; part2:u0|datapath:D0|counter16:p0|out[2]                                                                                                                ; Merged with part2:u0|datapath:D0|counter16:d0|out[2] ;
+; part2:u0|datapath:D0|delay_counter:d0|count[3]                                                                                                          ; Merged with part2:u0|datapath:D0|counter16:p0|out[3] ;
+; part2:u0|datapath:D0|delay_counter:d0|count[2]                                                                                                          ; Merged with part2:u0|datapath:D0|counter16:p0|out[2] ;
 ; part2:u0|datapath:D0|headx[1]                                                                                                                           ; Merged with part2:u0|datapath:D0|headx[0]            ;
 ; part2:u0|datapath:D0|heady[0,1]                                                                                                                         ; Merged with part2:u0|datapath:D0|headx[0]            ;
-; part2:u0|datapath:D0|counter16:p0|out[1]                                                                                                                ; Merged with part2:u0|datapath:D0|counter16:d0|out[1] ;
-; part2:u0|datapath:D0|counter16:p0|out[0]                                                                                                                ; Merged with part2:u0|datapath:D0|counter16:d0|out[0] ;
+; part2:u0|datapath:D0|delay_counter:d0|count[1]                                                                                                          ; Merged with part2:u0|datapath:D0|counter16:p0|out[1] ;
+; part2:u0|datapath:D0|delay_counter:d0|count[0]                                                                                                          ; Merged with part2:u0|datapath:D0|counter16:p0|out[0] ;
 ; part2:u0|datapath:D0|headx[0]                                                                                                                           ; Stuck at GND due to stuck port data_in               ;
 ; part2:u0|keyboard_tracker:KB0|curr_state.MAKE                                                                                                           ; Lost fanout                                          ;
 ; part2:u0|keyboard_tracker:KB0|curr_state.BREAK                                                                                                          ; Lost fanout                                          ;
@@ -521,12 +526,12 @@ Encoding Type:  One-Hot
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 132   ;
-; Number of registers using Synchronous Clear  ; 38    ;
-; Number of registers using Synchronous Load   ; 33    ;
+; Total registers                              ; 141   ;
+; Number of registers using Synchronous Clear  ; 56    ;
+; Number of registers using Synchronous Load   ; 38    ;
 ; Number of registers using Asynchronous Clear ; 20    ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 45    ;
+; Number of registers using Clock Enable       ; 38    ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
@@ -536,13 +541,15 @@ Encoding Type:  One-Hot
 +--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------------------+
 ; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                                         ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------------------+
-; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |snake_2|part2:u0|datapath:D0|y1[5]                                                                                ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |snake_2|part2:u0|datapath:D0|y1[4]                                                                                ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |snake_2|part2:u0|vga_adapter:a0|vga_controller:controller|yCounter[7]                                             ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |snake_2|part2:u0|datapath:D0|counter16:p0|out[1]                                                                  ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; Yes        ; |snake_2|part2:u0|datapath:D0|counter6:c6|count[0]                                                                 ;
 ; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |snake_2|part2:u0|datapath:D0|colour[0]                                                                            ;
-; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |snake_2|part2:u0|vga_adapter:a0|vga_controller:controller|yCounter[0]                                             ;
-; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |snake_2|part2:u0|datapath:D0|counter16:d0|out[1]                                                                  ;
 ; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |snake_2|part2:u0|datapath:D0|x1[2]                                                                                ;
 ; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |snake_2|part2:u0|datapath:D0|x1[4]                                                                                ;
-; 5:1                ; 11 bits   ; 33 LEs        ; 0 LEs                ; 33 LEs                 ; Yes        ; |snake_2|part2:u0|datapath:D0|heady[2]                                                                             ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |snake_2|part2:u0|datapath:D0|delay_counter:d1|count[0]                                                            ;
+; 5:1                ; 11 bits   ; 33 LEs        ; 0 LEs                ; 33 LEs                 ; Yes        ; |snake_2|part2:u0|datapath:D0|headx[3]                                                                             ;
 ; 3:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |snake_2|part2:u0|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated|mux_ifb:mux3|result_node[2] ;
 +--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------------------+
 
@@ -1187,14 +1194,22 @@ Note: In order to hide this table in the UI and the text report file, please set
 +--------+-------+----------+-----------------------------------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------+
-; Port Connectivity Checks: "part2:u0|datapath:D0|counter16:d0"                                                                                       ;
-+--------+--------+----------+------------------------------------------------------------------------------------------------------------------------+
-; Port   ; Type   ; Severity ; Details                                                                                                                ;
-+--------+--------+----------+------------------------------------------------------------------------------------------------------------------------+
-; enable ; Input  ; Info     ; Stuck at VCC                                                                                                           ;
-; out    ; Output ; Warning  ; Output or bidir port (4 bits) is wider than the port expression (1 bits) it drives; bit(s) "out[3..1]" have no fanouts ;
-+--------+--------+----------+------------------------------------------------------------------------------------------------------------------------+
++--------------------------------------------------------------+
+; Port Connectivity Checks: "part2:u0|datapath:D0|counter6:c6" ;
++--------+-------+----------+----------------------------------+
+; Port   ; Type  ; Severity ; Details                          ;
++--------+-------+----------+----------------------------------+
+; enable ; Input ; Info     ; Stuck at VCC                     ;
++--------+-------+----------+----------------------------------+
+
+
++-------------------------------------------------------------------+
+; Port Connectivity Checks: "part2:u0|datapath:D0|delay_counter:d0" ;
++--------+-------+----------+---------------------------------------+
+; Port   ; Type  ; Severity ; Details                               ;
++--------+-------+----------+---------------------------------------+
+; enable ; Input ; Info     ; Stuck at VCC                          ;
++--------+-------+----------+---------------------------------------+
 
 
 +-------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -1221,28 +1236,27 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; arriav_ff             ; 132                         ;
+; arriav_ff             ; 141                         ;
 ;     CLR SCLR          ; 10                          ;
-;     ENA               ; 18                          ;
+;     ENA               ; 11                          ;
 ;     ENA CLR SCLR      ; 10                          ;
 ;     ENA SCLR          ; 4                           ;
 ;     ENA SCLR SLD      ; 11                          ;
 ;     ENA SLD           ; 2                           ;
-;     SCLR              ; 3                           ;
-;     SLD               ; 20                          ;
-;     plain             ; 54                          ;
+;     SCLR              ; 21                          ;
+;     SLD               ; 25                          ;
+;     plain             ; 47                          ;
 ; arriav_io_obuf        ; 2                           ;
-; arriav_lcell_comb     ; 121                         ;
+; arriav_lcell_comb     ; 131                         ;
 ;     arith             ; 26                          ;
 ;         1 data inputs ; 26                          ;
-;     normal            ; 75                          ;
+;     normal            ; 85                          ;
 ;         0 data inputs ; 1                           ;
-;         1 data inputs ; 1                           ;
-;         2 data inputs ; 20                          ;
-;         3 data inputs ; 13                          ;
-;         4 data inputs ; 11                          ;
-;         5 data inputs ; 19                          ;
-;         6 data inputs ; 10                          ;
+;         2 data inputs ; 21                          ;
+;         3 data inputs ; 14                          ;
+;         4 data inputs ; 15                          ;
+;         5 data inputs ; 23                          ;
+;         6 data inputs ; 11                          ;
 ;     shared            ; 20                          ;
 ;         0 data inputs ; 2                           ;
 ;         1 data inputs ; 4                           ;
@@ -1253,7 +1267,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 ; stratixv_ram_block    ; 9                           ;
 ;                       ;                             ;
 ; Max LUT depth         ; 2.90                        ;
-; Average LUT depth     ; 1.41                        ;
+; Average LUT depth     ; 1.39                        ;
 +-----------------------+-----------------------------+
 
 
@@ -1262,7 +1276,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:00     ;
+; Top            ; 00:00:01     ;
 +----------------+--------------+
 
 
@@ -1272,7 +1286,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Fri Mar 22 00:03:35 2019
+    Info: Processing started: Sun Mar 24 11:35:20 2019
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off 2snake -c 2snake
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
@@ -1290,24 +1304,25 @@ Info (12021): Found 1 design units, including 1 entities, in source file Altera_
     Info (12023): Found entity 1: Altera_UP_PS2_Data_In File: /h/u17/c7/00/choimat4/csc258/snake2/Altera_UP_PS2_Data_In.v Line: 10
 Info (12021): Found 1 design units, including 1 entities, in source file Altera_UP_PS2_Command_Out.v
     Info (12023): Found entity 1: Altera_UP_PS2_Command_Out File: /h/u17/c7/00/choimat4/csc258/snake2/Altera_UP_PS2_Command_Out.v Line: 10
-Warning (10275): Verilog HDL Module Instantiation warning at 2snake.v(101): ignored dangling comma in List of Port Connections File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 101
-Info (12021): Found 8 design units, including 8 entities, in source file 2snake.v
+Info (12021): Found 10 design units, including 10 entities, in source file 2snake.v
     Info (12023): Found entity 1: snake_2 File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 5
     Info (12023): Found entity 2: part2 File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 36
-    Info (12023): Found entity 3: control File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 159
-    Info (12023): Found entity 4: datapath File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 306
-    Info (12023): Found entity 5: counter16 File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 460
-    Info (12023): Found entity 6: keyboard_reader File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 487
-    Info (12023): Found entity 7: RateDivider File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 514
-    Info (12023): Found entity 8: food_gen File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 547
-Warning (10236): Verilog HDL Implicit Net warning at 2snake.v(120): created implicit net for "reset" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 120
-Warning (10236): Verilog HDL Implicit Net warning at 2snake.v(138): created implicit net for "delay" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 138
-Critical Warning (10846): Verilog HDL Instantiation warning at 2snake.v(154): instance has no name File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 154
+    Info (12023): Found entity 3: control File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 158
+    Info (12023): Found entity 4: datapath File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 305
+    Info (12023): Found entity 5: delay_counter File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 478
+    Info (12023): Found entity 6: counter6 File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 507
+    Info (12023): Found entity 7: counter16 File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 538
+    Info (12023): Found entity 8: keyboard_reader File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 565
+    Info (12023): Found entity 9: RateDivider File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 592
+    Info (12023): Found entity 10: food_gen File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 623
+Warning (10236): Verilog HDL Implicit Net warning at 2snake.v(126): created implicit net for "reset" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 126
+Warning (10236): Verilog HDL Implicit Net warning at 2snake.v(142): created implicit net for "delay" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 142
+Critical Warning (10846): Verilog HDL Instantiation warning at 2snake.v(153): instance has no name File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 153
 Info (12127): Elaborating entity "snake_2" for the top level hierarchy
 Info (12128): Elaborating entity "part2" for hierarchy "part2:u0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 32
 Warning (12125): Using design file vga_adapter.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
     Info (12023): Found entity 1: vga_adapter File: /h/u17/c7/00/choimat4/csc258/snake2/vga_adapter.v Line: 78
-Info (12128): Elaborating entity "vga_adapter" for hierarchy "part2:u0|vga_adapter:a0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 62
+Info (12128): Elaborating entity "vga_adapter" for hierarchy "part2:u0|vga_adapter:a0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 80
 Warning (12125): Using design file vga_address_translator.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
     Info (12023): Found entity 1: vga_address_translator File: /h/u17/c7/00/choimat4/csc258/snake2/vga_address_translator.v Line: 4
 Info (12128): Elaborating entity "vga_address_translator" for hierarchy "part2:u0|vga_adapter:a0|vga_address_translator:user_input_translator" File: /h/u17/c7/00/choimat4/csc258/snake2/vga_adapter.v Line: 192
@@ -1364,31 +1379,36 @@ Info (12128): Elaborating entity "altpll_80u" for hierarchy "part2:u0|vga_adapte
 Warning (12125): Using design file vga_controller.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
     Info (12023): Found entity 1: vga_controller File: /h/u17/c7/00/choimat4/csc258/snake2/vga_controller.v Line: 9
 Info (12128): Elaborating entity "vga_controller" for hierarchy "part2:u0|vga_adapter:a0|vga_controller:controller" File: /h/u17/c7/00/choimat4/csc258/snake2/vga_adapter.v Line: 252
-Info (12128): Elaborating entity "control" for hierarchy "part2:u0|control:C0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 81
-Warning (10270): Verilog HDL Case Statement warning at 2snake.v(263): incomplete case statement has no default case item File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 263
-Info (10264): Verilog HDL Case Statement information at 2snake.v(263): all case item expressions in this case statement are onehot File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 263
-Info (12128): Elaborating entity "datapath" for hierarchy "part2:u0|datapath:D0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 101
-Info (12128): Elaborating entity "counter16" for hierarchy "part2:u0|datapath:D0|counter16:d0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 333
-Warning (10230): Verilog HDL assignment warning at 2snake.v(480): truncated value with size 32 to match size of target (4) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 480
-Info (12128): Elaborating entity "keyboard_reader" for hierarchy "part2:u0|keyboard_reader:k0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 112
-Warning (10240): Verilog HDL Always Construct warning at 2snake.v(493): inferring latch(es) for variable "out", which holds its previous value in one or more paths through the always construct File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 493
-Info (10041): Inferred latch for "out[0]" at 2snake.v(493) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 493
-Info (10041): Inferred latch for "out[1]" at 2snake.v(493) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 493
-Info (12128): Elaborating entity "keyboard_tracker" for hierarchy "part2:u0|keyboard_tracker:KB0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 133
+Info (12128): Elaborating entity "control" for hierarchy "part2:u0|control:C0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 97
+Warning (10270): Verilog HDL Case Statement warning at 2snake.v(262): incomplete case statement has no default case item File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 262
+Info (10264): Verilog HDL Case Statement information at 2snake.v(262): all case item expressions in this case statement are onehot File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 262
+Info (12128): Elaborating entity "datapath" for hierarchy "part2:u0|datapath:D0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 113
+Info (12128): Elaborating entity "delay_counter" for hierarchy "part2:u0|datapath:D0|delay_counter:d0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 332
+Warning (10230): Verilog HDL assignment warning at 2snake.v(501): truncated value with size 32 to match size of target (4) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 501
+Info (12128): Elaborating entity "counter6" for hierarchy "part2:u0|datapath:D0|counter6:c6" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 340
+Warning (10230): Verilog HDL assignment warning at 2snake.v(528): truncated value with size 32 to match size of target (3) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 528
+Warning (10230): Verilog HDL assignment warning at 2snake.v(533): truncated value with size 32 to match size of target (1) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 533
+Info (12128): Elaborating entity "counter16" for hierarchy "part2:u0|datapath:D0|counter16:p0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 357
+Warning (10230): Verilog HDL assignment warning at 2snake.v(558): truncated value with size 32 to match size of target (4) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 558
+Info (12128): Elaborating entity "keyboard_reader" for hierarchy "part2:u0|keyboard_reader:k0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 122
+Warning (10240): Verilog HDL Always Construct warning at 2snake.v(571): inferring latch(es) for variable "out", which holds its previous value in one or more paths through the always construct File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 571
+Info (10041): Inferred latch for "out[0]" at 2snake.v(571) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 571
+Info (10041): Inferred latch for "out[1]" at 2snake.v(571) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 571
+Info (12128): Elaborating entity "keyboard_tracker" for hierarchy "part2:u0|keyboard_tracker:KB0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 139
 Info (12128): Elaborating entity "PS2_Controller" for hierarchy "part2:u0|keyboard_tracker:KB0|PS2_Controller:core_driver" File: /h/u17/c7/00/choimat4/csc258/snake2/PS2_Keyboard_Controller.v Line: 197
 Info (12128): Elaborating entity "Altera_UP_PS2_Data_In" for hierarchy "part2:u0|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In" File: /h/u17/c7/00/choimat4/csc258/snake2/PS2_Controller.v Line: 246
 Info (12128): Elaborating entity "Altera_UP_PS2_Command_Out" for hierarchy "part2:u0|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out" File: /h/u17/c7/00/choimat4/csc258/snake2/PS2_Controller.v Line: 266
-Info (12128): Elaborating entity "RateDivider" for hierarchy "part2:u0|RateDivider:r0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 143
-Warning (10230): Verilog HDL assignment warning at 2snake.v(537): truncated value with size 32 to match size of target (28) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 537
-Warning (10230): Verilog HDL assignment warning at 2snake.v(542): truncated value with size 32 to match size of target (1) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 542
-Info (12128): Elaborating entity "food_gen" for hierarchy "part2:u0|food_gen:comb_3" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 154
-Warning (10230): Verilog HDL assignment warning at 2snake.v(562): truncated value with size 32 to match size of target (7) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 562
-Warning (10230): Verilog HDL assignment warning at 2snake.v(579): truncated value with size 32 to match size of target (7) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 579
+Info (12128): Elaborating entity "RateDivider" for hierarchy "part2:u0|RateDivider:r0" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 146
+Warning (10230): Verilog HDL assignment warning at 2snake.v(613): truncated value with size 32 to match size of target (28) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 613
+Warning (10230): Verilog HDL assignment warning at 2snake.v(618): truncated value with size 32 to match size of target (1) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 618
+Info (12128): Elaborating entity "food_gen" for hierarchy "part2:u0|food_gen:comb_3" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 153
+Warning (10230): Verilog HDL assignment warning at 2snake.v(638): truncated value with size 32 to match size of target (7) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 638
+Warning (10230): Verilog HDL assignment warning at 2snake.v(655): truncated value with size 32 to match size of target (7) File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 655
 Warning (12011): Net is missing source, defaulting to GND
-    Warning (12110): Net "part2:u0|reset" is missing source, defaulting to GND File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 120
-Warning (14025): LATCH primitive "part2:u0|keyboard_reader:k0|out[1]" is permanently disabled File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 493
-Warning (14025): LATCH primitive "part2:u0|keyboard_reader:k0|out[0]" is permanently disabled File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 493
-Warning (12241): 4 hierarchies have connectivity warnings - see the Connectivity Checks report folder
+    Warning (12110): Net "part2:u0|reset" is missing source, defaulting to GND File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 126
+Warning (14025): LATCH primitive "part2:u0|keyboard_reader:k0|out[1]" is permanently disabled File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 571
+Warning (14025): LATCH primitive "part2:u0|keyboard_reader:k0|out[0]" is permanently disabled File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 571
+Warning (12241): 3 hierarchies have connectivity warnings - see the Connectivity Checks report folder
 Warning (13024): Output pins are stuck at VCC or GND
     Warning (13410): Pin "VGA_SYNC" is stuck at VCC File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 8
 Info (286030): Timing-Driven Synthesis is running
@@ -1402,18 +1422,18 @@ Warning (21074): Design contains 3 input pin(s) that do not drive logic
     Warning (15610): No output dependent on input pin "KEY[2]" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 6
     Warning (15610): No output dependent on input pin "KEY[3]" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 6
     Warning (15610): No output dependent on input pin "KEY[1]" File: /h/u17/c7/00/choimat4/csc258/snake2/2snake.v Line: 6
-Info (21057): Implemented 231 device resources after synthesis - the final resource count might be different
+Info (21057): Implemented 241 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 5 input pins
     Info (21059): Implemented 35 output pins
     Info (21060): Implemented 2 bidirectional pins
-    Info (21061): Implemented 179 logic cells
+    Info (21061): Implemented 189 logic cells
     Info (21064): Implemented 9 RAM segments
     Info (21065): Implemented 1 PLLs
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 28 warnings
-    Info: Peak virtual memory: 1107 megabytes
-    Info: Processing ended: Fri Mar 22 00:03:49 2019
-    Info: Elapsed time: 00:00:14
-    Info: Total CPU time (on all processors): 00:00:22
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 30 warnings
+    Info: Peak virtual memory: 1104 megabytes
+    Info: Processing ended: Sun Mar 24 11:35:42 2019
+    Info: Elapsed time: 00:00:22
+    Info: Total CPU time (on all processors): 00:00:26
 
 
 +------------------------------------------+

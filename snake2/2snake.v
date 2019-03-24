@@ -42,6 +42,24 @@ module part2(
 	 inout PS2_CLK, PS2_DAT
     );
 	
+	 wire left, right, up, down;
+	 
+	 wire [2:0] colour;
+	 wire [7:0] x_out; 
+	 wire [6:0] y_out;
+	 
+	 wire [1:0] dir;
+	  
+	 wire kleft, kright, kup, kdown;
+	 wire not_used[5:0];
+	 
+	 wire enable_d;
+	 
+	 wire gen;
+	 wire [7:0] foodx;
+	 wire [6:0] foody;
+	 
+	 
 	 
 	 vga_adapter a0(
 			.resetn(resetn),
@@ -64,9 +82,7 @@ module part2(
 		   defparam a0.MONOCHROME = "FALSE";
 		   defparam a0.BITS_PER_COLOUR_CHANNEL = 1;
          defparam a0.BACKGROUND_IMAGE = "black.mif";
-			
-
-	 wire left, right, up, down;
+		
 	 
     control C0(
         .clk(clk),
@@ -80,11 +96,7 @@ module part2(
 		  .down(down)
     );
 	 
-	 
-	 wire [2:0] colour;
-	 wire [7:0] x_out; 
-	 wire [6:0] y_out;
-	 
+
     datapath D0(
         .clk(clk),
         .resetn(resetn),
@@ -97,12 +109,10 @@ module part2(
 		  .food_gen(gen),
         .x_out(x_out),
 		  .y_out(y_out),
-		  .colour(colour),
+		  .colour(colour)
     );
 	 
-	 
-	 wire [1:0] dir;
-	 
+
 	 keyboard_reader k0 (
 			.left(kleft),
 			.right(kright),
@@ -110,10 +120,6 @@ module part2(
 			.down(down),
 			.out(dir)
 	 );
-	 
-	 
-	 wire kleft, kright, kup, kdown;
-	 wire not_used[5:0];
 	 
 	 keyboard_tracker #(.PULSE_OR_HOLD(1)) KB0 (
 			.clock(clk),
@@ -131,20 +137,13 @@ module part2(
 			.up(kup),
 			.down(kdown)
 	 );
-	 
-	 wire enable_d;
-	 
+
 	 RateDivider r0(
 			.cout(delay),
 			.reset(reset),
 			.clk(clk),
-			.d(28'b10000000),
-			.enable_d(enable_d)
+			.d(28'b10000000)
 	 );
-	 
-	 wire gen;
-	 wire [7:0] foodx;
-	 wire [6:0] foody;
 	 
 	 food_gen(
 			.clk(clk),
@@ -310,7 +309,7 @@ module datapath(
 	 input left, right, up, down,// if y_dir is 1, go down else up. if x_dir is 1, go right, else left.
 	 
 	 // food 
-	 input [6:0] foodx,
+	 input [7:0] foodx,
 	 input [6:0] foody,
 	 output reg food_gen,
 	 
@@ -324,13 +323,23 @@ module datapath(
 	 reg [6:0] heady, y1, y2, y3, y4, y5, taily;
 	 
 	 
-	 wire delay;
-	 counter16 d0 (
+	 
+	 wire new_clk;
+	 RateDivider r0 (
+			.cout(new_clk),
 			.resetn(resetn),
 			.clk(clk),
+			.d(28'd16)
+	 );
+	 
+	 wire delay;
+	 counter6 c6 (
+			.resetn(resetn),
+			.clk(new_clk),
 			.enable(1'b1),
 			.out(delay)
 	 );
+	
 	 
 	 
 	 wire [3:0] pixel;
@@ -358,16 +367,16 @@ module datapath(
 			x3 <= x2 - 3'd4; 
 			x4 <= x3 - 3'd4; 
 			x5 <= x4 - 3'd4; 
-			
+			tailx <= x5 - 3'd4;
 			
 			y2 <= y1; 
 			y3 <= y2; 
 			y4 <= y3; 
 			y5 <= y4; 
-			
-			
-			tailx <= x5 - 3'd4;
 			taily <= y5;
+			
+
+			food_gen <= 1'b0;
 			
 	   end
 	 
@@ -377,11 +386,13 @@ module datapath(
 				x3 <= x2; 
 				x4 <= x3; 
 				x5 <= x4; 
+				tailx <= x5;
 				
 				y2 <= y1; 
 				y3 <= y2; 
 				y4 <= y3; 
-				y5 <= y4; 
+				y5 <= y4;
+				taily <= y5;
 				
 				if (right)
 				begin
@@ -403,6 +414,12 @@ module datapath(
 					y1 <= y1 - 3'd4;
 				end
 				
+				
+				if ((headx == foodx) && (heady == foody))
+				begin
+					food_gen <= 1'b1;
+				end
+				
 				if (food_gen == 0)
 				begin 
 					if (delay == 0)
@@ -422,40 +439,63 @@ module datapath(
 				
 				else 
 				begin
-					if (delay == 1)
-					begin
-					headx <= foodx;
-					heady <= foody;
-					colour <= 3'b001;
-					end
+						headx <= foodx;
+						heady <= foody;
+						colour <= 3'b001;
+						food_gen <= 1'b0;
+					
 				end
 			end
 		end
-	 
-	 
-	 always @ (posedge clk)
+		
+		
+	 always @(posedge clk)
 	 begin
-		  if (!resetn)
-		  begin 
-				food_gen <= 1'b0;
-		  end
-		  else
+			if (!resetn)
+			begin
+				x_out <= 8'b0;
+				y_out <= 7'b0;
+			end
+			else 
+			begin
+				x_out <= headx + pixel[1:0];
+				y_out <= heady + pixel[3:2];
+			end
+	 end
+
+endmodule
+
+module counter6(resetn, clk, enable, out) ;
+	input resetn, clk, enable;
+	output out;
+	
+	reg [2:0] count;
+	
+	
+	always @ (posedge clk, negedge resetn) 
+	 begin
+        if (!resetn) 
 		  begin
-			  if ((headx == foodx) && (heady == foody))
-			  begin 
-					food_gen <= 1'b1;
+            count <= 3'b0; 
+				
+        end
+        else if (enable)
+		  begin
+           if (count == 3'd6) 
+			  begin
+					count <= 0;
+			  end
+			  else 
+			  begin
+					count <= count + 1;
 			  end
 		  end
 	 end
-	 
-	 always @(posedge clk)
-	 begin
-			x_out <= headx + pixel[1:0];
-			y_out <= heady + pixel[3:2];
-	 end
-	 
+	 assign out = (count == 3'd6) ? 1 : 0;
 	 
 endmodule
+	
+	
 
 module counter16(resetn, clk, enable, out) ;
 	input resetn, clk, enable;
@@ -511,22 +551,21 @@ endmodule
 
 		
 
-module RateDivider(cout, reset, clk, d, enable_d) ; // need to take into account of the frames too
+module RateDivider(cout, resetn, clk, d) ; // need to take into account of the frames too
 	input [27:0] d;
-	input reset, clk;
-	input enable_d;
+	input resetn, clk;
 	output cout; 
 	
 	reg [27:0] count;
 	
 	always @ (posedge clk)
 	begin 
-		if (reset == 1'b0)
+		if (resetn == 1'b0)
 		begin
 			count <= d;
 		end
 		
-		if (enable_d == 1'b1)
+		else 
 		begin 
 			if (count == 0)
 			begin
