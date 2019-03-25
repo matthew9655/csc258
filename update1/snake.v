@@ -139,10 +139,10 @@ module part2(
 //	 );
 	
 	 RateDivider r0(
-			.cout(control_clock),
+			.cout(delay),
 			.resetn(reset),
 			.clk(clk),
-			.d(28'd1666666)
+			.d(28'd12499999)
 	 );
 	 
 //	 food_gen fg0(
@@ -290,12 +290,12 @@ module datapath(
 	 wire [6:0] randy;
 	 
 	 
-	 food_gen fg0(
-			.clk(clk),
-			.gen(food_gen),
-			.randomX(randx),
-			.randomY(randy)
-	 );
+//	 food_gen fg0(
+//			.clk(clk),
+//			.gen(food_gen),
+//			.randomX(randx),
+//			.randomY(randy)
+//	 );
 	 
 					
 	 always@(posedge clk)
@@ -342,7 +342,7 @@ module datapath(
 			begin 
 				if (foodx == headx && foody == heady) 
 					length <= length + 1'b1;
-				colour <= 3'b001;
+				colour <= 3'b111;
 			end
 			
 			MOVE:
@@ -378,8 +378,8 @@ module datapath(
 			end
 			EAT:
 			begin 
-				if (foodx == headx && foody == heady)
-					food_gen <= 1;
+//				if (foodx == headx && foody == heady)
+//					food_gen <= 1;
 					
 				
 			end
@@ -612,3 +612,5 @@ module combined(clk, resetn, l, r, u, d, x_out, y_out, colour);
 			.out(dir)
 	 );
 endmodule
+
+
