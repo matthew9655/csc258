@@ -2,7 +2,8 @@
 //KEY[1] go signal
 
 
-module snake_2(KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R, VGA_G, VGA_B, PS2_CLK, PS2_DAT);
+module snake_2(SW, KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R, VGA_G, VGA_B, PS2_CLK, PS2_DAT);
+	 input [9:0] SW;
     input [3:0] KEY;
     input CLOCK_50;
     output VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK;
@@ -11,12 +12,15 @@ module snake_2(KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R
 	 
 	 
     wire resetn;
-	 wire start;
     assign resetn = KEY[0];
 
     part2 u0(
         .clk(CLOCK_50),
         .resetn(resetn),
+		  .l(SW[0]),
+		  .r(SW[1]),
+		  .u(SW[2]),
+		  .d(SW[3]),
         .VGA_HS(VGA_HS),
 		  .VGA_VS(VGA_VS),
 		  .VGA_BLANK(VGA_BLANK),
@@ -34,6 +38,7 @@ endmodule
 module part2(
     input clk,
     input resetn,
+	 input l, r, u, d;
 	 output VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK,
 	 output [9:0] VGA_R, VGA_G, VGA_B,
 	 inout PS2_CLK, PS2_DAT
@@ -114,29 +119,29 @@ module part2(
 	 
 
 	 keyboard_reader k0 (
-			.left(kleft),
-			.right(kright),
-			.up(up),
-			.down(down),
+			.left(l),
+			.right(r),
+			.up(u),
+			.down(d),
 			.out(dir)
 	 );
 	 
-	 keyboard_tracker #(.PULSE_OR_HOLD(1)) KB0 (
-			.clock(clk),
-			.reset(reset),
-			.PS2_CLK(PS2_CLK),
-			.PS2_DAT(PS2_DAT),
-			.w(not_used[5]),
-			.a(not_used[4]),
-			.s(not_used[3]),
-			.d(not_used[2]),
-			.space(not_used[1]),
-			.enter(not_used[0]),
-			.left(kleft),
-			.right(kright),
-			.up(kup),
-			.down(kdown)
-	 );
+//	 keyboard_tracker #(.PULSE_OR_HOLD(1)) KB0 (
+//			.clock(clk),
+//			.reset(reset),
+//			.PS2_CLK(PS2_CLK),
+//			.PS2_DAT(PS2_DAT),
+//			.w(not_used[5]),
+//			.a(not_used[4]),
+//			.s(not_used[3]),
+//			.d(not_used[2]),
+//			.space(not_used[1]),
+//			.enter(not_used[0]),
+//			.left(kleft),
+//			.right(kright),
+//			.up(kup),
+//			.down(kdown)
+//	 );
 	
 	 RateDivider r0(
 			.cout(control_clock),
@@ -145,12 +150,12 @@ module part2(
 			.d(28'd8)
 	 );
 	 
-	 food_gen fg0(
-			.clk(clk),
-			.gen(gen),
-			.randomX(foodx),
-			.randomY(foody)
-	 );
+//	 food_gen fg0(
+//			.clk(clk),
+//			.gen(gen),
+//			.randomX(foodx),
+//			.randomY(foody)
+//	 );
                 
  endmodule        
                 
@@ -189,7 +194,7 @@ module control(
 					begin
 						next_state = UP;
 					end
-					if (dir == 2'd3)
+					else if (dir == 2'd3)
 					begin
 						next_state = DOWN;
 					end
@@ -207,7 +212,7 @@ module control(
 					begin
 						next_state = UP;
 					end
-					if (dir == 2'd3)
+					else if (dir == 2'd3)
 					begin
 						next_state = DOWN;
 					end
@@ -225,7 +230,7 @@ module control(
 					begin
 						next_state = LEFT;
 					end
-					if (dir == 2'd1)
+					else if (dir == 2'd1)
 					begin
 						next_state = RIGHT;
 					end
@@ -244,7 +249,7 @@ module control(
 					begin
 						next_state = LEFT;
 					end
-					if (dir == 2'd1)
+					else if (dir == 2'd1)
 					begin
 						next_state = RIGHT;
 					end
@@ -256,7 +261,7 @@ module control(
 				
 				DOWN_WAIT: next_state = DOWN;
 					 
-            default: next_state = current_state;
+            default: next_state = RIGHT;
         endcase
     end // state_table
    
@@ -354,7 +359,7 @@ module datapath(
 			.cout(new_clk),
 			.resetn(resetn),
 			.clk(clk),
-			.d(28'd16)
+			.d(28'd2)
 	 );
 	 
 	 wire delay;
@@ -387,12 +392,12 @@ module datapath(
 			headx <= x1;
 			heady <= y1;
 			
-			x5 <= x4 - 3'd4; 
-			x4 <= x3 - 3'd4; 
-			x3 <= x2 - 3'd4; 
-			x2 <= x1 - 3'd4; 
+			x5 <= x4 - 8'd4; 
+			x4 <= x3 - 8'd4; 
+			x3 <= x2 - 8'd4; 
+			x2 <= x1 - 8'd4; 
 	
-			tailx <= x5 - 3'd4;
+			tailx <= x5 - 8'd4;
 			
 			y5 <= y4; 
 			y4 <= y3; 
@@ -408,7 +413,7 @@ module datapath(
 			
 	   end
 	 
-		 else 
+		else 
 		 begin
 				tailx <= x5;
 				x5 <= x4; 
@@ -425,55 +430,51 @@ module datapath(
 				
 				if (right == 1'b1)
 				begin
-					x1 <= x1 + 3'd4;
+					x1 <= x1 + 3'b100;
 				end
-				
-				if (left == 1'b1)
+				else if (left == 1'b1)
 				begin 
-					x1 <= x1 - 3'd4;
+					x1 <= x1 - 3'b100;
 				end
-				
-				if (down == 1'b1)
+				else if (down == 1'b1)
 				begin
-					y1 <= y1 + 3'd4;
+					y1 <= y1 + 3'b100;
 				end
-				
-				if (up == 1'b1)
+				else if (up == 1'b1)
 				begin 
-					y1 <= y1 - 3'd4;
+					y1 <= y1 - 3'b100;
 				end
-				
-				
-//				if ((headx == foodx) && (heady == foody))
-//				begin
-//					food_gen <= 1'b1;
-//				end
-				
+						
+				if ((headx == foodx) && (heady == foody))
+					begin
+						food_gen <= 1'b1;				
+					end
+		
 				if (food_gen == 0)
 				begin 
 					if (delay == 0)
-					begin
-						headx <= x1;
-						heady <= y1;
-						colour <= 3'b001;
+					begin					
+					headx <= x1;
+					heady <= y1;
+					colour <= 3'b001;
 					end
-					
-					if (delay == 1)
+
+					else if (delay == 1)
 					begin 	
 						headx <= tailx;
 						heady <= taily;
 						colour <= 3'b000;
 					end
-				end
+            end
+			
+				else 
+				begin
+					headx <= foodx;
+					heady <= foody;
+					colour <= 3'b001;
+					food_gen <= 1'b0;
 				
-//				else 
-//				begin
-//						headx <= foodx;
-//						heady <= foody;
-//						colour <= 3'b001;
-//						food_gen <= 1'b0;
-//					
-				//end
+				end
 			end
 		end
 		
@@ -659,7 +660,7 @@ endmodule
 
 module combined(clk, resetn, dir, x_out, y_out, colour);
 	input clk, resetn; 
-	input [2:0] dir;
+	input [1:0] dir;
 	output [7:0] x_out; 
 	output [6:0] y_out;
 	output [2:0] colour;
