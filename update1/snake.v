@@ -65,10 +65,6 @@ module part2(
 	 wire [7:0] foodx;
 	 wire [6:0] foody;
 	 
-	 wire control_clock;
-	 
-	 
-	 
 	 vga_adapter a0(
 			.resetn(resetn),
 			.clock(clk),
@@ -602,7 +598,6 @@ module combined(clk, resetn, l, r, u, d, x_out, y_out, colour);
 		  .direction(direction),
 		  .state(state),
 		  
-		  .food_gen(gen),
         .x_out(x_out),
 		  .y_out(y_out),
 		  .colour(colour)
