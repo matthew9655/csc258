@@ -21,6 +21,7 @@ module snake_2(SW, KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, V
 		  .r(SW[1]),
 		  .u(SW[2]),
 		  .d(SW[3]),
+		  .enable(SW[9]),
         .VGA_HS(VGA_HS),
 		  .VGA_VS(VGA_VS),
 		  .VGA_BLANK(VGA_BLANK),
@@ -38,7 +39,7 @@ endmodule
 module part2(
     input clk,
     input resetn,
-	 input l, r, u, d;
+	 input l, r, u, d, enable,
 	 output VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK,
 	 output [9:0] VGA_R, VGA_G, VGA_B,
 	 inout PS2_CLK, PS2_DAT
@@ -108,6 +109,7 @@ module part2(
 		  .right(right),
 		  .up(up),
 		  .down(down),
+		  .enable(enable),
 		  .stop(stop),
 
 		  
@@ -147,7 +149,7 @@ module part2(
 			.cout(control_clock),
 			.resetn(reset),
 			.clk(clk),
-			.d(28'd8)
+			.d(28'd12500000)
 	 );
 	 
 //	 food_gen fg0(
@@ -335,7 +337,7 @@ module datapath(
 	 // moving snake
     input clk,
     input resetn,
-	 input left, right, up, down,
+	 input left, right, up, down,enable,
 	 input stop,
 	 
 	 // food 
@@ -359,7 +361,7 @@ module datapath(
 			.cout(new_clk),
 			.resetn(resetn),
 			.clk(clk),
-			.d(28'd2)
+			.d(28'd12500000)
 	 );
 	 
 	 wire delay;
@@ -413,7 +415,7 @@ module datapath(
 			
 	   end
 	 
-		else 
+		else if (enable)
 		 begin
 				tailx <= x5;
 				x5 <= x4; 
@@ -492,7 +494,6 @@ module datapath(
 					y_out <= heady + pixel[3:2];
 				end
 	 end
-
 endmodule
 
 module counter6(resetn, clk, enable, out) ;
