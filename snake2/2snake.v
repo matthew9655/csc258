@@ -13,12 +13,10 @@ module snake_2(KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R
     wire resetn;
 	 wire start;
     assign resetn = KEY[0];
-	 assign start = KEY[1];
 
     part2 u0(
         .clk(CLOCK_50),
         .resetn(resetn),
-		  .start(start),
         .VGA_HS(VGA_HS),
 		  .VGA_VS(VGA_VS),
 		  .VGA_BLANK(VGA_BLANK),
@@ -36,7 +34,6 @@ endmodule
 module part2(
     input clk,
     input resetn,
-	 input start,
 	 output VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK,
 	 output [9:0] VGA_R, VGA_G, VGA_B,
 	 inout PS2_CLK, PS2_DAT
@@ -89,7 +86,6 @@ module part2(
     control C0(
         .clk(control_clk),
         .resetn(resetn),
-		  .start(start),
 		  .dir(dir),
 		  
         .left(left),
@@ -149,7 +145,7 @@ module part2(
 			.d(28'd8)
 	 );
 	 
-	 food_gen(
+	 food_gen fg0(
 			.clk(clk),
 			.gen(gen),
 			.randomX(foodx),
@@ -162,7 +158,6 @@ module part2(
 module control(
     input clk,
     input resetn,
-	 input start,
 	 input [1:0] dir, // 0 for left, 1 for right, 2 for up, 3 for down
 	 
 	 output reg left, right, up ,down, stop
@@ -173,9 +168,13 @@ module control(
     localparam  
 					 START			  = 4'd0,
 					 RIGHT           = 4'd1,
-					 LEFT		        = 4'd2,
-					 UP              = 4'd3,
-					 DOWN			     = 4'd4;
+					 RIGHT_WAIT		  = 4'd2,
+					 LEFT		        = 4'd3,
+					 LEFT_WAIT		  = 4'd4,
+					 UP              = 4'd5,
+					 UP_WAIT			  = 4'd6,
+					 DOWN				  = 4'd7,
+					 DOWN_WAIT		  = 4'd8;
 				
 			
     
@@ -196,9 +195,11 @@ module control(
 					end
 					else
 					begin
-						next_state = RIGHT;
+						next_state = RIGHT_WAIT;
 					end
 				end
+				
+				RIGHT_WAIT: next_state = RIGHT;
 				
 				LEFT: 
 				begin 
@@ -212,9 +213,12 @@ module control(
 					end
 					else
 					begin
-						next_state = LEFT;
+						next_state = LEFT_WAIT;
 					end
 				end
+				
+				LEFT_WAIT: next_state = LEFT;
+				
 				UP: 
 				begin 
 					if (dir == 2'd0)
@@ -227,9 +231,13 @@ module control(
 					end
 					else
 					begin
-						next_state = UP;
+						next_state = UP_WAIT;
 					end
 				end
+				
+				UP_WAIT: next_state = UP;
+				
+				
 				DOWN: 
 				begin 
 					if (dir == 2'd0)
@@ -242,9 +250,11 @@ module control(
 					end
 					else
 					begin
-						next_state = DOWN;
+						next_state = DOWN_WAIT;
 					end
 				end
+				
+				DOWN_WAIT: next_state = DOWN;
 					 
             default: next_state = current_state;
         endcase
@@ -344,7 +354,7 @@ module datapath(
 			.cout(new_clk),
 			.resetn(resetn),
 			.clk(clk),
-			.d(28'd12500000)
+			.d(28'd16)
 	 );
 	 
 	 wire delay;
@@ -367,7 +377,7 @@ module datapath(
 	 
 	 
 	 
-	 always @ (posedge new_clk) 
+	 always @ (posedge new_clk, negedge resetn) 
 	 begin 
 		if (!resetn) 
 		begin 
@@ -377,17 +387,19 @@ module datapath(
 			headx <= x1;
 			heady <= y1;
 			
-			
-			x2 <= x1 - 3'd4; 
-			x3 <= x2 - 3'd4; 
-			x4 <= x3 - 3'd4; 
 			x5 <= x4 - 3'd4; 
+			x4 <= x3 - 3'd4; 
+			x3 <= x2 - 3'd4; 
+			x2 <= x1 - 3'd4; 
+	
 			tailx <= x5 - 3'd4;
 			
-			y2 <= y1; 
-			y3 <= y2; 
-			y4 <= y3; 
 			y5 <= y4; 
+			y4 <= y3; 
+			y3 <= y2; 
+			y2 <= y1; 
+			
+			
 			taily <= y5;
 			
 
@@ -398,38 +410,35 @@ module datapath(
 	 
 		 else 
 		 begin
-				x2 <= x1; 
-				x3 <= x2; 
-				x4 <= x3; 
-				x5 <= x4; 
 				tailx <= x5;
+				x5 <= x4; 
+				x4 <= x3; 
+				x3 <= x2; 
+				x2 <= x1; 
 				
-				y2 <= y1; 
-				y3 <= y2; 
-				y4 <= y3; 
-				y5 <= y4;
 				taily <= y5;
+				y5 <= y4;
+				y4 <= y3; 
+				y3 <= y2; 
+				y2 <= y1; 
 				
-				if (stop)
-					x1 <= x1;
-					y1 <= y1;
 				
-				if (right)
+				if (right == 1'b1)
 				begin
 					x1 <= x1 + 3'd4;
 				end
 				
-				if (left)
+				if (left == 1'b1)
 				begin 
 					x1 <= x1 - 3'd4;
 				end
 				
-				if (down)
+				if (down == 1'b1)
 				begin
 					y1 <= y1 + 3'd4;
 				end
 				
-				if (up)
+				if (up == 1'b1)
 				begin 
 					y1 <= y1 - 3'd4;
 				end
@@ -646,3 +655,44 @@ module food_gen (clk, gen, randomX, randomY);
 	end
 	
 endmodule 
+
+
+module combined(clk, resetn, dir, x_out, y_out, colour);
+	input clk, resetn; 
+	input [2:0] dir;
+	output [7:0] x_out; 
+	output [6:0] y_out;
+	output [2:0] colour;
+	
+	wire left, right, up, down, stop;
+	
+
+	control C0(
+        .clk(clk),
+        .resetn(resetn),
+		  .dir(dir),
+		  
+        .left(left),
+		  .right(right),
+		  .up(up),
+		  .down(down),
+		  .stop(stop)
+    );
+	 
+
+    datapath D0(
+        .clk(clk),
+        .resetn(resetn),
+		  .left(left),
+		  .right(right),
+		  .up(up),
+		  .down(down),
+		  .stop(stop),
+
+		  
+		  .food_gen(gen),
+        .x_out(x_out),
+		  .y_out(y_out),
+		  .colour(colour)
+    );
+endmodule
