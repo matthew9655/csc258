@@ -315,13 +315,13 @@ module datapath(
 	 
 	 
 	 localparam  
-					 CLEAR_WAIT			  = 3'd0,
-					 CLEAR              = 3'd1,
-					 MOVE_WAIT		     = 3'd2,
-					 MOVE		           = 3'd3,
-					 EAT_WAIT		     = 3'd4,
-					 EAT                = 3'd5,
-					 REPEAT			     = 3'd6;
+					 CLEAR_WAIT			  = 3'b000,
+					 CLEAR              = 3'b001,
+					 MOVE_WAIT		     = 3'b010,
+					 MOVE		           = 3'b011,
+					 EAT_WAIT		     = 3'b100,
+					 EAT                = 3'b101,
+					 REPEAT			     = 3'b110;
 	 
 	 localparam 
 					LEFT = 2'b0,
@@ -331,7 +331,6 @@ module datapath(
 					
 	 wire [7:0] randx;
 	 wire [6:0] randy;
-	 
 	 
 	 food_gen fg0(
 			.clk(clk),
@@ -351,8 +350,8 @@ module datapath(
 		heady <= 7'b0;
 		bodyx[0] <= 8'b0;
 		bodyy[0] <= 7'b0;
-		foodx <= 8'd50;
-		foody <= 7'd70;
+		foodx <= 8'd6;
+		foody <= 7'd0;
 		colour <= 3'b000;
 		food_gen <= 1'b0;
 		length <= 1'b1;
@@ -424,13 +423,21 @@ module datapath(
 			end
 			EAT_WAIT:
 			begin 
+				if (foodx == headx && foody == heady)
+					food_gen <= 1'b1;
 			end
 			EAT:
 			begin 
-				if ((foodx == headx && foody == heady) || start)
+				if (start)
 				begin
-					food_gen <= 1'b1;
+					x_out <= foodx;
+					y_out <= foody;
+					colour <= 3'b010;
 					start <= 1'b0;
+				end
+					
+				else if ((foodx == headx && foody == heady))
+				begin
 					
 					foodx <= randx;
 					foody <= randy;
@@ -588,7 +595,7 @@ module combined(clk, resetn, l, r, u, d, x_out, y_out, colour, plot);
 		  .cout(delay),
 		  .resetn(resetn),
 		  .clk(clk),
-		  .d(28'd12500000)
+		  .d(28'd2)
 	);
 	
 	control C0(
