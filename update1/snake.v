@@ -35,6 +35,48 @@ module snake_2(SW, KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, V
 
 endmodule
 
+module snake(SW, KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R, VGA_G, VGA_B);
+    input [3:0] KEY;
+	 input [9:0] SW;
+    input CLOCK_50;
+    output VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK;
+	 output [9:0] VGA_R, VGA_G, VGA_B;
+	
+	 
+	 wire [7:0] x_out;
+	 wire [6:0] y_out;
+	 wire [2:0] colour;
+	 wire plot;
+	 
+	 
+	 vga_adapter a0(
+			.resetn(SW[9]),
+			.clock(CLOCK_50),
+			.colour(colour),
+			.x(x_out), 
+			.y(y_out),
+			.plot(plot),
+			/* Signals for the DAC to drive the monitor. */
+			.VGA_R(VGA_R),
+			.VGA_G(VGA_G),
+			.VGA_B(VGA_B),
+			.VGA_HS(VGA_HS),
+			.VGA_VS(VGA_VS),
+			.VGA_BLANK(VGA_BLANK),
+			.VGA_SYNC(VGA_SYNC),
+			.VGA_CLK(VGA_CLK)
+			);
+			defparam a0.RESOLUTION = "160x120";
+		   defparam a0.MONOCHROME = "FALSE";
+		   defparam a0.BITS_PER_COLOUR_CHANNEL = 1;
+         defparam a0.BACKGROUND_IMAGE = "black.mif";
+			
+	 combined c0(CLOCK_50, SW[9], SW[0], SW[1], SW[2], SW[3], x_out, y_out, colour, plot);
+	
+endmodule
+
+	
+
 module part2(
     input clk,
     input resetn,
@@ -256,13 +298,14 @@ module datapath(
     input [2:0] state,
 	 
 	 
+	 
     output reg [7:0] x_out,
 	 output reg [6:0] y_out,
 	 output reg [2:0] colour
     );
 	 
 	 reg [5:0] length;
-	 reg food_gen;
+	 reg food_gen, start;
 	 reg [7:0] headx, foodx;
 	 reg [6:0] heady, foody;
 	 reg [7:0] bodyx[0:127];
@@ -290,12 +333,12 @@ module datapath(
 	 wire [6:0] randy;
 	 
 	 
-//	 food_gen fg0(
-//			.clk(clk),
-//			.gen(food_gen),
-//			.randomX(randx),
-//			.randomY(randy)
-//	 );
+	 food_gen fg0(
+			.clk(clk),
+			.food_gen(food_gen),
+			.randomX(randx),
+			.randomY(randy)
+	 );
 	 
 					
 	 always@(posedge clk)
@@ -312,7 +355,8 @@ module datapath(
 		foody <= 7'd70;
 		colour <= 3'b000;
 		food_gen <= 1'b0;
-		length <= 1'd1;
+		length <= 1'b1;
+		start <= 1'b1;
 		end
 		
 		
@@ -334,21 +378,26 @@ module datapath(
 			end
 			CLEAR:
 			begin
+				if (headx == foodx && heady == foody)
+					colour <= 3'b111;
+				else 
+					colour <= 3'b000;
+				
 				x_out <= bodyx[length - 1];
 				y_out <= bodyy[length - 1];
-				colour <= 3'b000;
 			end
 			MOVE_WAIT:
 			begin 
 				if (foodx == headx && foody == heady) 
 					length <= length + 1'b1;
-				colour <= 3'b111;
+				
 			end
 			
 			MOVE:
 			begin 
 				x_out <= headx;
 				y_out <= heady;
+				colour <= 3'b111;
 				bodyx[0] <= headx;
 				bodyy[0] <= heady;
 				
@@ -378,10 +427,19 @@ module datapath(
 			end
 			EAT:
 			begin 
-//				if (foodx == headx && foody == heady)
-//					food_gen <= 1;
+				if ((foodx == headx && foody == heady) || start)
+				begin
+					food_gen <= 1'b1;
+					start <= 1'b0;
 					
+					foodx <= randx;
+					foody <= randy;
 				
+					x_out <= foodx;
+					y_out <= foody;
+					colour <= 3'b010;
+				end
+					
 			end
 			
 			endcase
@@ -419,32 +477,6 @@ module counter6(resetn, clk, enable, out) ;
 	 end
 	 assign out = (count == 3'd6) ? 1 : 0;
 	 
-endmodule
-	
-module counter16(resetn, clk, enable, out) ;
-	input resetn, clk, enable;
-	output reg [3:0] out;
-	
-	
-	always @ (posedge clk) 
-	 begin
-        if (!resetn) 
-		  begin
-            out <= 4'b0; 
-				
-        end
-        else if (enable)
-		  begin
-           if (out == 4'b1111) 
-			  begin
-					out <= 0;
-			  end
-			  else 
-			  begin
-					out <= out + 1;
-			  end
-		  end
-	 end
 endmodule
 	
 
@@ -507,8 +539,8 @@ module RateDivider(cout, resetn, clk, d) ; // need to take into account of the f
 endmodule
 
 
-module food_gen (clk, gen, randomX, randomY);
-	input clk, gen;
+module food_gen (clk, food_gen, randomX, randomY);
+	input clk, food_gen;
 	output reg [7:0] randomX;
 	output reg [6:0] randomY;
 
@@ -517,57 +549,37 @@ module food_gen (clk, gen, randomX, randomY);
 	
 	always@(posedge clk)
 	begin
-		if (gen == 0)
+		if (food_gen == 0)
 		begin 
 			if (x < 8'd159)
 				x <= x + 1'b1;
 			else 
 				x <= 0;
-		end
-		if (gen == 1)
-		begin
-			if(x < 8'd159)
-			begin
-				randomX <= x;
-				x<= x + 1;
-			end
+			if (y > 0)
+				y <= y - 1'b1;
 			else
-			begin
-				randomX <= x;
-				x <= 7'd0;
-			end
+				y <= 7'd119;
 		end
-	end
-	
-	always@(posedge clk)
-	begin
-		if (gen == 1)
+		if (food_gen == 1)
 		begin
-			if(y > 7'd28)
-			begin
-				randomY <= y;
-				y <= y - 1;
-			end
-			else
-			begin
-				randomY <= y;
-				y <= 7'd92;
-			end
+			randomX <= x;
+			randomY <= y;
 		end
 	end
 	
 endmodule 
 
 
-module combined(clk, resetn, l, r, u, d, x_out, y_out, colour);
+module combined(clk, resetn, l, r, u, d, x_out, y_out, colour, plot);
 	input clk, resetn; 
 	input l, r, u, d;
 	
 	output [7:0] x_out; 
 	output [6:0] y_out;
 	output [2:0] colour;
+	output plot;
 	
-	wire delay, plot;
+	wire delay;
 	wire [1:0] direction;
 	wire [2:0] state;
 	wire [1:0] dir;
@@ -576,7 +588,7 @@ module combined(clk, resetn, l, r, u, d, x_out, y_out, colour);
 		  .cout(delay),
 		  .resetn(resetn),
 		  .clk(clk),
-		  .d(28'd1)
+		  .d(28'd12500000)
 	);
 	
 	control C0(
