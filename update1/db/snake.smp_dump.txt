@@ -1,10 +1,12 @@
 
-State Machine - |snake_2|part2:u0|control:C0|current_state
-Name current_state.CLEAR_WAIT current_state.EAT current_state.EAT_WAIT current_state.MOVE current_state.MOVE_WAIT current_state.CLEAR current_state.REPEAT 
-current_state.REPEAT 0 0 0 0 0 0 0 
-current_state.CLEAR 0 0 0 0 0 1 1 
-current_state.MOVE_WAIT 0 0 0 0 1 0 1 
-current_state.MOVE 0 0 0 1 0 0 1 
-current_state.EAT_WAIT 0 0 1 0 0 0 1 
-current_state.EAT 0 1 0 0 0 0 1 
-current_state.CLEAR_WAIT 1 0 0 0 0 0 1 
+State Machine - |snake|combined:c0|control:C0|current_state
+Name current_state.EAT current_state.EAT_WAIT current_state.MOVE current_state.MOVE_WAIT current_state.CLEAR current_state.CLEAR_WAIT current_state.START_WAIT current_state.START current_state.REPEAT 
+current_state.START 0 0 0 0 0 0 0 0 0 
+current_state.START_WAIT 0 0 0 0 0 0 1 1 0 
+current_state.CLEAR_WAIT 0 0 0 0 0 1 0 1 0 
+current_state.CLEAR 0 0 0 0 1 0 0 1 0 
+current_state.MOVE_WAIT 0 0 0 1 0 0 0 1 0 
+current_state.MOVE 0 0 1 0 0 0 0 1 0 
+current_state.EAT_WAIT 0 1 0 0 0 0 0 1 0 
+current_state.EAT 1 0 0 0 0 0 0 1 0 
+current_state.REPEAT 0 0 0 0 0 0 0 1 1 
