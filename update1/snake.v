@@ -164,13 +164,14 @@ module control(
     localparam  
 					 START				  = 4'd0,
 					 START_WAIT			  = 4'd1,
-					 CLEAR_WAIT			  = 4'd2,
-					 CLEAR              = 4'd3,
-					 MOVE_WAIT		     = 4'd4,
-					 MOVE		           = 4'd5,
-					 EAT_WAIT		     = 4'd6,
-					 EAT                = 4'd7,
-					 REPEAT			     = 4'd8;
+					 SETUP				  = 4'd2,
+					 CLEAR_WAIT			  = 4'd3,
+					 CLEAR              = 4'd4,
+					 MOVE_WAIT		     = 4'd5,
+					 MOVE		           = 4'd6,
+					 EAT_WAIT		     = 4'd7,
+					 EAT                = 4'd8,
+					 REPEAT			     = 4'd9;
 	 
 	 localparam 
 					LEFT = 2'b0,
@@ -186,7 +187,8 @@ module control(
     begin: state_table 
             case (current_state)
 					START: next_state = start ? START : START_WAIT;
-					START_WAIT: next_state = start ? CLEAR_WAIT: START_WAIT;
+					START_WAIT: next_state = start ? SETUP : START_WAIT;
+					SETUP: next_state = delay ? CLEAR_WAIT : SETUP;
 					CLEAR_WAIT: next_state = CLEAR;
 					CLEAR: next_state = MOVE_WAIT;
 					MOVE_WAIT: next_state = MOVE;
@@ -252,38 +254,36 @@ module datapath(
     input [3:0] state,
 	 input [7:0] randx,
 	 input [6:0] randy,
-	 input [6:0] setupx, setupy;
 	 
 	 
     output reg [7:0] x_out,
 	 output reg [6:0] y_out,
 	 output reg [2:0] colour,
 	 output reg food_gen,
-	 output reg [4:0] select,
-	 output reg setup
+	 output reg [4:0] select
     );
 	 
 	 reg [5:0] length;
 	 reg start, over;
-	 reg [7:0] headx, foodx;
-	 reg [6:0] heady, foody;
+	 reg [7:0] headx, foodx, setupx;
+	 reg [6:0] heady, foody, setupy;
 	 reg [7:0] bodyx[0:127];
 	 reg [6:0] bodyy[0:127];
-	 integer i;
+	 integer i, t, j;
 	 
 	 
 	 
 	 localparam  
-					 START 				  = 4'b000,
-					 START_WAIT			  = 4'b001,
-					 
-					 CLEAR_WAIT			  = 4'b010,
-					 CLEAR              = 4'b011,
-					 MOVE_WAIT		     = 4'b100,
-					 MOVE		           = 4'b101,
-					 EAT_WAIT		     = 4'b110,
-					 EAT                = 4'b111,
-					 REPEAT			     = 4'b110;
+					 START 				  = 4'b0000,
+					 START_WAIT			  = 4'b0001,
+					 SETUP				  = 4'b0010,
+					 CLEAR_WAIT			  = 4'b0011,
+					 CLEAR              = 4'b0100,
+					 MOVE_WAIT		     = 4'b0101,
+					 MOVE		           = 4'b0110,
+					 EAT_WAIT		     = 4'b0111,
+					 EAT                = 4'b1000,
+					 REPEAT			     = 4'b1001;
 	 
 	 localparam 
 					LEFT = 2'b0,
@@ -298,12 +298,14 @@ module datapath(
 		begin 
 		x_out <= 8'b0;
 		y_out <= 7'b0;
-		headx <= 8'b0;
-		heady <= 7'b0;
-		bodyx[0] <= 8'b0;
-		bodyy[0] <= 7'b0;
-		foodx <= 8'd6;
-		foody <= 7'd0;
+		headx <= 8'd80;
+		heady <= 7'd60;
+		setupx <= 8'b0;
+		setupy <= 7'b0;
+		bodyx[0] <= 8'd80;
+		bodyy[0] <= 7'd60;
+		foodx <= 8'd69;
+		foody <= 7'd69;
 		colour <= 3'b000;
 		food_gen <= 1'b0;
 		length <= 1'b1;
@@ -321,6 +323,32 @@ module datapath(
 			end
 			START_WAIT:
 			begin 
+			end
+			
+			SETUP:
+			begin
+				if ((setupx < 8'd48 && setupy < 8'd28) || (setupx > 8'd112 && setupy > 92))
+					colour <= 3'b000;
+				else
+					colour <= 3'b111;
+				
+				x_out <= setupx;
+				y_out <= setupy;
+				
+				for (t = 0; t < 120; t = t + 1)
+				begin 
+					for (j = 0; j < 160; j = j + 1) 
+						setupx <= setupx + 1'b1;
+						
+					if (setupx == 8'd159)
+						setupx <= 8'd0;
+						
+					setupy <= setupy + 1'b1;
+				end
+				
+				if (setupy == 8'd119)
+					setupy <= 8'b0;
+				
 			end
 			
 			CLEAR_WAIT:
@@ -368,9 +396,9 @@ module datapath(
 			CLEAR:
 			begin
 				if (headx == foodx && heady == foody)
-					colour <= 3'b111;
+					colour <= 3'b001;
 				else 
-					colour <= 3'b000;
+					colour <= 3'b111;
 				
 				x_out <= bodyx[length - 1];
 				y_out <= bodyy[length - 1];
@@ -414,7 +442,7 @@ module datapath(
 				
 				x_out <= headx;
 				y_out <= heady;
-				colour <= 3'b111;
+				colour <= 3'b001;
 				bodyx[0] <= headx;
 				bodyy[0] <= heady;
 				
@@ -435,7 +463,7 @@ module datapath(
 					end 
 					else 
 					begin
-						bodyy[i + 1] <= 8'b0;
+						bodyy[i + 1] <= 7'b0;
 					end 
 				end
 			end
@@ -471,51 +499,6 @@ module datapath(
 			 
 endmodule
 
-
-module setup(x, y, clk, resetn, enable);
-	input resetn, enable;
-	output reg [6:0] x;
-	output reg [6:0] y;
-	
-	reg [5:0] xcount;
-	reg [5:0] ycount;
-	
-	always@(posedge clk)
-	begin
-		if (!resetn)
-		begin 
-		x <= 7'd48;
-		y <= 7'd28;
-		count <= 6'b0;
-		end
-		
-		else if (enable)
-		begin
-			if (xcount == 6'b111111)
-			begin
-				xcount <= 6'b0;
-				ycount <= ycount + 1'b1;
-			end
-			else 
-			begin 
-				xcount <= xcount + 1'b1;
-			end
-			
-			if (ycount == 6'b111111) 
-				enable <= 1'b0; 
-			else 
-				ycount <= ycount + 1'b1;			
-				
-		end
-	end
-	
-	assign x = x + xcount;
-	assign y = y + ycount;
-	
-endmodule
-	
-	
-	
 
 module keyboard_reader(left, right, up, down, out);
 	input left, right, up, down;
@@ -598,21 +581,21 @@ module food_gen (clk, food_gen, randomX, randomY);
 	output reg [7:0] randomX;
 	output reg [6:0] randomY;
 
-	reg [7:0] x = 8'd48;
+	reg [6:0] x = 8'd48;
 	reg [6:0] y = 7'd92;
 	
 	always@(posedge clk)
 	begin
 		if (food_gen == 0)
 		begin 
-			if (x < 8'd159)
+			if (x < 7'd112)
 				x <= x + 1'b1;
 			else 
 				x <= 0;
 			if (y > 0)
 				y <= y - 1'b1;
 			else
-				y <= 7'd119;
+				y <= 7'd92;
 		end
 		if (food_gen == 1)
 		begin
