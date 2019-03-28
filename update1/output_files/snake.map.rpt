@@ -1,5 +1,5 @@
 Analysis & Synthesis report for snake
-Tue Mar 26 17:04:08 2019
+Thu Mar 28 15:52:17 2019
 Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 
 
@@ -15,25 +15,36 @@ Quartus Prime Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
   7. Analysis & Synthesis Resource Utilization by Entity
   8. Analysis & Synthesis RAM Summary
   9. State Machine - |snake|combined:c0|control:C0|current_state
- 10. User-Specified and Inferred Latches
- 11. Registers Removed During Synthesis
- 12. General Register Statistics
- 13. Inverted Register Statistics
- 14. Multiplexer Restructuring Statistics (Restructuring Performed)
- 15. Source assignments for vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated
- 16. Parameter Settings for User Entity Instance: vga_adapter:a0
- 17. Parameter Settings for User Entity Instance: vga_adapter:a0|vga_address_translator:user_input_translator
- 18. Parameter Settings for User Entity Instance: vga_adapter:a0|altsyncram:VideoMemory
- 19. Parameter Settings for User Entity Instance: vga_adapter:a0|vga_pll:mypll|altpll:altpll_component
- 20. Parameter Settings for User Entity Instance: vga_adapter:a0|vga_controller:controller
- 21. Parameter Settings for User Entity Instance: vga_adapter:a0|vga_controller:controller|vga_address_translator:controller_translator
- 22. altsyncram Parameter Settings by Entity Instance
- 23. altpll Parameter Settings by Entity Instance
- 24. Port Connectivity Checks: "combined:c0|RateDivider:r0"
- 25. Post-Synthesis Netlist Statistics for Top Partition
- 26. Elapsed Time Per Partition
- 27. Analysis & Synthesis Messages
- 28. Analysis & Synthesis Suppressed Messages
+ 10. State Machine - |snake|keyboard_tracker:KB0|curr_state
+ 11. State Machine - |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver
+ 12. State Machine - |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter
+ 13. State Machine - |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver
+ 14. User-Specified and Inferred Latches
+ 15. Registers Removed During Synthesis
+ 16. Removed Registers Triggering Further Register Optimizations
+ 17. General Register Statistics
+ 18. Inverted Register Statistics
+ 19. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 20. Source assignments for vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated
+ 21. Parameter Settings for User Entity Instance: vga_adapter:a0
+ 22. Parameter Settings for User Entity Instance: vga_adapter:a0|vga_address_translator:user_input_translator
+ 23. Parameter Settings for User Entity Instance: vga_adapter:a0|altsyncram:VideoMemory
+ 24. Parameter Settings for User Entity Instance: vga_adapter:a0|vga_pll:mypll|altpll:altpll_component
+ 25. Parameter Settings for User Entity Instance: vga_adapter:a0|vga_controller:controller
+ 26. Parameter Settings for User Entity Instance: vga_adapter:a0|vga_controller:controller|vga_address_translator:controller_translator
+ 27. Parameter Settings for User Entity Instance: keyboard_tracker:KB0
+ 28. Parameter Settings for User Entity Instance: keyboard_tracker:KB0|PS2_Controller:core_driver
+ 29. Parameter Settings for User Entity Instance: keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out
+ 30. altsyncram Parameter Settings by Entity Instance
+ 31. altpll Parameter Settings by Entity Instance
+ 32. Port Connectivity Checks: "combined:c0|datapath:D0"
+ 33. Port Connectivity Checks: "combined:c0|time_controller:t0"
+ 34. Port Connectivity Checks: "keyboard_tracker:KB0|PS2_Controller:core_driver"
+ 35. Port Connectivity Checks: "keyboard_tracker:KB0"
+ 36. Post-Synthesis Netlist Statistics for Top Partition
+ 37. Elapsed Time Per Partition
+ 38. Analysis & Synthesis Messages
+ 39. Analysis & Synthesis Suppressed Messages
 
 
 
@@ -60,14 +71,14 @@ agreement for further details.
 +-------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                  ;
 +---------------------------------+---------------------------------------------+
-; Analysis & Synthesis Status     ; Successful - Tue Mar 26 17:04:07 2019       ;
+; Analysis & Synthesis Status     ; Successful - Thu Mar 28 15:52:17 2019       ;
 ; Quartus Prime Version           ; 17.0.0 Build 595 04/25/2017 SJ Lite Edition ;
 ; Revision Name                   ; snake                                       ;
 ; Top-level Entity Name           ; snake                                       ;
 ; Family                          ; Cyclone V                                   ;
 ; Logic utilization (in ALMs)     ; N/A                                         ;
-; Total registers                 ; 2075                                        ;
-; Total pins                      ; 50                                          ;
+; Total registers                 ; 2154                                        ;
+; Total pins                      ; 52                                          ;
 ; Total virtual pins              ; 0                                           ;
 ; Total block memory bits         ; 57,600                                      ;
 ; Total DSP Blocks                ; 0                                           ;
@@ -192,7 +203,9 @@ agreement for further details.
 ; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                              ; Library ;
 +----------------------------------+-----------------+------------------------------+---------------------------------------------------------------------------+---------+
 ; vga_pll.v                        ; yes             ; User Wizard-Generated File   ; /h/u17/c7/00/choimat4/csc258/update1/vga_pll.v                            ;         ;
+; PS2_Controller.v                 ; yes             ; User Verilog HDL File        ; /h/u17/c7/00/choimat4/csc258/update1/PS2_Controller.v                     ;         ;
 ; vga_controller.v                 ; yes             ; User Verilog HDL File        ; /h/u17/c7/00/choimat4/csc258/update1/vga_controller.v                     ;         ;
+; PS2_Keyboard_Controller.v        ; yes             ; User Verilog HDL File        ; /h/u17/c7/00/choimat4/csc258/update1/PS2_Keyboard_Controller.v            ;         ;
 ; vga_adapter.v                    ; yes             ; User Verilog HDL File        ; /h/u17/c7/00/choimat4/csc258/update1/vga_adapter.v                        ;         ;
 ; vga_address_translator.v         ; yes             ; User Verilog HDL File        ; /h/u17/c7/00/choimat4/csc258/update1/vga_address_translator.v             ;         ;
 ; snake.v                          ; yes             ; User Verilog HDL File        ; /h/u17/c7/00/choimat4/csc258/update1/snake.v                              ;         ;
@@ -214,6 +227,8 @@ agreement for further details.
 ; stratixii_pll.inc                ; yes             ; Megafunction                 ; /s/appspace/quartus/quartus/libraries/megafunctions/stratixii_pll.inc     ;         ;
 ; cycloneii_pll.inc                ; yes             ; Megafunction                 ; /s/appspace/quartus/quartus/libraries/megafunctions/cycloneii_pll.inc     ;         ;
 ; db/altpll_80u.tdf                ; yes             ; Auto-Generated Megafunction  ; /h/u17/c7/00/choimat4/csc258/update1/db/altpll_80u.tdf                    ;         ;
+; Altera_UP_PS2_Data_In.v          ; yes             ; Auto-Found Verilog HDL File  ; /h/u17/c7/00/choimat4/csc258/update1/Altera_UP_PS2_Data_In.v              ;         ;
+; Altera_UP_PS2_Command_Out.v      ; yes             ; Auto-Found Verilog HDL File  ; /h/u17/c7/00/choimat4/csc258/update1/Altera_UP_PS2_Command_Out.v          ;         ;
 +----------------------------------+-----------------+------------------------------+---------------------------------------------------------------------------+---------+
 
 
@@ -222,18 +237,18 @@ agreement for further details.
 +---------------------------------------------+----------------+
 ; Resource                                    ; Usage          ;
 +---------------------------------------------+----------------+
-; Estimate of Logic utilization (ALMs needed) ; 1648           ;
+; Estimate of Logic utilization (ALMs needed) ; 2455           ;
 ;                                             ;                ;
-; Combinational ALUT usage for logic          ; 2935           ;
-;     -- 7 input functions                    ; 0              ;
-;     -- 6 input functions                    ; 348            ;
-;     -- 5 input functions                    ; 163            ;
-;     -- 4 input functions                    ; 397            ;
-;     -- <=3 input functions                  ; 2027           ;
+; Combinational ALUT usage for logic          ; 2618           ;
+;     -- 7 input functions                    ; 14             ;
+;     -- 6 input functions                    ; 2273           ;
+;     -- 5 input functions                    ; 40             ;
+;     -- 4 input functions                    ; 53             ;
+;     -- <=3 input functions                  ; 238            ;
 ;                                             ;                ;
-; Dedicated logic registers                   ; 2075           ;
+; Dedicated logic registers                   ; 2154           ;
 ;                                             ;                ;
-; I/O pins                                    ; 50             ;
+; I/O pins                                    ; 52             ;
 ; Total MLAB memory bits                      ; 0              ;
 ; Total block memory bits                     ; 57600          ;
 ;                                             ;                ;
@@ -243,37 +258,40 @@ agreement for further details.
 ;     -- PLLs                                 ; 1              ;
 ;                                             ;                ;
 ; Maximum fan-out node                        ; CLOCK_50~input ;
-; Maximum fan-out                             ; 2055           ;
-; Total fan-out                               ; 16919          ;
-; Average fan-out                             ; 3.30           ;
+; Maximum fan-out                             ; 2134           ;
+; Total fan-out                               ; 19712          ;
+; Average fan-out                             ; 4.03           ;
 +---------------------------------------------+----------------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                             ;
-+---------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------+------------------------+--------------+
-; Compilation Hierarchy Node                              ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                  ; Entity Name            ; Library Name ;
-+---------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------+------------------------+--------------+
-; |snake                                                  ; 2935 (1)            ; 2075 (0)                  ; 57600             ; 0          ; 50   ; 0            ; |snake                                                                                               ; snake                  ; work         ;
-;    |combined:c0|                                        ; 2871 (0)            ; 2045 (0)                  ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0                                                                                   ; combined               ; work         ;
-;       |RateDivider:r0|                                  ; 35 (35)             ; 28 (28)                   ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|RateDivider:r0                                                                    ; RateDivider            ; work         ;
-;       |control:C0|                                      ; 8 (8)               ; 12 (12)                   ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|control:C0                                                                        ; control                ; work         ;
-;       |datapath:D0|                                     ; 2784 (2784)         ; 1975 (1975)               ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|datapath:D0                                                                       ; datapath               ; work         ;
-;       |food_gen:fg0|                                    ; 38 (38)             ; 30 (30)                   ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|food_gen:fg0                                                                      ; food_gen               ; work         ;
-;       |keyboard_reader:k0|                              ; 6 (6)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|keyboard_reader:k0                                                                ; keyboard_reader        ; work         ;
-;    |vga_adapter:a0|                                     ; 63 (2)              ; 30 (0)                    ; 57600             ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0                                                                                ; vga_adapter            ; work         ;
-;       |altsyncram:VideoMemory|                          ; 9 (0)               ; 4 (0)                     ; 57600             ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory                                                         ; altsyncram             ; work         ;
-;          |altsyncram_m6m1:auto_generated|               ; 9 (0)               ; 4 (4)                     ; 57600             ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated                          ; altsyncram_m6m1        ; work         ;
-;             |decode_01a:rden_decode_b|                  ; 3 (3)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated|decode_01a:rden_decode_b ; decode_01a             ; work         ;
-;             |decode_7la:decode2|                        ; 3 (3)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated|decode_7la:decode2       ; decode_7la             ; work         ;
-;             |mux_ifb:mux3|                              ; 3 (3)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated|mux_ifb:mux3             ; mux_ifb                ; work         ;
-;       |vga_address_translator:user_input_translator|    ; 10 (10)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_address_translator:user_input_translator                                   ; vga_address_translator ; work         ;
-;       |vga_controller:controller|                       ; 42 (32)             ; 26 (26)                   ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_controller:controller                                                      ; vga_controller         ; work         ;
-;          |vga_address_translator:controller_translator| ; 10 (10)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_controller:controller|vga_address_translator:controller_translator         ; vga_address_translator ; work         ;
-;       |vga_pll:mypll|                                   ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_pll:mypll                                                                  ; vga_pll                ; work         ;
-;          |altpll:altpll_component|                      ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_pll:mypll|altpll:altpll_component                                          ; altpll                 ; work         ;
-;             |altpll_80u:auto_generated|                 ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_pll:mypll|altpll:altpll_component|altpll_80u:auto_generated                ; altpll_80u             ; work         ;
-+---------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------+------------------------+--------------+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                ;
++---------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------+---------------------------+--------------+
+; Compilation Hierarchy Node                              ; Combinational ALUTs ; Dedicated Logic Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                  ; Entity Name               ; Library Name ;
++---------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------+---------------------------+--------------+
+; |snake                                                  ; 2618 (1)            ; 2154 (0)                  ; 57600             ; 0          ; 52   ; 0            ; |snake                                                                                               ; snake                     ; work         ;
+;    |combined:c0|                                        ; 2469 (0)            ; 2062 (0)                  ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0                                                                                   ; combined                  ; work         ;
+;       |RateDivider:r0|                                  ; 52 (52)             ; 28 (28)                   ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|RateDivider:r0                                                                    ; RateDivider               ; work         ;
+;       |control:C0|                                      ; 20 (20)             ; 14 (14)                   ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|control:C0                                                                        ; control                   ; work         ;
+;       |datapath:D0|                                     ; 2356 (2356)         ; 1992 (1992)               ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|datapath:D0                                                                       ; datapath                  ; work         ;
+;       |food_gen:fg0|                                    ; 35 (35)             ; 28 (28)                   ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|food_gen:fg0                                                                      ; food_gen                  ; work         ;
+;       |keyboard_reader:k0|                              ; 6 (6)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|combined:c0|keyboard_reader:k0                                                                ; keyboard_reader           ; work         ;
+;    |keyboard_tracker:KB0|                               ; 86 (0)              ; 62 (0)                    ; 0                 ; 0          ; 0    ; 0            ; |snake|keyboard_tracker:KB0                                                                          ; keyboard_tracker          ; work         ;
+;       |PS2_Controller:core_driver|                      ; 86 (3)              ; 62 (2)                    ; 0                 ; 0          ; 0    ; 0            ; |snake|keyboard_tracker:KB0|PS2_Controller:core_driver                                               ; PS2_Controller            ; work         ;
+;          |Altera_UP_PS2_Command_Out:PS2_Command_Out|    ; 83 (83)             ; 60 (60)                   ; 0                 ; 0          ; 0    ; 0            ; |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out     ; Altera_UP_PS2_Command_Out ; work         ;
+;    |vga_adapter:a0|                                     ; 62 (1)              ; 30 (0)                    ; 57600             ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0                                                                                ; vga_adapter               ; work         ;
+;       |altsyncram:VideoMemory|                          ; 9 (0)               ; 4 (0)                     ; 57600             ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory                                                         ; altsyncram                ; work         ;
+;          |altsyncram_m6m1:auto_generated|               ; 9 (0)               ; 4 (4)                     ; 57600             ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated                          ; altsyncram_m6m1           ; work         ;
+;             |decode_01a:rden_decode_b|                  ; 3 (3)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated|decode_01a:rden_decode_b ; decode_01a                ; work         ;
+;             |decode_7la:decode2|                        ; 3 (3)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated|decode_7la:decode2       ; decode_7la                ; work         ;
+;             |mux_ifb:mux3|                              ; 3 (3)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated|mux_ifb:mux3             ; mux_ifb                   ; work         ;
+;       |vga_address_translator:user_input_translator|    ; 10 (10)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_address_translator:user_input_translator                                   ; vga_address_translator    ; work         ;
+;       |vga_controller:controller|                       ; 42 (32)             ; 26 (26)                   ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_controller:controller                                                      ; vga_controller            ; work         ;
+;          |vga_address_translator:controller_translator| ; 10 (10)             ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_controller:controller|vga_address_translator:controller_translator         ; vga_address_translator    ; work         ;
+;       |vga_pll:mypll|                                   ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_pll:mypll                                                                  ; vga_pll                   ; work         ;
+;          |altpll:altpll_component|                      ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_pll:mypll|altpll:altpll_component                                          ; altpll                    ; work         ;
+;             |altpll_80u:auto_generated|                 ; 0 (0)               ; 0 (0)                     ; 0                 ; 0          ; 0    ; 0            ; |snake|vga_adapter:a0|vga_pll:mypll|altpll:altpll_component|altpll_80u:auto_generated                ; altpll_80u                ; work         ;
++---------------------------------------------------------+---------------------+---------------------------+-------------------+------------+------+--------------+------------------------------------------------------------------------------------------------------+---------------------------+--------------+
 Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
 
 
@@ -287,21 +305,81 @@ Note: For table entries with two numbers listed, the numbers in parentheses indi
 
 
 Encoding Type:  One-Hot
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; State Machine - |snake|combined:c0|control:C0|current_state                                                                                                                                                                                   ;
-+--------------------------+-------------------+------------------------+--------------------+-------------------------+---------------------+--------------------------+--------------------------+---------------------+----------------------+
-; Name                     ; current_state.EAT ; current_state.EAT_WAIT ; current_state.MOVE ; current_state.MOVE_WAIT ; current_state.CLEAR ; current_state.CLEAR_WAIT ; current_state.START_WAIT ; current_state.START ; current_state.REPEAT ;
-+--------------------------+-------------------+------------------------+--------------------+-------------------------+---------------------+--------------------------+--------------------------+---------------------+----------------------+
-; current_state.START      ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                        ; 0                   ; 0                    ;
-; current_state.START_WAIT ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 1                        ; 1                   ; 0                    ;
-; current_state.CLEAR_WAIT ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 1                        ; 0                        ; 1                   ; 0                    ;
-; current_state.CLEAR      ; 0                 ; 0                      ; 0                  ; 0                       ; 1                   ; 0                        ; 0                        ; 1                   ; 0                    ;
-; current_state.MOVE_WAIT  ; 0                 ; 0                      ; 0                  ; 1                       ; 0                   ; 0                        ; 0                        ; 1                   ; 0                    ;
-; current_state.MOVE       ; 0                 ; 0                      ; 1                  ; 0                       ; 0                   ; 0                        ; 0                        ; 1                   ; 0                    ;
-; current_state.EAT_WAIT   ; 0                 ; 1                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                        ; 1                   ; 0                    ;
-; current_state.EAT        ; 1                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                        ; 1                   ; 0                    ;
-; current_state.REPEAT     ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                        ; 1                   ; 1                    ;
-+--------------------------+-------------------+------------------------+--------------------+-------------------------+---------------------+--------------------------+--------------------------+---------------------+----------------------+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |snake|combined:c0|control:C0|current_state                                                                                                                                                                                                                                    ;
++--------------------------+----------------------+-------------------+------------------------+--------------------+-------------------------+---------------------+--------------------------+---------------------+--------------------------+--------------------------+---------------------+
+; Name                     ; current_state.REPEAT ; current_state.EAT ; current_state.EAT_WAIT ; current_state.MOVE ; current_state.MOVE_WAIT ; current_state.CLEAR ; current_state.CLEAR_WAIT ; current_state.SETUP ; current_state.SETUP_WAIT ; current_state.START_WAIT ; current_state.START ;
++--------------------------+----------------------+-------------------+------------------------+--------------------+-------------------------+---------------------+--------------------------+---------------------+--------------------------+--------------------------+---------------------+
+; current_state.START      ; 0                    ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                   ; 0                        ; 0                        ; 0                   ;
+; current_state.START_WAIT ; 0                    ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                   ; 0                        ; 1                        ; 1                   ;
+; current_state.SETUP_WAIT ; 0                    ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                   ; 1                        ; 0                        ; 1                   ;
+; current_state.SETUP      ; 0                    ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 1                   ; 0                        ; 0                        ; 1                   ;
+; current_state.CLEAR_WAIT ; 0                    ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 1                        ; 0                   ; 0                        ; 0                        ; 1                   ;
+; current_state.CLEAR      ; 0                    ; 0                 ; 0                      ; 0                  ; 0                       ; 1                   ; 0                        ; 0                   ; 0                        ; 0                        ; 1                   ;
+; current_state.MOVE_WAIT  ; 0                    ; 0                 ; 0                      ; 0                  ; 1                       ; 0                   ; 0                        ; 0                   ; 0                        ; 0                        ; 1                   ;
+; current_state.MOVE       ; 0                    ; 0                 ; 0                      ; 1                  ; 0                       ; 0                   ; 0                        ; 0                   ; 0                        ; 0                        ; 1                   ;
+; current_state.EAT_WAIT   ; 0                    ; 0                 ; 1                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                   ; 0                        ; 0                        ; 1                   ;
+; current_state.EAT        ; 0                    ; 1                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                   ; 0                        ; 0                        ; 1                   ;
+; current_state.REPEAT     ; 1                    ; 0                 ; 0                      ; 0                  ; 0                       ; 0                   ; 0                        ; 0                   ; 0                        ; 0                        ; 1                   ;
++--------------------------+----------------------+-------------------+------------------------+--------------------+-------------------------+---------------------+--------------------------+---------------------+--------------------------+--------------------------+---------------------+
+
+
+Encoding Type:  One-Hot
++--------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |snake|keyboard_tracker:KB0|curr_state                                                                   ;
++----------------------------+----------------------------+---------------------------+------------------+-----------------+
+; Name                       ; curr_state.SECONDARY_BREAK ; curr_state.SECONDARY_MAKE ; curr_state.BREAK ; curr_state.MAKE ;
++----------------------------+----------------------------+---------------------------+------------------+-----------------+
+; curr_state.MAKE            ; 0                          ; 0                         ; 0                ; 0               ;
+; curr_state.BREAK           ; 0                          ; 0                         ; 1                ; 1               ;
+; curr_state.SECONDARY_MAKE  ; 0                          ; 1                         ; 0                ; 1               ;
+; curr_state.SECONDARY_BREAK ; 1                          ; 0                         ; 0                ; 1               ;
++----------------------------+----------------------------+---------------------------+------------------+-----------------+
+
+
+Encoding Type:  One-Hot
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver                                                                                                                                                                     ;
++--------------------------------------------+--------------------------------------------+-------------------------------------------+---------------------------------------+------------------------------------+-------------------------------------------+
+; Name                                       ; s_ps2_transceiver.PS2_STATE_3_END_TRANSFER ; s_ps2_transceiver.PS2_STATE_2_COMMAND_OUT ; s_ps2_transceiver.PS2_STATE_1_DATA_IN ; s_ps2_transceiver.PS2_STATE_0_IDLE ; s_ps2_transceiver.PS2_STATE_4_END_DELAYED ;
++--------------------------------------------+--------------------------------------------+-------------------------------------------+---------------------------------------+------------------------------------+-------------------------------------------+
+; s_ps2_transceiver.PS2_STATE_0_IDLE         ; 0                                          ; 0                                         ; 0                                     ; 0                                  ; 0                                         ;
+; s_ps2_transceiver.PS2_STATE_1_DATA_IN      ; 0                                          ; 0                                         ; 1                                     ; 1                                  ; 0                                         ;
+; s_ps2_transceiver.PS2_STATE_2_COMMAND_OUT  ; 0                                          ; 1                                         ; 0                                     ; 1                                  ; 0                                         ;
+; s_ps2_transceiver.PS2_STATE_3_END_TRANSFER ; 1                                          ; 0                                         ; 0                                     ; 1                                  ; 0                                         ;
+; s_ps2_transceiver.PS2_STATE_4_END_DELAYED  ; 0                                          ; 0                                         ; 0                                     ; 1                                  ; 1                                         ;
++--------------------------------------------+--------------------------------------------+-------------------------------------------+---------------------------------------+------------------------------------+-------------------------------------------+
+
+
+Encoding Type:  One-Hot
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter                                                                                                                                                                                                                                                                                                                  ;
++------------------------------------------------------+--------------------------------------------------+------------------------------------------------+-----------------------------------------------+-------------------------------------------------+---------------------------------------------+----------------------------------------------+------------------------------------------------------+------------------------------------+
+; Name                                                 ; s_ps2_transmitter.PS2_STATE_7_TRANSMISSION_ERROR ; s_ps2_transmitter.PS2_STATE_6_COMMAND_WAS_SENT ; s_ps2_transmitter.PS2_STATE_5_RECEIVE_ACK_BIT ; s_ps2_transmitter.PS2_STATE_4_TRANSMIT_STOP_BIT ; s_ps2_transmitter.PS2_STATE_3_TRANSMIT_DATA ; s_ps2_transmitter.PS2_STATE_2_WAIT_FOR_CLOCK ; s_ps2_transmitter.PS2_STATE_1_INITIATE_COMMUNICATION ; s_ps2_transmitter.PS2_STATE_0_IDLE ;
++------------------------------------------------------+--------------------------------------------------+------------------------------------------------+-----------------------------------------------+-------------------------------------------------+---------------------------------------------+----------------------------------------------+------------------------------------------------------+------------------------------------+
+; s_ps2_transmitter.PS2_STATE_0_IDLE                   ; 0                                                ; 0                                              ; 0                                             ; 0                                               ; 0                                           ; 0                                            ; 0                                                    ; 0                                  ;
+; s_ps2_transmitter.PS2_STATE_1_INITIATE_COMMUNICATION ; 0                                                ; 0                                              ; 0                                             ; 0                                               ; 0                                           ; 0                                            ; 1                                                    ; 1                                  ;
+; s_ps2_transmitter.PS2_STATE_2_WAIT_FOR_CLOCK         ; 0                                                ; 0                                              ; 0                                             ; 0                                               ; 0                                           ; 1                                            ; 0                                                    ; 1                                  ;
+; s_ps2_transmitter.PS2_STATE_3_TRANSMIT_DATA          ; 0                                                ; 0                                              ; 0                                             ; 0                                               ; 1                                           ; 0                                            ; 0                                                    ; 1                                  ;
+; s_ps2_transmitter.PS2_STATE_4_TRANSMIT_STOP_BIT      ; 0                                                ; 0                                              ; 0                                             ; 1                                               ; 0                                           ; 0                                            ; 0                                                    ; 1                                  ;
+; s_ps2_transmitter.PS2_STATE_5_RECEIVE_ACK_BIT        ; 0                                                ; 0                                              ; 1                                             ; 0                                               ; 0                                           ; 0                                            ; 0                                                    ; 1                                  ;
+; s_ps2_transmitter.PS2_STATE_6_COMMAND_WAS_SENT       ; 0                                                ; 1                                              ; 0                                             ; 0                                               ; 0                                           ; 0                                            ; 0                                                    ; 1                                  ;
+; s_ps2_transmitter.PS2_STATE_7_TRANSMISSION_ERROR     ; 1                                                ; 0                                              ; 0                                             ; 0                                               ; 0                                           ; 0                                            ; 0                                                    ; 1                                  ;
++------------------------------------------------------+--------------------------------------------------+------------------------------------------------+-----------------------------------------------+-------------------------------------------------+---------------------------------------------+----------------------------------------------+------------------------------------------------------+------------------------------------+
+
+
+Encoding Type:  One-Hot
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver                                                                                                                ;
++------------------------------------------+--------------------------------------+------------------------------------+------------------------------------------+---------------------------------+------------------------------------+
+; Name                                     ; s_ps2_receiver.PS2_STATE_3_PARITY_IN ; s_ps2_receiver.PS2_STATE_2_DATA_IN ; s_ps2_receiver.PS2_STATE_1_WAIT_FOR_DATA ; s_ps2_receiver.PS2_STATE_0_IDLE ; s_ps2_receiver.PS2_STATE_4_STOP_IN ;
++------------------------------------------+--------------------------------------+------------------------------------+------------------------------------------+---------------------------------+------------------------------------+
+; s_ps2_receiver.PS2_STATE_0_IDLE          ; 0                                    ; 0                                  ; 0                                        ; 0                               ; 0                                  ;
+; s_ps2_receiver.PS2_STATE_1_WAIT_FOR_DATA ; 0                                    ; 0                                  ; 1                                        ; 1                               ; 0                                  ;
+; s_ps2_receiver.PS2_STATE_2_DATA_IN       ; 0                                    ; 1                                  ; 0                                        ; 1                               ; 0                                  ;
+; s_ps2_receiver.PS2_STATE_3_PARITY_IN     ; 1                                    ; 0                                  ; 0                                        ; 1                               ; 0                                  ;
+; s_ps2_receiver.PS2_STATE_4_STOP_IN       ; 0                                    ; 0                                  ; 0                                        ; 1                               ; 1                                  ;
++------------------------------------------+--------------------------------------+------------------------------------+------------------------------------------+---------------------------------+------------------------------------+
 
 
 +---------------------------------------------------------------------------------------------------+
@@ -316,17 +394,105 @@ Encoding Type:  One-Hot
 Note: All latches listed above may not be present at the end of synthesis due to various synthesis optimizations.
 
 
-+----------------------------------------------------------------------------------------+
-; Registers Removed During Synthesis                                                     ;
-+----------------------------------------+-----------------------------------------------+
-; Register name                          ; Reason for Removal                            ;
-+----------------------------------------+-----------------------------------------------+
-; combined:c0|datapath:D0|colour[2]      ; Merged with combined:c0|datapath:D0|colour[0] ;
-; combined:c0|control:C0|current_state~2 ; Lost fanout                                   ;
-; combined:c0|control:C0|current_state~3 ; Lost fanout                                   ;
-; combined:c0|control:C0|current_state~4 ; Lost fanout                                   ;
-; Total Number of Removed Registers = 4  ;                                               ;
-+----------------------------------------+-----------------------------------------------+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                                                                                                                                                                ;
++--------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+; Register name                                                                                                                              ; Reason for Removal                                                                                                   ;
++--------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+; combined:c0|food_gen:fg0|randomX[7]                                                                                                        ; Stuck at GND due to stuck port data_in                                                                               ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|idle_counter[0..7]                                                                         ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|ps2_command[1..7]                                ; Merged with keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|ps2_command[0] ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|ps2_command[0]                                   ; Stuck at GND due to stuck port data_in                                                                               ;
+; combined:c0|datapath:D0|foodx[7]                                                                                                           ; Stuck at GND due to stuck port data_in                                                                               ;
+; combined:c0|control:C0|current_state~2                                                                                                     ; Lost fanout                                                                                                          ;
+; combined:c0|control:C0|current_state~3                                                                                                     ; Lost fanout                                                                                                          ;
+; combined:c0|control:C0|current_state~4                                                                                                     ; Lost fanout                                                                                                          ;
+; combined:c0|control:C0|current_state~5                                                                                                     ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|curr_state~5                                                                                                          ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|curr_state~6                                                                                                          ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver~2                                                                        ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver~3                                                                        ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter~2                              ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter~3                              ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter~4                              ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver~2                                         ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver~3                                         ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[0..3,5..7]                                 ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data_en                                         ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[4]                                         ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|ps2_data_reg                                                                               ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|command_was_sent                                 ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|error_communication_timed_out                    ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_count[0..3]                                         ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[0..7]                                     ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|curr_state.MAKE                                                                                                       ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|curr_state.BREAK                                                                                                      ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|curr_state.SECONDARY_MAKE                                                                                             ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|curr_state.SECONDARY_BREAK                                                                                            ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver.PS2_STATE_4_END_DELAYED                                                  ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver.PS2_STATE_0_IDLE                                                         ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver.PS2_STATE_1_DATA_IN                                                      ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver.PS2_STATE_2_COMMAND_OUT                                                  ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver.PS2_STATE_3_END_TRANSFER                                                 ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver.PS2_STATE_4_STOP_IN                       ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver.PS2_STATE_0_IDLE                          ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver.PS2_STATE_1_WAIT_FOR_DATA                 ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver.PS2_STATE_2_DATA_IN                       ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver.PS2_STATE_3_PARITY_IN                     ; Lost fanout                                                                                                          ;
+; combined:c0|datapath:D0|select[1..4]                                                                                                       ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter.PS2_STATE_0_IDLE               ; Stuck at GND due to stuck port data_in                                                                               ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter.PS2_STATE_6_COMMAND_WAS_SENT   ; Lost fanout                                                                                                          ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter.PS2_STATE_7_TRANSMISSION_ERROR ; Lost fanout                                                                                                          ;
+; Total Number of Removed Registers = 76                                                                                                     ;                                                                                                                      ;
++--------------------------------------------------------------------------------------------------------------------------------------------+----------------------------------------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                                                                                                                                                                                                                 ;
++----------------------------------------------------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+; Register name                                                                                      ; Reason for Removal        ; Registers Removed due to This Register                                                                                                     ;
++----------------------------------------------------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+; keyboard_tracker:KB0|curr_state~6                                                                  ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[7],                                        ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[6],                                        ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[5],                                        ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[7],                                       ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[6],                                       ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[5],                                       ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|curr_state.SECONDARY_MAKE,                                                                                            ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver.PS2_STATE_4_STOP_IN                       ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver~2                                ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|ps2_data_reg,                                                                              ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|command_was_sent,                                ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|error_communication_timed_out,                   ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver.PS2_STATE_0_IDLE,                                                        ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver.PS2_STATE_1_DATA_IN,                                                     ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver.PS2_STATE_2_COMMAND_OUT,                                                 ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter.PS2_STATE_6_COMMAND_WAS_SENT,  ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|s_ps2_transmitter.PS2_STATE_7_TRANSMISSION_ERROR ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver~2 ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_count[0],                                           ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_count[1],                                           ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_count[2],                                           ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_count[3],                                           ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|s_ps2_transceiver.PS2_STATE_3_END_TRANSFER,                                                ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver.PS2_STATE_1_WAIT_FOR_DATA,                ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver.PS2_STATE_2_DATA_IN,                      ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|s_ps2_receiver.PS2_STATE_3_PARITY_IN                     ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|idle_counter[3]                                    ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|idle_counter[4],                                                                           ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|idle_counter[5],                                                                           ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|idle_counter[6],                                                                           ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|PS2_Controller:core_driver|idle_counter[7]                                                                            ;
+; keyboard_tracker:KB0|curr_state~5                                                                  ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data_en,                                        ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|curr_state.MAKE, keyboard_tracker:KB0|curr_state.BREAK,                                                               ;
+;                                                                                                    ;                           ; keyboard_tracker:KB0|curr_state.SECONDARY_BREAK                                                                                            ;
+; combined:c0|datapath:D0|select[4]                                                                  ; Lost Fanouts              ; combined:c0|datapath:D0|select[3], combined:c0|datapath:D0|select[2],                                                                      ;
+;                                                                                                    ;                           ; combined:c0|datapath:D0|select[1]                                                                                                          ;
+; combined:c0|food_gen:fg0|randomX[7]                                                                ; Stuck at GND              ; combined:c0|datapath:D0|foodx[7]                                                                                                           ;
+;                                                                                                    ; due to stuck port data_in ;                                                                                                                                            ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[3] ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[3]                                        ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[1] ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[1]                                        ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[2] ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[2]                                        ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[0] ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[0]                                        ;
+; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[4] ; Lost Fanouts              ; keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[4]                                        ;
++----------------------------------------------------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
 
 
 +------------------------------------------------------+
@@ -334,12 +500,12 @@ Note: All latches listed above may not be present at the end of synthesis due to
 +----------------------------------------------+-------+
 ; Statistic                                    ; Value ;
 +----------------------------------------------+-------+
-; Total registers                              ; 2075  ;
-; Number of registers using Synchronous Clear  ; 2005  ;
-; Number of registers using Synchronous Load   ; 27    ;
+; Total registers                              ; 2154  ;
+; Number of registers using Synchronous Clear  ; 143   ;
+; Number of registers using Synchronous Load   ; 18    ;
 ; Number of registers using Asynchronous Clear ; 20    ;
 ; Number of registers using Asynchronous Load  ; 0     ;
-; Number of registers using Clock Enable       ; 2012  ;
+; Number of registers using Clock Enable       ; 173   ;
 ; Number of registers using Preset             ; 0     ;
 +----------------------------------------------+-------+
 
@@ -349,33 +515,49 @@ Note: All latches listed above may not be present at the end of synthesis due to
 +----------------------------------------+---------+
 ; Inverted Register                      ; Fan out ;
 +----------------------------------------+---------+
-; combined:c0|food_gen:fg0|x[5]          ; 10      ;
-; combined:c0|food_gen:fg0|y[6]          ; 3       ;
+; combined:c0|food_gen:fg0|x[5]          ; 9       ;
+; combined:c0|food_gen:fg0|y[6]          ; 9       ;
 ; combined:c0|food_gen:fg0|y[4]          ; 3       ;
 ; combined:c0|food_gen:fg0|y[3]          ; 3       ;
-; combined:c0|food_gen:fg0|x[4]          ; 3       ;
-; combined:c0|food_gen:fg0|y[2]          ; 9       ;
+; combined:c0|food_gen:fg0|x[4]          ; 9       ;
+; combined:c0|food_gen:fg0|y[2]          ; 3       ;
 ; Total number of inverted registers = 6 ;         ;
 +----------------------------------------+---------+
 
 
-+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                                        ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------------------------------------------+
-; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                              ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------------------------------------------+
-; 3:1                ; 27 bits   ; 54 LEs        ; 0 LEs                ; 54 LEs                 ; Yes        ; |snake|combined:c0|RateDivider:r0|count[14]                                                             ;
-; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |snake|vga_adapter:a0|vga_controller:controller|yCounter[8]                                             ;
-; 3:1                ; 15 bits   ; 30 LEs        ; 0 LEs                ; 30 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|bodyy[0][0]                                                              ;
-; 3:1                ; 5 bits    ; 10 LEs        ; 5 LEs                ; 5 LEs                  ; Yes        ; |snake|combined:c0|datapath:D0|length[2]                                                                ;
-; 3:1                ; 13 bits   ; 26 LEs        ; 0 LEs                ; 26 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|foody[1]                                                                 ;
-; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |snake|combined:c0|datapath:D0|foodx[2]                                                                 ;
-; 4:1                ; 7 bits    ; 14 LEs        ; 7 LEs                ; 7 LEs                  ; Yes        ; |snake|combined:c0|datapath:D0|heady[6]                                                                 ;
-; 4:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|headx[7]                                                                 ;
-; 13:1               ; 2 bits    ; 16 LEs        ; 6 LEs                ; 10 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|colour[0]                                                                ;
-; 82:1               ; 15 bits   ; 810 LEs       ; 660 LEs              ; 150 LEs                ; Yes        ; |snake|combined:c0|datapath:D0|y_out[6]                                                                 ;
-; 3:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated|mux_ifb:mux3|result_node[0] ;
-+--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------------------------------------------+
++---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                                                              ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                                                    ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-------------------------------------------------------------------------------------------------------------------------------+
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|received_data[4]                     ;
+; 3:1                ; 13 bits   ; 26 LEs        ; 0 LEs                ; 26 LEs                 ; Yes        ; |snake|combined:c0|RateDivider:r0|count[24]                                                                                   ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |snake|combined:c0|RateDivider:r0|count[13]                                                                                   ;
+; 3:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_shift_reg[4]                    ;
+; 3:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |snake|vga_adapter:a0|vga_controller:controller|yCounter[5]                                                                   ;
+; 4:1                ; 13 bits   ; 26 LEs        ; 0 LEs                ; 26 LEs                 ; Yes        ; |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|command_initiate_counter[13] ;
+; 4:1                ; 20 bits   ; 40 LEs        ; 0 LEs                ; 40 LEs                 ; Yes        ; |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|waiting_counter[17]          ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|cur_bit[0]                   ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; Yes        ; |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In|data_count[0]                        ;
+; 4:1                ; 17 bits   ; 34 LEs        ; 0 LEs                ; 34 LEs                 ; Yes        ; |snake|keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out|transfer_counter[14]         ;
+; 11:1               ; 9 bits    ; 63 LEs        ; 0 LEs                ; 63 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|bodyy[0][0]                                                                                    ;
+; 11:1               ; 6 bits    ; 42 LEs        ; 12 LEs               ; 30 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|bodyy[0][5]                                                                                    ;
+; 19:1               ; 5 bits    ; 60 LEs        ; 10 LEs               ; 50 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|length[1]                                                                                      ;
+; 19:1               ; 8 bits    ; 96 LEs        ; 0 LEs                ; 96 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|foody[1]                                                                                       ;
+; 19:1               ; 6 bits    ; 72 LEs        ; 12 LEs               ; 60 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|foodx[6]                                                                                       ;
+; 19:1               ; 5 bits    ; 60 LEs        ; 10 LEs               ; 50 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|select[0]                                                                                      ;
+; 14:1               ; 3 bits    ; 27 LEs        ; 6 LEs                ; 21 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|heady[0]                                                                                       ;
+; 14:1               ; 4 bits    ; 36 LEs        ; 8 LEs                ; 28 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|heady[2]                                                                                       ;
+; 14:1               ; 7 bits    ; 63 LEs        ; 14 LEs               ; 49 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|setupy[2]                                                                                      ;
+; 14:1               ; 8 bits    ; 72 LEs        ; 0 LEs                ; 72 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|setupx[7]                                                                                      ;
+; 14:1               ; 6 bits    ; 54 LEs        ; 12 LEs               ; 42 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|headx[2]                                                                                       ;
+; 14:1               ; 2 bits    ; 18 LEs        ; 4 LEs                ; 14 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|headx[4]                                                                                       ;
+; 78:1               ; 14 bits   ; 728 LEs       ; 630 LEs              ; 98 LEs                 ; Yes        ; |snake|combined:c0|datapath:D0|x_out[5]                                                                                       ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 6 LEs                ; 0 LEs                  ; No         ; |snake|vga_adapter:a0|altsyncram:VideoMemory|altsyncram_m6m1:auto_generated|mux_ifb:mux3|result_node[0]                       ;
+; 3:1                ; 9 bits    ; 18 LEs        ; 18 LEs               ; 0 LEs                  ; No         ; |snake|combined:c0|control:C0|current_state                                                                                   ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |snake|keyboard_tracker:KB0|curr_state                                                                                        ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; No         ; |snake|keyboard_tracker:KB0|curr_state                                                                                        ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+-------------------------------------------------------------------------------------------------------------------------------+
 
 
 +---------------------------------------------------------------------------------------------+
@@ -875,6 +1057,52 @@ Note: In order to hide this table in the UI and the text report file, please set
 Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
 
 
++-------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: keyboard_tracker:KB0 ;
++----------------+-------+------------------------------------------+
+; Parameter Name ; Value ; Type                                     ;
++----------------+-------+------------------------------------------+
+; PULSE_OR_HOLD  ; 1     ; Signed Integer                           ;
++----------------+-------+------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: keyboard_tracker:KB0|PS2_Controller:core_driver ;
++------------------+-------+-------------------------------------------------------------------+
+; Parameter Name   ; Value ; Type                                                              ;
++------------------+-------+-------------------------------------------------------------------+
+; INITIALIZE_MOUSE ; 0     ; Signed Integer                                                    ;
++------------------+-------+-------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out ;
++------------------------------------+----------------------+----------------------------------------------------------------------------+
+; Parameter Name                     ; Value                ; Type                                                                       ;
++------------------------------------+----------------------+----------------------------------------------------------------------------+
+; CLOCK_CYCLES_FOR_101US             ; 5050                 ; Signed Integer                                                             ;
+; NUMBER_OF_BITS_FOR_101US           ; 13                   ; Signed Integer                                                             ;
+; COUNTER_INCREMENT_FOR_101US        ; 0000000000001        ; Unsigned Binary                                                            ;
+; CLOCK_CYCLES_FOR_15MS              ; 750000               ; Signed Integer                                                             ;
+; NUMBER_OF_BITS_FOR_15MS            ; 20                   ; Signed Integer                                                             ;
+; COUNTER_INCREMENT_FOR_15MS         ; 00000000000000000001 ; Unsigned Binary                                                            ;
+; CLOCK_CYCLES_FOR_2MS               ; 100000               ; Signed Integer                                                             ;
+; NUMBER_OF_BITS_FOR_2MS             ; 17                   ; Signed Integer                                                             ;
+; COUNTER_INCREMENT_FOR_2MS          ; 00000000000000001    ; Unsigned Binary                                                            ;
+; PS2_STATE_0_IDLE                   ; 000                  ; Unsigned Binary                                                            ;
+; PS2_STATE_1_INITIATE_COMMUNICATION ; 001                  ; Unsigned Binary                                                            ;
+; PS2_STATE_2_WAIT_FOR_CLOCK         ; 010                  ; Unsigned Binary                                                            ;
+; PS2_STATE_3_TRANSMIT_DATA          ; 011                  ; Unsigned Binary                                                            ;
+; PS2_STATE_4_TRANSMIT_STOP_BIT      ; 100                  ; Unsigned Binary                                                            ;
+; PS2_STATE_5_RECEIVE_ACK_BIT        ; 101                  ; Unsigned Binary                                                            ;
+; PS2_STATE_6_COMMAND_WAS_SENT       ; 110                  ; Unsigned Binary                                                            ;
+; PS2_STATE_7_TRANSMISSION_ERROR     ; 111                  ; Unsigned Binary                                                            ;
++------------------------------------+----------------------+----------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
 +-----------------------------------------------------------------------------------+
 ; altsyncram Parameter Settings by Entity Instance                                  ;
 +-------------------------------------------+---------------------------------------+
@@ -912,15 +1140,52 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-------------------------------+------------------------------------------------------+
 
 
-+--------------------------------------------------------+
-; Port Connectivity Checks: "combined:c0|RateDivider:r0" ;
-+----------+-------+----------+--------------------------+
-; Port     ; Type  ; Severity ; Details                  ;
-+----------+-------+----------+--------------------------+
-; d[27..2] ; Input ; Info     ; Stuck at GND             ;
-; d[1]     ; Input ; Info     ; Stuck at VCC             ;
-; d[0]     ; Input ; Info     ; Stuck at GND             ;
-+----------+-------+----------+--------------------------+
++--------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "combined:c0|datapath:D0"                                                                                                    ;
++--------+--------+----------+---------------------------------------------------------------------------------------------------------------------------+
+; Port   ; Type   ; Severity ; Details                                                                                                                   ;
++--------+--------+----------+---------------------------------------------------------------------------------------------------------------------------+
+; select ; Output ; Warning  ; Output or bidir port (5 bits) is wider than the port expression (1 bits) it drives; bit(s) "select[4..1]" have no fanouts ;
++--------+--------+----------+---------------------------------------------------------------------------------------------------------------------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "combined:c0|time_controller:t0"                                                                                                                 ;
++--------+-------+----------+------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port   ; Type  ; Severity ; Details                                                                                                                                        ;
++--------+-------+----------+------------------------------------------------------------------------------------------------------------------------------------------------+
+; select ; Input ; Warning  ; Input port expression (1 bits) is smaller than the input port (5 bits) it drives.  Extra input bit(s) "select[4..1]" will be connected to GND. ;
++--------+-------+----------+------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "keyboard_tracker:KB0|PS2_Controller:core_driver"                                                                                                                      ;
++-------------------------------+--------+----------+----------------------------------------------------------------------------------------------------------------------------------------------+
+; Port                          ; Type   ; Severity ; Details                                                                                                                                      ;
++-------------------------------+--------+----------+----------------------------------------------------------------------------------------------------------------------------------------------+
+; the_command                   ; Input  ; Warning  ; Declared by entity but not connected by instance. If a default value exists, it will be used.  Otherwise, the port will be connected to GND. ;
+; send_command                  ; Input  ; Warning  ; Declared by entity but not connected by instance. If a default value exists, it will be used.  Otherwise, the port will be connected to GND. ;
+; command_was_sent              ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed.                                     ;
+; error_communication_timed_out ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed.                                     ;
++-------------------------------+--------+----------+----------------------------------------------------------------------------------------------------------------------------------------------+
+
+
++-----------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "keyboard_tracker:KB0"                                                                ;
++-------+--------+----------+-------------------------------------------------------------------------------------+
+; Port  ; Type   ; Severity ; Details                                                                             ;
++-------+--------+----------+-------------------------------------------------------------------------------------+
+; w     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; a     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; s     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; d     ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; space ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; enter ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; left  ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; right ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; up    ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
+; down  ; Output ; Info     ; Connected to dangling logic. Logic that only feeds a dangling port will be removed. ;
++-------+--------+----------+-------------------------------------------------------------------------------------+
 
 
 +-----------------------------------------------------+
@@ -928,38 +1193,41 @@ Note: In order to hide this table in the UI and the text report file, please set
 +-----------------------+-----------------------------+
 ; Type                  ; Count                       ;
 +-----------------------+-----------------------------+
-; arriav_ff             ; 2075                        ;
+; arriav_ff             ; 2154                        ;
 ;     CLR SCLR          ; 10                          ;
-;     ENA               ; 32                          ;
+;     ENA               ; 49                          ;
 ;     ENA CLR SCLR      ; 10                          ;
-;     ENA SCLR          ; 1956                        ;
-;     ENA SLD           ; 14                          ;
-;     SCLR              ; 29                          ;
-;     SLD               ; 13                          ;
-;     plain             ; 11                          ;
-; arriav_lcell_comb     ; 2936                        ;
-;     arith             ; 1983                        ;
-;         1 data inputs ; 1970                        ;
+;     ENA SCLR          ; 99                          ;
+;     ENA SLD           ; 15                          ;
+;     SCLR              ; 24                          ;
+;     SLD               ; 3                           ;
+;     plain             ; 1944                        ;
+; arriav_io_obuf        ; 2                           ;
+; arriav_lcell_comb     ; 2619                        ;
+;     arith             ; 142                         ;
+;         1 data inputs ; 129                         ;
 ;         3 data inputs ; 13                          ;
-;     normal            ; 933                         ;
+;     extend            ; 14                          ;
+;         7 data inputs ; 14                          ;
+;     normal            ; 2443                        ;
 ;         0 data inputs ; 2                           ;
-;         1 data inputs ; 6                           ;
-;         2 data inputs ; 6                           ;
-;         3 data inputs ; 11                          ;
-;         4 data inputs ; 397                         ;
-;         5 data inputs ; 163                         ;
-;         6 data inputs ; 348                         ;
+;         1 data inputs ; 7                           ;
+;         2 data inputs ; 33                          ;
+;         3 data inputs ; 35                          ;
+;         4 data inputs ; 53                          ;
+;         5 data inputs ; 40                          ;
+;         6 data inputs ; 2273                        ;
 ;     shared            ; 20                          ;
 ;         0 data inputs ; 2                           ;
 ;         1 data inputs ; 4                           ;
 ;         2 data inputs ; 12                          ;
 ;         3 data inputs ; 2                           ;
-; boundary_port         ; 50                          ;
+; boundary_port         ; 52                          ;
 ; generic_pll           ; 1                           ;
 ; stratixv_ram_block    ; 9                           ;
 ;                       ;                             ;
-; Max LUT depth         ; 4.00                        ;
-; Average LUT depth     ; 2.07                        ;
+; Max LUT depth         ; 4.20                        ;
+; Average LUT depth     ; 2.40                        ;
 +-----------------------+-----------------------------+
 
 
@@ -968,7 +1236,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 +----------------+--------------+
 ; Partition Name ; Elapsed Time ;
 +----------------+--------------+
-; Top            ; 00:00:02     ;
+; Top            ; 00:00:06     ;
 +----------------+--------------+
 
 
@@ -978,7 +1246,7 @@ Note: In order to hide this table in the UI and the text report file, please set
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 17.0.0 Build 595 04/25/2017 SJ Lite Edition
-    Info: Processing started: Tue Mar 26 17:03:48 2019
+    Info: Processing started: Thu Mar 28 15:51:54 2019
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off snake -c snake
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
@@ -1001,16 +1269,17 @@ Info (12021): Found 1 design units, including 1 entities, in source file vga_ada
 Info (12021): Found 1 design units, including 1 entities, in source file vga_address_translator.v
     Info (12023): Found entity 1: vga_address_translator File: /h/u17/c7/00/choimat4/csc258/update1/vga_address_translator.v Line: 4
 Info (12021): Found 8 design units, including 8 entities, in source file snake.v
-    Info (12023): Found entity 1: snake_2 File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 5
-    Info (12023): Found entity 2: snake File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 38
-    Info (12023): Found entity 3: control File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 79
-    Info (12023): Found entity 4: datapath File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 178
-    Info (12023): Found entity 5: keyboard_reader File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 346
-    Info (12023): Found entity 6: RateDivider File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 373
-    Info (12023): Found entity 7: food_gen File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 405
-    Info (12023): Found entity 8: combined File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 436
+    Info (12023): Found entity 1: snake File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 4
+    Info (12023): Found entity 2: combined File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 68
+    Info (12023): Found entity 3: control File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 151
+    Info (12023): Found entity 4: datapath File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 257
+    Info (12023): Found entity 5: keyboard_reader File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 543
+    Info (12023): Found entity 6: time_controller File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 569
+    Info (12023): Found entity 7: RateDivider File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 587
+    Info (12023): Found entity 8: food_gen File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 619
+Warning (10236): Verilog HDL Implicit Net warning at snake.v(90): created implicit net for "select" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 90
 Info (12127): Elaborating entity "snake" for the top level hierarchy
-Info (12128): Elaborating entity "vga_adapter" for hierarchy "vga_adapter:a0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 68
+Info (12128): Elaborating entity "vga_adapter" for hierarchy "vga_adapter:a0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 39
 Info (12128): Elaborating entity "vga_address_translator" for hierarchy "vga_adapter:a0|vga_address_translator:user_input_translator" File: /h/u17/c7/00/choimat4/csc258/update1/vga_adapter.v Line: 192
 Info (12128): Elaborating entity "altsyncram" for hierarchy "vga_adapter:a0|altsyncram:VideoMemory" File: /h/u17/c7/00/choimat4/csc258/update1/vga_adapter.v Line: 213
 Info (12130): Elaborated megafunction instantiation "vga_adapter:a0|altsyncram:VideoMemory" File: /h/u17/c7/00/choimat4/csc258/update1/vga_adapter.v Line: 213
@@ -1061,46 +1330,59 @@ Info (12021): Found 1 design units, including 1 entities, in source file db/altp
     Info (12023): Found entity 1: altpll_80u File: /h/u17/c7/00/choimat4/csc258/update1/db/altpll_80u.tdf Line: 26
 Info (12128): Elaborating entity "altpll_80u" for hierarchy "vga_adapter:a0|vga_pll:mypll|altpll:altpll_component|altpll_80u:auto_generated" File: /s/appspace/quartus/quartus/libraries/megafunctions/altpll.tdf Line: 898
 Info (12128): Elaborating entity "vga_controller" for hierarchy "vga_adapter:a0|vga_controller:controller" File: /h/u17/c7/00/choimat4/csc258/update1/vga_adapter.v Line: 252
-Info (12128): Elaborating entity "combined" for hierarchy "combined:c0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 74
-Info (12128): Elaborating entity "RateDivider" for hierarchy "combined:c0|RateDivider:r0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 458
-Warning (10230): Verilog HDL assignment warning at snake.v(395): truncated value with size 32 to match size of target (28) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 395
-Warning (10230): Verilog HDL assignment warning at snake.v(400): truncated value with size 32 to match size of target (1) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 400
-Info (12128): Elaborating entity "control" for hierarchy "combined:c0|control:C0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 471
-Info (12128): Elaborating entity "datapath" for hierarchy "combined:c0|datapath:D0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 486
-Warning (10230): Verilog HDL assignment warning at snake.v(308): truncated value with size 8 to match size of target (7) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 308
-Info (12128): Elaborating entity "keyboard_reader" for hierarchy "combined:c0|keyboard_reader:k0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 495
-Warning (10240): Verilog HDL Always Construct warning at snake.v(352): inferring latch(es) for variable "out", which holds its previous value in one or more paths through the always construct File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 352
-Info (10041): Inferred latch for "out[0]" at snake.v(352) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 352
-Info (10041): Inferred latch for "out[1]" at snake.v(352) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 352
-Info (12128): Elaborating entity "food_gen" for hierarchy "combined:c0|food_gen:fg0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 503
+Info (12128): Elaborating entity "keyboard_tracker" for hierarchy "keyboard_tracker:KB0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 61
+Info (12128): Elaborating entity "PS2_Controller" for hierarchy "keyboard_tracker:KB0|PS2_Controller:core_driver" File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Keyboard_Controller.v Line: 197
+Warning (12125): Using design file Altera_UP_PS2_Data_In.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+    Info (12023): Found entity 1: Altera_UP_PS2_Data_In File: /h/u17/c7/00/choimat4/csc258/update1/Altera_UP_PS2_Data_In.v Line: 10
+Info (12128): Elaborating entity "Altera_UP_PS2_Data_In" for hierarchy "keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Data_In:PS2_Data_In" File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Controller.v Line: 246
+Warning (12125): Using design file Altera_UP_PS2_Command_Out.v, which is not specified as a design file for the current project, but contains definitions for 1 design units and 1 entities in project
+    Info (12023): Found entity 1: Altera_UP_PS2_Command_Out File: /h/u17/c7/00/choimat4/csc258/update1/Altera_UP_PS2_Command_Out.v Line: 10
+Info (12128): Elaborating entity "Altera_UP_PS2_Command_Out" for hierarchy "keyboard_tracker:KB0|PS2_Controller:core_driver|Altera_UP_PS2_Command_Out:PS2_Command_Out" File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Controller.v Line: 266
+Info (12128): Elaborating entity "combined" for hierarchy "combined:c0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 63
+Info (12128): Elaborating entity "time_controller" for hierarchy "combined:c0|time_controller:t0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 91
+Info (12128): Elaborating entity "RateDivider" for hierarchy "combined:c0|RateDivider:r0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 98
+Warning (10230): Verilog HDL assignment warning at snake.v(609): truncated value with size 32 to match size of target (28) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 609
+Warning (10230): Verilog HDL assignment warning at snake.v(614): truncated value with size 32 to match size of target (1) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 614
+Info (12128): Elaborating entity "control" for hierarchy "combined:c0|control:C0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 111
+Info (12128): Elaborating entity "datapath" for hierarchy "combined:c0|datapath:D0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 128
+Info (12128): Elaborating entity "keyboard_reader" for hierarchy "combined:c0|keyboard_reader:k0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 137
+Warning (10240): Verilog HDL Always Construct warning at snake.v(549): inferring latch(es) for variable "out", which holds its previous value in one or more paths through the always construct File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 549
+Info (10041): Inferred latch for "out[0]" at snake.v(549) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 549
+Info (10041): Inferred latch for "out[1]" at snake.v(549) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 549
+Info (12128): Elaborating entity "food_gen" for hierarchy "combined:c0|food_gen:fg0" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 145
+Warning (10230): Verilog HDL assignment warning at snake.v(624): truncated value with size 8 to match size of target (7) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 624
+Warning (10230): Verilog HDL assignment warning at snake.v(634): truncated value with size 8 to match size of target (7) File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 634
+Warning (12241): 3 hierarchies have connectivity warnings - see the Connectivity Checks report folder
 Warning (13024): Output pins are stuck at VCC or GND
-    Warning (13410): Pin "VGA_SYNC" is stuck at VCC File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 42
+    Warning (13410): Pin "VGA_SYNC" is stuck at VCC File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 9
 Info (286030): Timing-Driven Synthesis is running
-Info (17049): 3 registers lost all their fanouts during netlist optimizations.
+Info (17049): 65 registers lost all their fanouts during netlist optimizations.
 Info (144001): Generated suppressed messages file /h/u17/c7/00/choimat4/csc258/update1/output_files/snake.map.smsg
 Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
     Info (16011): Adding 5 node(s), including 0 DDIO, 1 PLL, 0 transceiver and 0 LCELL
 Warning: RST port on the PLL is not properly connected on instance vga_adapter:a0|vga_pll:mypll|altpll:altpll_component|altpll_80u:auto_generated|generic_pll1. The reset port on the PLL should be connected. If the PLL loses lock for any reason, you might need to manually reset the PLL in order to re-establish lock to the reference clock. File: /h/u17/c7/00/choimat4/csc258/update1/db/altpll_80u.tdf Line: 34
     Info: Must be connected
-Warning (21074): Design contains 7 input pin(s) that do not drive logic
-    Warning (15610): No output dependent on input pin "SW[4]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 40
-    Warning (15610): No output dependent on input pin "SW[5]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 40
-    Warning (15610): No output dependent on input pin "SW[6]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 40
-    Warning (15610): No output dependent on input pin "SW[7]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 40
-    Warning (15610): No output dependent on input pin "SW[8]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 40
-    Warning (15610): No output dependent on input pin "KEY[2]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 39
-    Warning (15610): No output dependent on input pin "KEY[3]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 39
-Info (21057): Implemented 3048 device resources after synthesis - the final resource count might be different
+Warning (21074): Design contains 8 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "SW[4]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 6
+    Warning (15610): No output dependent on input pin "SW[5]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 6
+    Warning (15610): No output dependent on input pin "SW[6]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 6
+    Warning (15610): No output dependent on input pin "SW[7]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 6
+    Warning (15610): No output dependent on input pin "SW[8]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 6
+    Warning (15610): No output dependent on input pin "SW[9]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 6
+    Warning (15610): No output dependent on input pin "KEY[2]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 5
+    Warning (15610): No output dependent on input pin "KEY[3]" File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 5
+Info (21057): Implemented 2714 device resources after synthesis - the final resource count might be different
     Info (21058): Implemented 15 input pins
     Info (21059): Implemented 35 output pins
-    Info (21061): Implemented 2988 logic cells
+    Info (21060): Implemented 2 bidirectional pins
+    Info (21061): Implemented 2652 logic cells
     Info (21064): Implemented 9 RAM segments
     Info (21065): Implemented 1 PLLs
-Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 16 warnings
-    Info: Peak virtual memory: 1131 megabytes
-    Info: Processing ended: Tue Mar 26 17:04:08 2019
-    Info: Elapsed time: 00:00:20
-    Info: Total CPU time (on all processors): 00:00:26
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 22 warnings
+    Info: Peak virtual memory: 1125 megabytes
+    Info: Processing ended: Thu Mar 28 15:52:17 2019
+    Info: Elapsed time: 00:00:23
+    Info: Total CPU time (on all processors): 00:00:30
 
 
 +------------------------------------------+

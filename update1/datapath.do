@@ -15,9 +15,9 @@ force {resetn} 0 0, 1 20
 
 force {start} 0 20, 1 40 
 
-force {d} 1 2000
 
-run 10000ns
+
+run 100000ns
 
 
 

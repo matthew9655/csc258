@@ -4,5 +4,5 @@ Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(312)
 Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(313): object "HEX3" differs only in case from object "hex3" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Mouse_Controller.v Line: 313
 Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(314): object "HEX4" differs only in case from object "hex4" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Mouse_Controller.v Line: 314
 Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(315): object "HEX5" differs only in case from object "hex5" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Mouse_Controller.v Line: 315
-Info (10281): Verilog HDL Declaration information at snake.v(83): object "start" differs only in case from object "START" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 83
-Info (10281): Verilog HDL Declaration information at snake.v(194): object "start" differs only in case from object "START" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 194
+Info (10281): Verilog HDL Declaration information at snake.v(155): object "start" differs only in case from object "START" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 155
+Info (10281): Verilog HDL Declaration information at snake.v(275): object "start" differs only in case from object "START" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 275
