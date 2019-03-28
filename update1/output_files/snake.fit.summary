@@ -1,20 +1,20 @@
-Fitter Status : Successful - Mon Mar 25 15:54:29 2019
+Fitter Status : Successful - Tue Mar 26 17:05:05 2019
 Quartus Prime Version : 17.0.0 Build 595 04/25/2017 SJ Lite Edition
 Revision Name : snake
-Top-level Entity Name : snake_2
+Top-level Entity Name : snake
 Family : Cyclone V
-Device : 5CGXFC7C7F23C8
+Device : 5CSEMA5F31C6
 Timing Models : Final
-Logic utilization (in ALMs) : 26 / 56,480 ( < 1 % )
-Total registers : 36
-Total pins : 52 / 268 ( 19 % )
+Logic utilization (in ALMs) : 2,032 / 32,070 ( 6 % )
+Total registers : 2091
+Total pins : 50 / 457 ( 11 % )
 Total virtual pins : 0
-Total block memory bits : 57,600 / 7,024,640 ( < 1 % )
-Total RAM Blocks : 8 / 686 ( 1 % )
-Total DSP Blocks : 0 / 156 ( 0 % )
-Total HSSI RX PCSs : 0 / 6 ( 0 % )
-Total HSSI PMA RX Deserializers : 0 / 6 ( 0 % )
-Total HSSI TX PCSs : 0 / 6 ( 0 % )
-Total HSSI PMA TX Serializers : 0 / 6 ( 0 % )
-Total PLLs : 1 / 13 ( 8 % )
+Total block memory bits : 57,600 / 4,065,280 ( 1 % )
+Total RAM Blocks : 8 / 397 ( 2 % )
+Total DSP Blocks : 0 / 87 ( 0 % )
+Total HSSI RX PCSs : 0
+Total HSSI PMA RX Deserializers : 0
+Total HSSI TX PCSs : 0
+Total HSSI PMA TX Serializers : 0
+Total PLLs : 1 / 6 ( 17 % )
 Total DLLs : 0 / 4 ( 0 % )

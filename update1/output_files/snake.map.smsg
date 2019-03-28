@@ -1,1 +1,8 @@
-Warning (10268): Verilog HDL information at snake.v(296): always construct contains both blocking and non-blocking assignments File: /h/u17/c7/00/choimat4/csc258/New /snake.v Line: 296
+Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(310): object "HEX0" differs only in case from object "hex0" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Mouse_Controller.v Line: 310
+Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(311): object "HEX1" differs only in case from object "hex1" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Mouse_Controller.v Line: 311
+Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(312): object "HEX2" differs only in case from object "hex2" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Mouse_Controller.v Line: 312
+Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(313): object "HEX3" differs only in case from object "hex3" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Mouse_Controller.v Line: 313
+Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(314): object "HEX4" differs only in case from object "hex4" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Mouse_Controller.v Line: 314
+Info (10281): Verilog HDL Declaration information at PS2_Mouse_Controller.v(315): object "HEX5" differs only in case from object "hex5" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/PS2_Mouse_Controller.v Line: 315
+Info (10281): Verilog HDL Declaration information at snake.v(83): object "start" differs only in case from object "START" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 83
+Info (10281): Verilog HDL Declaration information at snake.v(194): object "start" differs only in case from object "START" in the same scope File: /h/u17/c7/00/choimat4/csc258/update1/snake.v Line: 194
