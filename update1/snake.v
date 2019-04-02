@@ -99,19 +99,10 @@ module combined(clk, resetn, start, l, r, u, d, x_out, y_out, colour, plot);
 	);
 	
 	
-	RateDivider r1(
-			.cout(delay1),
-			.resetn(resetn),
-			.clk(clk),
-			.d(28'd200)
-	);
-	
-	
 	control C0(
         .clk(clk),
         .resetn(resetn),
 		  .delay(delay),
-		  .delay1(delay1),
 		  .start(start),
 		  .dir(dir),
 		  .over(over),
@@ -173,7 +164,6 @@ endmodule
 module control(
     input clk,
 	 input delay,
-	 input delay1,
     input resetn,
 	 input start,
 	 input over,
@@ -193,16 +183,15 @@ module control(
 					 WAIT					  = 4'd2,
 					 SETUP_WAIT 		  = 4'd3,
 					 SETUP				  = 4'd4,
-					 BODY_CHECKER_WAIT  = 4'd5,
-					 BODY_CHECKER		  = 4'd6,
-					 CLEAR_WAIT			  = 4'd7,
-					 CLEAR              = 4'd8,
-					 MOVE_WAIT		     = 4'd9,
-					 MOVE		           = 4'd10,
-					 EAT_WAIT		     = 4'd11,
-					 EAT                = 4'd12,
-					 WRONG				  = 4'd13,
-					 REPEAT			     = 4'd14;
+					 CLEAR_WAIT			  = 4'd5,
+					 CLEAR              = 4'd6,
+					 MOVE_WAIT		     = 4'd7,
+					 MOVE		           = 4'd8,
+					 EAT_WAIT		     = 4'd9,
+					 EAT                = 4'd10,
+					 WRONG				  = 4'd11,
+					 ERASE_WRONG		  = 4'd12,
+					 REPEAT			     = 4'd13;
 	 
 	 localparam 
 					LEFT = 2'b0,
@@ -219,17 +208,16 @@ module control(
 					START_WAIT: next_state = start ? SETUP : START_WAIT;
 					WAIT: next_state = delay ? SETUP_WAIT: WAIT;
 					SETUP_WAIT: next_state = SETUP;
-					SETUP: next_state = delay ? BODY_CHECKER_WAIT : SETUP_WAIT;
-					BODY_CHECKER_WAIT: next_state = BODY_CHECKER;
-					BODY_CHECKER: next_state = delay1 ? CLEAR_WAIT : BODY_CHECKER_WAIT;
+					SETUP: next_state = delay ? CLEAR_WAIT : SETUP_WAIT;
 					CLEAR_WAIT: next_state = CLEAR;
 					CLEAR: next_state = MOVE_WAIT;
 					MOVE_WAIT: next_state = MOVE;
 					MOVE: next_state = EAT_WAIT;
 					EAT_WAIT: next_state = EAT;
 					EAT: next_state = WRONG;
-					WRONG: next_state = REPEAT;
-					REPEAT: next_state = delay ? CLEAR_WAIT : REPEAT;
+					WRONG: next_state = ERASE_WRONG;
+					ERASE_WRONG: next_state = REPEAT;
+					REPEAT: next_state = delay ? CLEAR_WAIT: REPEAT;
 					default: next_state = CLEAR_WAIT;
 				endcase
 	 end
@@ -306,11 +294,13 @@ module datapath(
 	 
 	 reg [5:0] length;
 	 reg start;
-	 reg [7:0] headx, foodx, setupx, wrongx;
-	 reg [6:0] heady, foody, setupy, wrongy;
+	 reg [7:0] headx, foodx, setupx, wrongx, oldx;
+	 reg [6:0] heady, foody, setupy, wrongy, oldy;
 	 reg [7:0] bodyx[0:127];
 	 reg [6:0] bodyy[0:127];
-	 integer i, j;
+	 reg [7:0] count;
+	 integer i; 
+	 integer j;
 	 
 	 
 	 localparam  
@@ -319,16 +309,15 @@ module datapath(
 					 WAIT               = 4'b0010,
 					 SETUP_WAIT			  = 4'b0011,
 					 SETUP				  = 4'b0100,
-					 BODY_CHECKER_WAIT  = 4'b0101,
-					 BODY_CHECKER		  = 4'b0110,
-					 CLEAR_WAIT			  = 4'b0111,
-					 CLEAR              = 4'b1000,
-					 MOVE_WAIT		     = 4'b1001,
-					 MOVE		           = 4'b1010,
-					 EAT_WAIT		     = 4'b1011,
-					 EAT                = 4'b1100,
-					 WRONG				  = 4'b1101,
-					 REPEAT			     = 4'b1110;
+					 CLEAR_WAIT			  = 4'b0101,
+					 CLEAR              = 4'b0110,
+					 MOVE_WAIT		     = 4'b0111,
+					 MOVE		           = 4'b1000,
+					 EAT_WAIT		     = 4'b1001,
+					 EAT                = 4'b1010,
+					 WRONG				  = 4'b1011,
+					 ERASE_WRONG		  = 4'b1100,
+					 REPEAT			     = 4'b1101;
 	 
 	 localparam 
 					LEFT = 2'b0,
@@ -358,8 +347,9 @@ module datapath(
 		over <= 1'b0;
 		select <= 5'b0;
 		wrongx <= 8'd59;
-		wrongy <= 8'd59;
-		j <= 0;
+		wrongy <= 7'd59;
+		oldx <= 8'd0;
+		oldy <= 7'd0;
 		end
 		
 		
@@ -412,35 +402,22 @@ module datapath(
 				
 			end
 			
-			BODY_CHECKER_WAIT:
-			begin
-				if (length > 4) 
-				begin
-					if (j == 127)
-					begin
-						j <= 4;
-					end
-					else 
-					begin 
-						j <= j + 1;
-					end
-				end 
-			end 
-			
-			BODY_CHECKER:
-			begin
-				if (length > 4)
-				begin
-					if (bodyx[j] == headx && bodyy[j] == heady)
-					begin
-						over <= 1'b1;
-					end 
-				end 
-			end
-			
 			CLEAR_WAIT:
 			begin 
 				food_gen <= 1'b0;
+				
+				if (length > 4)
+				begin
+					for (j = 0; j < 127; j = j + 1)
+					begin 
+						if (j > 3 && j <= length - 1)
+						begin
+							if (bodyx[j] == headx && bodyy[j] == heady)
+								over <= 1'b1;
+						end
+					end
+				end
+				
 				
 				if (headx == wrongx && heady == wrongy)
 				begin	
@@ -507,6 +484,8 @@ module datapath(
 				select <= 4'b0000;
 				wrongx <= 8'd59;
 				wrongy <= 7'd59;
+				oldx <= 8'd0;
+				oldy <= 7'd0;
 				end
 					
 			end
@@ -557,6 +536,11 @@ module datapath(
 			end
 			EAT_WAIT:
 			begin 
+				if (food_gen)
+				begin
+					oldx <= wrongx;
+					oldy <= wrongy;
+				end 
 			end
 			EAT:
 			begin 
@@ -589,13 +573,35 @@ module datapath(
 						start <= 1'b0;
 					end
 						
-					else if ((foodx == headx && foody == heady))
+					else if (food_gen)
 					begin
-					
-						x_out <= rand2x;
-						y_out <= rand2y;
-						colour <= 3'b100;
+						if (rand2x == randx && rand2y == randy)
+						begin 
+							wrongx <= rand2x + 8'd3;
+							wrongy <= rand2y + 7'd3;
+							x_out <= rand2x + 8'd3;
+							y_out <= rand2y + 7'd3;
+							colour <= 3'b100;
+						end
+						else 
+						begin
+							wrongx <= rand2x;
+							wrongy <= rand2y;
+							x_out <= rand2x;
+							y_out <= rand2y;
+							colour <= 3'b100;
+						end
 					end
+			end
+			
+			ERASE_WRONG:
+			begin
+				if (food_gen)
+				begin
+					x_out <= oldx;
+					y_out <= oldy;
+					colour <= 3'b111;
+				end 
 			end
 			
 			endcase
