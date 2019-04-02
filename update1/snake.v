@@ -193,14 +193,16 @@ module control(
 					 WAIT					  = 4'd2,
 					 SETUP_WAIT 		  = 4'd3,
 					 SETUP				  = 4'd4,
-					 CLEAR_WAIT			  = 4'd5,
-					 CLEAR              = 4'd6,
-					 MOVE_WAIT		     = 4'd7,
-					 MOVE		           = 4'd8,
-					 EAT_WAIT		     = 4'd9,
-					 EAT                = 4'd10,
-					 WRONG				  = 4'd11,
-					 REPEAT			     = 4'd12;
+					 BODY_CHECKER_WAIT  = 4'd5,
+					 BODY_CHECKER		  = 4'd6,
+					 CLEAR_WAIT			  = 4'd7,
+					 CLEAR              = 4'd8,
+					 MOVE_WAIT		     = 4'd9,
+					 MOVE		           = 4'd10,
+					 EAT_WAIT		     = 4'd11,
+					 EAT                = 4'd12,
+					 WRONG				  = 4'd13,
+					 REPEAT			     = 4'd14;
 	 
 	 localparam 
 					LEFT = 2'b0,
@@ -217,8 +219,10 @@ module control(
 					START_WAIT: next_state = start ? SETUP : START_WAIT;
 					WAIT: next_state = delay ? SETUP_WAIT: WAIT;
 					SETUP_WAIT: next_state = SETUP;
-					SETUP: next_state = delay ? CLEAR_WAIT : SETUP_WAIT;
-					CLEAR_WAIT: next_state = delay1 ? CLEAR : CLEAR_WAIT;
+					SETUP: next_state = delay ? BODY_CHECKER_WAIT : SETUP_WAIT;
+					BODY_CHECKER_WAIT: next_state = BODY_CHECKER;
+					BODY_CHECKER: next_state = delay1 ? CLEAR_WAIT : BODY_CHECKER_WAIT;
+					CLEAR_WAIT: next_state = CLEAR;
 					CLEAR: next_state = MOVE_WAIT;
 					MOVE_WAIT: next_state = MOVE;
 					MOVE: next_state = EAT_WAIT;
@@ -315,14 +319,16 @@ module datapath(
 					 WAIT               = 4'b0010,
 					 SETUP_WAIT			  = 4'b0011,
 					 SETUP				  = 4'b0100,
-					 CLEAR_WAIT			  = 4'b0101,
-					 CLEAR              = 4'b0110,
-					 MOVE_WAIT		     = 4'b0111,
-					 MOVE		           = 4'b1000,
-					 EAT_WAIT		     = 4'b1001,
-					 EAT                = 4'b1010,
-					 WRONG				  = 4'b1011,
-					 REPEAT			     = 4'b1100;
+					 BODY_CHECKER_WAIT  = 4'b0101,
+					 BODY_CHECKER		  = 4'b0110,
+					 CLEAR_WAIT			  = 4'b0111,
+					 CLEAR              = 4'b1000,
+					 MOVE_WAIT		     = 4'b1001,
+					 MOVE		           = 4'b1010,
+					 EAT_WAIT		     = 4'b1011,
+					 EAT                = 4'b1100,
+					 WRONG				  = 4'b1101,
+					 REPEAT			     = 4'b1110;
 	 
 	 localparam 
 					LEFT = 2'b0,
@@ -353,6 +359,7 @@ module datapath(
 		select <= 5'b0;
 		wrongx <= 8'd59;
 		wrongy <= 8'd59;
+		j <= 0;
 		end
 		
 		
@@ -405,15 +412,35 @@ module datapath(
 				
 			end
 			
+			BODY_CHECKER_WAIT:
+			begin
+				if (length > 4) 
+				begin
+					if (j == 127)
+					begin
+						j <= 4;
+					end
+					else 
+					begin 
+						j <= j + 1;
+					end
+				end 
+			end 
+			
+			BODY_CHECKER:
+			begin
+				if (length > 4)
+				begin
+					if (bodyx[j] == headx && bodyy[j] == heady)
+					begin
+						over <= 1'b1;
+					end 
+				end 
+			end
+			
 			CLEAR_WAIT:
 			begin 
 				food_gen <= 1'b0;
-				
-				for (j = 0; j < 127; j = j + 1)
-				begin
-					if (headx == bodyx[j] && heady == bodyy[j])
-						over <= 1'b1;
-				end
 				
 				if (headx == wrongx && heady == wrongy)
 				begin	
@@ -495,7 +522,7 @@ module datapath(
 			
 			MOVE:
 			begin 
-				if ((length % 4) == 0) 
+				if ((length % 2) == 0) 
 				begin 
 					select <= select + 1'b1;
 				end 
@@ -526,35 +553,6 @@ module datapath(
 					begin
 						bodyy[i + 1] <= 7'b0;
 					end
-						
-						
-					/*\
-					temphead <= head;
-					for (j = 0; j < length; j= j=1)
-						for (i = 0; i < 127; i = i + 1)
-					begin 
-						if (tempbodyx[i] > 0)
-						begin
-							tempbodyx[i + 1] <=tempbodyx[i];
-						end 
-						else 
-						begin
-							tempbodyx[i + 1] <= 8'b0;
-						end 
-						
-						if (tempbodyy[i] > 0)
-						begin
-							tempbodyy[i + 1] <= bodyy[i];
-						end 
-						else 
-						begin
-							bodyy[i + 1] <= 7'b0;
-						end 
-					
-					
-
-					
-					*/
 				end
 			end
 			EAT_WAIT:
