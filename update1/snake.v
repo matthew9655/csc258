@@ -1,13 +1,14 @@
 //KEY[0] active low reset
 //KEY[1] go signal
 
-module snake(SW, KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R, VGA_G, VGA_B, PS2_CLK, PS2_DAT);
+module snake(SW, KEY, CLOCK_50, HEX0, HEX1, HEX2, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA_R, VGA_G, VGA_B, PS2_CLK, PS2_DAT);
     input [3:0] KEY;
 	 input [9:0] SW;
     input CLOCK_50;
 	 inout PS2_CLK, PS2_DAT;
     output VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK;
 	 output [9:0] VGA_R, VGA_G, VGA_B;
+	 output [6:0] HEX0, HEX1, HEX2;
 	
 	 
 	 wire [7:0] x_out;
@@ -16,6 +17,7 @@ module snake(SW, KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA
 	 wire plot;
 	 
 	 wire kleft, kright, kup, kdown; 
+	 wire [11:0] hex_length;
 	 
 	 wire [5:0] not_used;
 	 
@@ -60,12 +62,26 @@ module snake(SW, KEY, CLOCK_50, VGA_HS, VGA_VS, VGA_BLANK,VGA_SYNC, VGA_CLK, VGA
 			.down(kdown)	 
 	);
 			
-	 combined c0(CLOCK_50, KEY[0], KEY[1], SW[0], SW[1], SW[2], SW[3], x_out, y_out, colour, plot);
-	
+	 combined c0(CLOCK_50, KEY[0], KEY[1], kleft, kright, kup, kdown, x_out, y_out, colour, plot, hex_length);
+	 
+	 hex_decoder h0(
+			.hex_digit(hex_length[3:0]),
+			.segments(HEX0)
+	 );
+	  hex_decoder h1(
+			.hex_digit(hex_length[7:4]),
+			.segments(HEX1)
+	 );
+	  hex_decoder h2(
+			.hex_digit(hex_length[11:8]),
+			.segments(HEX2)
+	 );
+	 
+
 endmodule      
 
 
-module combined(clk, resetn, start, l, r, u, d, x_out, y_out, colour, plot);
+module combined(clk, resetn, start, l, r, u, d, x_out, y_out, colour, plot, hex_length);
 	input clk, resetn, start;
 	input l, r, u, d;
 	
@@ -73,6 +89,7 @@ module combined(clk, resetn, start, l, r, u, d, x_out, y_out, colour, plot);
 	output [6:0] y_out;
 	output [2:0] colour;
 	output plot;
+	output [11:0] hex_length;
 	
 	wire over;
 	wire delay;
@@ -83,6 +100,7 @@ module combined(clk, resetn, start, l, r, u, d, x_out, y_out, colour, plot);
 	wire [6:0] randy, rand2y;
 	wire food_gen;
 	wire [27:0] timer;
+	wire [6:0] length;
 	
 	
 	time_controller t0(
@@ -128,7 +146,8 @@ module combined(clk, resetn, start, l, r, u, d, x_out, y_out, colour, plot);
 		  .colour(colour),
 		  .food_gen(food_gen),
 		  .select(select),
-		  .over(over)
+		  .over(over),
+		  .length(length)
     );
 	 
 
@@ -153,6 +172,11 @@ module combined(clk, resetn, start, l, r, u, d, x_out, y_out, colour, plot);
 			.food_gen(food_gen),
 			.randomX(rand2x),
 			.randomY(rand2y)
+	 );
+	 
+	 bin_to_int bi0 (
+			.out(hex_length),
+			.length(length)
 	 );
 	 
 	 
@@ -289,10 +313,10 @@ module datapath(
 	 output reg [2:0] colour,
 	 output reg food_gen,
 	 output reg [4:0] select,
-	 output reg over
+	 output reg over,
+	 output reg [6:0] length
     );
 	 
-	 reg [5:0] length;
 	 reg start;
 	 reg [7:0] headx, foodx, setupx, wrongx, oldx;
 	 reg [6:0] heady, foody, setupy, wrongy, oldy;
@@ -645,12 +669,13 @@ module time_controller(out, select);
 	always @(*)
 	begin 
 			case (select)
-				5'b00000: out = 28'd6400000;
-				5'b00001: out = 28'd4500000;
-				5'b00010: out = 28'd3200000;
+				5'b00000: out = 28'd4500000;
+				5'b00001: out = 28'd3200000;
+				5'b00010: out = 28'd2000000;
 				5'b00011: out = 28'd1666667;
 				5'b00100: out = 28'd866666;
-				default: out = 28'd866666;
+				5'b00101: out = 28'd844444;
+				default: out = 28'd844444;
 			endcase
 	end 
 endmodule
@@ -747,4 +772,50 @@ module wrong_food_gen (clk, food_gen, randomX, randomY);
 	end
 	
 endmodule 
+
+module bin_to_int(out, length);
+	output reg [11:0] out;
+	input [6:0] length;
+	
+	
+	
+	always@(*)
+	begin 
+		if (length < 7'd100)
+		begin 
+			 out[3:0] = length % 10;
+			 out[7:4] = length / 10;
+			 out[11:8] = length / 100;
+		end 
+		else 
+		begin
+			 out[3:0] = length % 10;
+			 out[7:4] = (length / 10) - 10;
+			 out[11:8] = length / 100;
+		end 
+	end
+	
+	 
+	
+endmodule
+
+module hex_decoder(hex_digit, segments);
+    input [3:0] hex_digit;
+    output reg [6:0] segments;
+   
+    always @(*)
+        case (hex_digit)
+            4'h0: segments = 7'b100_0000;
+            4'h1: segments = 7'b111_1001;
+            4'h2: segments = 7'b010_0100;
+            4'h3: segments = 7'b011_0000;
+            4'h4: segments = 7'b001_1001;
+            4'h5: segments = 7'b001_0010;
+            4'h6: segments = 7'b000_0010;
+            4'h7: segments = 7'b111_1000;
+            4'h8: segments = 7'b000_0000;
+            4'h9: segments = 7'b001_1000;
+            default: segments = 7'h7f;
+        endcase
+endmodule
 
